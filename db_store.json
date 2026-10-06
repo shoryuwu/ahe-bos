@@ -1,0 +1,3548 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-001",
+      "email": "admin@ahe.id",
+      "password_hash": "$2b$10$NM2nM4QjLGV4F0kxNa1e1utaCV0e9mscJeqjo5qb13gRXv7BYw7BW",
+      "role": "admin",
+      "nama": "Admin AHE Karang Joang",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": "2026-10-04T13:41:45.965Z",
+      "password_reset_required": false,
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-10-04T13:41:45.965Z"
+    },
+    {
+      "id": "usr-tutor-001",
+      "email": "sari@ahe.id",
+      "password_hash": "$2b$10$NM2nM4QjLGV4F0kxNa1e1ucCvQrm.N6raGh8ysmSE95A7V6RV/Jxu",
+      "role": "tutor",
+      "nama": "Bu Sari Rahayu, S.Pd.",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": "2026-10-04T13:41:25.219Z",
+      "password_reset_required": false,
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-10-04T13:41:25.219Z"
+    },
+    {
+      "id": "usr-tutor-002",
+      "email": "dewi.tutor@ahe.id",
+      "password_hash": "$2b$10$NM2nM4QjLGV4F0kxNa1e1ucCvQrm.N6raGh8ysmSE95A7V6RV/Jxu",
+      "role": "tutor",
+      "nama": "Bu Dewi Lestari, S.Pd.",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": null,
+      "password_reset_required": false,
+      "created_at": "2026-01-10T00:00:00.000Z",
+      "updated_at": "2026-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "usr-ortu-001",
+      "email": "sari.dewi@ahe.id",
+      "password_hash": "$2b$10$1ZEDffdeE2zVAGymEHqZMuE997fZ9w/ZP77DSKxbAN67XydwlX3Pa",
+      "role": "orangtua",
+      "nama": "Sari Dewi (Ibu Bintang)",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 1,
+      "locked_until": null,
+      "last_login_at": "2026-09-27T13:20:29.989Z",
+      "password_reset_required": true,
+      "created_at": "2026-01-15T00:00:00.000Z",
+      "updated_at": "2026-10-04T07:07:42.379Z"
+    },
+    {
+      "id": "usr-ortu-002",
+      "email": "budi.santoso@ahe.id",
+      "password_hash": "$2b$10$NM2nM4QjLGV4F0kxNa1e1uE56t3OdE8iVu9Jh.6FdmeA7qantKcyS",
+      "role": "orangtua",
+      "nama": "Budi Santoso (Ayah Aisyah)",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": null,
+      "password_reset_required": false,
+      "created_at": "2026-01-20T00:00:00.000Z",
+      "updated_at": "2026-01-20T00:00:00.000Z"
+    },
+    {
+      "id": "usr-ortu-4e3d9135",
+      "email": "ahmad.fauzi@gmail.com",
+      "password_hash": "$2b$10$MZmuXstqvz6h4Fh4C2L1LOfo7PC0/EzAaTj7HIj7eCFjGEs.Esoq.",
+      "role": "orangtua",
+      "nama": "Ahmad Fauzi",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": null,
+      "password_reset_required": true,
+      "created_at": "2026-09-27T12:10:19.553Z",
+      "updated_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "usr-ortu-e87038cc",
+      "email": "bunda.bintang@gmail.com",
+      "password_hash": "$2b$10$cl8OpImiNaz3hqEEjFtZG..iZrDGq6rYdgHp7w5fokjRLgRd1FMKi",
+      "role": "orangtua",
+      "nama": "Bunda Bintang",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": "2026-09-27T12:12:28.258Z",
+      "password_reset_required": true,
+      "created_at": "2026-09-27T12:11:27.562Z",
+      "updated_at": "2026-09-27T12:12:28.258Z"
+    },
+    {
+      "id": "usr-ortu-3a6bc3ae",
+      "email": "bunda.97853@gmail.com",
+      "password_hash": "$2b$10$2s/X0HSmTzQOjhduw3s4Vu5J1ISU2fE3KVXhP5g9hQnI.3aDK85qS",
+      "role": "orangtua",
+      "nama": "Bunda Bintang 97853",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": "2026-09-27T12:14:58.495Z",
+      "password_reset_required": true,
+      "created_at": "2026-09-27T12:14:58.112Z",
+      "updated_at": "2026-09-27T12:14:58.495Z"
+    },
+    {
+      "id": "usr-ortu-bd2e19d0",
+      "email": "bunda.10820@gmail.com",
+      "password_hash": "$2b$10$To8DFqCzg9FmEWRRkLJDce0fV6AL2XMkjpnjWkdLyRxtErDbFuxLS",
+      "role": "orangtua",
+      "nama": "Bunda Bintang 10820",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": "2026-09-27T12:16:51.442Z",
+      "password_reset_required": true,
+      "created_at": "2026-09-27T12:16:51.090Z",
+      "updated_at": "2026-09-27T12:16:51.442Z"
+    },
+    {
+      "id": "usr-ortu-a5f78dd8",
+      "email": "bunda.71632@gmail.com",
+      "password_hash": "$2b$10$mUorLEn6x2n5lo96hA/lhucxbfDdEfSVyQMgg7/PC5.XUB7G62Ejy",
+      "role": "orangtua",
+      "nama": "Bunda Bintang 71632",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": "2026-09-27T12:21:12.054Z",
+      "password_reset_required": true,
+      "created_at": "2026-09-27T12:21:11.817Z",
+      "updated_at": "2026-09-27T12:21:12.054Z"
+    },
+    {
+      "id": "usr-ortu-dd47ef42",
+      "email": "asda@gmail.com",
+      "password_hash": "$2b$10$NBdfZbj4mKAadhAJiT5fGeuSHP25SGJV9AuE3ZliHqElcrFPM/Y/S",
+      "role": "orangtua",
+      "nama": "sada",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": null,
+      "password_reset_required": true,
+      "created_at": "2026-10-04T06:40:26.903Z",
+      "updated_at": "2026-10-04T06:40:26.903Z"
+    },
+    {
+      "id": "usr-ortu-99e54a83",
+      "email": "bunda.92950@gmail.com",
+      "password_hash": "$2b$10$jZAQW191hS0Z5.Jqlq7vPezvh1QLt4Up7RuUjie.4b8h8C8n18j/C",
+      "role": "orangtua",
+      "nama": "Bunda Bintang 92950",
+      "is_active": true,
+      "foto_url": null,
+      "failed_logins": 0,
+      "locked_until": null,
+      "last_login_at": null,
+      "password_reset_required": true,
+      "created_at": "2026-10-04T08:03:26.387Z",
+      "updated_at": "2026-10-04T08:03:26.387Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "0e1c0011-65ab-49ab-9f29-10e8da3081c2",
+      "user_id": "usr-admin-001",
+      "token": "15613bec-d54a-43d3-aba0-f412abbb6343",
+      "expires_at": "2026-10-04T12:08:53.005Z",
+      "created_at": "2026-09-27T12:08:53.005Z"
+    },
+    {
+      "id": "323d7d9c-704e-4347-b572-b3acfc4b22b1",
+      "user_id": "usr-tutor-001",
+      "token": "db41e922-c8f7-4a45-9da2-fbfde859aac0",
+      "expires_at": "2026-10-04T12:08:53.744Z",
+      "created_at": "2026-09-27T12:08:53.745Z"
+    },
+    {
+      "id": "555800a3-c965-4e6c-9d51-8f0dbe94c083",
+      "user_id": "usr-admin-001",
+      "token": "3a6f4365-27c0-43ca-8ddd-8cbabd98a37f",
+      "expires_at": "2026-10-04T12:09:22.689Z",
+      "created_at": "2026-09-27T12:09:22.690Z"
+    },
+    {
+      "id": "83b5e44d-c09f-4151-af5c-feac07ac8805",
+      "user_id": "usr-tutor-001",
+      "token": "4611acb0-3f71-47d1-8ad7-78d0c37e42d1",
+      "expires_at": "2026-10-04T12:09:22.815Z",
+      "created_at": "2026-09-27T12:09:22.816Z"
+    },
+    {
+      "id": "85914698-c8c8-408f-a0df-834058cad5c0",
+      "user_id": "usr-admin-001",
+      "token": "e9e4f4a4-8397-4e4f-8ffb-f15c89dd8875",
+      "expires_at": "2026-10-04T12:10:00.203Z",
+      "created_at": "2026-09-27T12:10:00.204Z"
+    },
+    {
+      "id": "0110620c-c6c2-4972-b484-c34e7ca30484",
+      "user_id": "usr-tutor-001",
+      "token": "5eb2c243-5df3-40df-aba2-0cb2be53c9a4",
+      "expires_at": "2026-10-04T12:10:00.325Z",
+      "created_at": "2026-09-27T12:10:00.326Z"
+    },
+    {
+      "id": "d7ae9fe9-b3ad-473c-b21c-c41753c016c8",
+      "user_id": "usr-admin-001",
+      "token": "bbdc23e9-e794-44b4-873f-d4ced783fcea",
+      "expires_at": "2026-10-04T12:10:19.484Z",
+      "created_at": "2026-09-27T12:10:19.485Z"
+    },
+    {
+      "id": "78c3fd72-f056-46ce-8ec1-a2dada3aa599",
+      "user_id": "usr-admin-001",
+      "token": "f63f74a7-6937-4541-b56a-2e4166a5f4e1",
+      "expires_at": "2026-10-04T12:11:27.378Z",
+      "created_at": "2026-09-27T12:11:27.379Z"
+    },
+    {
+      "id": "7a982e76-1b92-48b5-bfd0-af6708921748",
+      "user_id": "usr-tutor-001",
+      "token": "bd6b70d0-e1b5-40c0-b8a6-3861cdf11822",
+      "expires_at": "2026-10-04T12:11:27.669Z",
+      "created_at": "2026-09-27T12:11:27.670Z"
+    },
+    {
+      "id": "c462c3ac-0035-4353-90b8-45b54e2a5941",
+      "user_id": "usr-ortu-e87038cc",
+      "token": "da89128d-58e4-43ad-883e-1bf0fab18a4b",
+      "expires_at": "2026-10-04T12:11:28.009Z",
+      "created_at": "2026-09-27T12:11:28.010Z"
+    },
+    {
+      "id": "3204262c-b604-4265-b309-6f25662927ab",
+      "user_id": "usr-tutor-001",
+      "token": "955b8c2a-e4d6-457e-ac39-2efcffa188fc",
+      "expires_at": "2026-10-04T12:11:42.058Z",
+      "created_at": "2026-09-27T12:11:42.060Z"
+    },
+    {
+      "id": "057820db-7ae3-4198-861d-7b29a3c82533",
+      "user_id": "usr-ortu-e87038cc",
+      "token": "18a0a6a9-2ab5-41e2-9da5-81b3f13619d5",
+      "expires_at": "2026-10-04T12:12:28.259Z",
+      "created_at": "2026-09-27T12:12:28.261Z"
+    },
+    {
+      "id": "27418c55-df1a-41b2-8fbc-387a714a1a3f",
+      "user_id": "usr-admin-001",
+      "token": "e6253628-3fe9-4ee6-b8b7-00d3ee7219c4",
+      "expires_at": "2026-10-04T12:13:43.285Z",
+      "created_at": "2026-09-27T12:13:43.286Z"
+    },
+    {
+      "id": "1993dd90-40ef-4b10-9307-1560fd391fd6",
+      "user_id": "usr-tutor-001",
+      "token": "18f057d9-e4ec-47a4-9dd3-89600e94e546",
+      "expires_at": "2026-10-04T12:13:43.497Z",
+      "created_at": "2026-09-27T12:13:43.498Z"
+    },
+    {
+      "id": "402a7d4a-d5e3-489f-af72-8057de978756",
+      "user_id": "usr-tutor-001",
+      "token": "62391d1d-ef99-47cd-91c7-88634a604d54",
+      "expires_at": "2026-10-04T12:14:17.351Z",
+      "created_at": "2026-09-27T12:14:17.352Z"
+    },
+    {
+      "id": "97d46d02-028b-4035-a186-897b7d08181e",
+      "user_id": "usr-admin-001",
+      "token": "4f657ba1-8637-41b8-8d2e-c8e3e7253720",
+      "expires_at": "2026-10-04T12:14:57.966Z",
+      "created_at": "2026-09-27T12:14:57.967Z"
+    },
+    {
+      "id": "9761d4e6-24a2-4b5e-a5d1-f8825e2ed99e",
+      "user_id": "usr-tutor-001",
+      "token": "ba4d972e-d03c-4bb8-8eaa-8d44367a1b16",
+      "expires_at": "2026-10-04T12:14:58.214Z",
+      "created_at": "2026-09-27T12:14:58.215Z"
+    },
+    {
+      "id": "7fa063b9-1a42-4018-a6bf-8c8f0b798e9d",
+      "user_id": "usr-ortu-3a6bc3ae",
+      "token": "14a3bde0-2f25-43eb-92a7-7ba1aca305f3",
+      "expires_at": "2026-10-04T12:14:58.496Z",
+      "created_at": "2026-09-27T12:14:58.497Z"
+    },
+    {
+      "id": "1c182c16-b4a2-4e04-ba1d-7e594782ba22",
+      "user_id": "usr-tutor-001",
+      "token": "847d24d1-6b1e-40e8-9df3-0b683e011e87",
+      "expires_at": "2026-10-04T12:16:24.160Z",
+      "created_at": "2026-09-27T12:16:24.161Z"
+    },
+    {
+      "id": "60570a14-267b-4dde-819f-4093c4c5d9ae",
+      "user_id": "usr-admin-001",
+      "token": "d56b9d83-983b-45de-ae97-056a7e64a73e",
+      "expires_at": "2026-10-04T12:16:50.937Z",
+      "created_at": "2026-09-27T12:16:50.938Z"
+    },
+    {
+      "id": "824fb167-8b79-4160-b1ff-92e439a1ac00",
+      "user_id": "usr-tutor-001",
+      "token": "d5f9c1a6-7910-430f-8cc8-636df08093a8",
+      "expires_at": "2026-10-04T12:16:51.190Z",
+      "created_at": "2026-09-27T12:16:51.191Z"
+    },
+    {
+      "id": "f3255682-311f-4485-820c-300b529cb468",
+      "user_id": "usr-ortu-bd2e19d0",
+      "token": "321b89ad-6f77-4352-86fa-1516f72fe648",
+      "expires_at": "2026-10-04T12:16:51.443Z",
+      "created_at": "2026-09-27T12:16:51.444Z"
+    },
+    {
+      "id": "628e3f7a-39ed-402e-9c5a-0e4d5f55e936",
+      "user_id": "usr-admin-001",
+      "token": "0c4b7ef0-368e-4b8f-93de-b4559bcf4e92",
+      "expires_at": "2026-10-04T12:17:16.853Z",
+      "created_at": "2026-09-27T12:17:16.855Z"
+    },
+    {
+      "id": "ba945882-da0f-4375-bb86-644ddedf1245",
+      "user_id": "usr-admin-001",
+      "token": "1982cacc-e15a-44dc-985a-d0a37f49e61c",
+      "expires_at": "2026-10-04T12:19:53.095Z",
+      "created_at": "2026-09-27T12:19:53.096Z"
+    },
+    {
+      "id": "fa209d00-5808-45af-a0f5-0e70457d3a7d",
+      "user_id": "usr-tutor-001",
+      "token": "ad97b12a-8b22-44a0-aa24-69e39f3baf4d",
+      "expires_at": "2026-10-04T12:19:53.280Z",
+      "created_at": "2026-09-27T12:19:53.281Z"
+    },
+    {
+      "id": "b25ac9ec-41b8-4294-9f03-ea575f56d9a8",
+      "user_id": "usr-admin-001",
+      "token": "8f7049fd-f828-44dc-bd50-e82b18435231",
+      "expires_at": "2026-10-04T12:20:43.618Z",
+      "created_at": "2026-09-27T12:20:43.619Z"
+    },
+    {
+      "id": "98cd3fad-5dc5-4f3b-b40c-45812022468a",
+      "user_id": "usr-tutor-001",
+      "token": "b47d4b38-95c9-4da4-9cae-c6816adcc8bb",
+      "expires_at": "2026-10-04T12:20:43.763Z",
+      "created_at": "2026-09-27T12:20:43.763Z"
+    },
+    {
+      "id": "48d1c194-0bfe-478d-911b-3f5ec0797184",
+      "user_id": "usr-admin-001",
+      "token": "5d75ad69-0bf1-449c-8620-7c79b0351903",
+      "expires_at": "2026-10-04T12:21:11.706Z",
+      "created_at": "2026-09-27T12:21:11.707Z"
+    },
+    {
+      "id": "70796a83-f23b-4e07-b22f-5d4d6bdc307c",
+      "user_id": "usr-tutor-001",
+      "token": "234c9372-33b1-43ac-8763-48b27d50228f",
+      "expires_at": "2026-10-04T12:21:11.893Z",
+      "created_at": "2026-09-27T12:21:11.893Z"
+    },
+    {
+      "id": "740da1e0-ea89-4b61-b38f-330e92602ba1",
+      "user_id": "usr-ortu-a5f78dd8",
+      "token": "4dd24d53-c455-4c8d-b9bd-01ac1c13b184",
+      "expires_at": "2026-10-04T12:21:12.054Z",
+      "created_at": "2026-09-27T12:21:12.055Z"
+    },
+    {
+      "id": "cf6872f3-1ad7-4d12-805e-ccf6db31a768",
+      "user_id": "usr-admin-001",
+      "token": "cd8cdd5b-237c-411e-8852-944659421570",
+      "expires_at": "2026-10-04T12:51:10.389Z",
+      "created_at": "2026-09-27T12:51:10.390Z"
+    },
+    {
+      "id": "cc56895f-23b8-41ec-826c-55894d4c9d13",
+      "user_id": "usr-admin-001",
+      "token": "38447e6a-ad71-40fd-b65c-4ac8114065a2",
+      "expires_at": "2026-10-11T13:41:45.966Z",
+      "created_at": "2026-10-04T13:41:45.967Z"
+    }
+  ],
+  "guru": [
+    {
+      "id": "guru-001",
+      "user_id": "usr-tutor-001",
+      "nama": "Bu Sari Rahayu, S.Pd.",
+      "no_wa": "081234567891",
+      "email": "sari@ahe.id",
+      "spesialisasi": [
+        "pra-membaca",
+        "level-1",
+        "level-2"
+      ],
+      "tanggal_gabung": "2024-01-01",
+      "foto_url": null,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "guru-002",
+      "user_id": "usr-tutor-002",
+      "nama": "Bu Dewi Lestari, S.Pd.",
+      "no_wa": "081234567892",
+      "email": "dewi.tutor@ahe.id",
+      "spesialisasi": [
+        "level-2",
+        "level-3",
+        "lanjutan"
+      ],
+      "tanggal_gabung": "2024-03-01",
+      "foto_url": null,
+      "is_active": true,
+      "created_at": "2026-01-10T00:00:00.000Z",
+      "updated_at": "2026-01-10T00:00:00.000Z"
+    }
+  ],
+  "orangtua": [
+    {
+      "id": "ortu-001",
+      "user_id": "usr-ortu-001",
+      "nama": "Sari Dewi",
+      "no_wa": "081234567890",
+      "email": "sari.dewi@ahe.id",
+      "alamat": "Jl. Soekarno Hatta Km. 11, Karang Joang, Balikpapan Utara",
+      "hubungan": "ibu",
+      "created_at": "2026-01-15T00:00:00.000Z",
+      "updated_at": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "ortu-002",
+      "user_id": "usr-ortu-002",
+      "nama": "Budi Santoso",
+      "no_wa": "081345678901",
+      "email": "budi.santoso@ahe.id",
+      "alamat": "Perumahan Joang Indah Blok C3, Karang Joang",
+      "hubungan": "ayah",
+      "created_at": "2026-01-20T00:00:00.000Z",
+      "updated_at": "2026-01-20T00:00:00.000Z"
+    },
+    {
+      "id": "ortu-1d998c49",
+      "user_id": "usr-ortu-4e3d9135",
+      "nama": "Ahmad Fauzi",
+      "no_wa": "081298765432",
+      "email": "ahmad.fauzi@gmail.com",
+      "alamat": "Jl. Karang Joang Km. 13 RT 05",
+      "hubungan": "ayah",
+      "created_at": "2026-09-27T12:10:19.553Z",
+      "updated_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "ortu-b7f5a735",
+      "user_id": "usr-ortu-e87038cc",
+      "nama": "Bunda Bintang",
+      "no_wa": "081299998888",
+      "email": "bunda.bintang@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "created_at": "2026-09-27T12:11:27.562Z",
+      "updated_at": "2026-09-27T12:11:27.562Z"
+    },
+    {
+      "id": "ortu-170fddcf",
+      "user_id": "usr-ortu-3a6bc3ae",
+      "nama": "Bunda Bintang 97853",
+      "no_wa": "08129785378",
+      "email": "bunda.97853@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "created_at": "2026-09-27T12:14:58.112Z",
+      "updated_at": "2026-09-27T12:14:58.112Z"
+    },
+    {
+      "id": "ortu-23e78001",
+      "user_id": "usr-ortu-bd2e19d0",
+      "nama": "Bunda Bintang 10820",
+      "no_wa": "08121082078",
+      "email": "bunda.10820@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "created_at": "2026-09-27T12:16:51.090Z",
+      "updated_at": "2026-09-27T12:16:51.090Z"
+    },
+    {
+      "id": "ortu-06239d9a",
+      "user_id": "usr-ortu-a5f78dd8",
+      "nama": "Bunda Bintang 71632",
+      "no_wa": "08127163278",
+      "email": "bunda.71632@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "created_at": "2026-09-27T12:21:11.817Z",
+      "updated_at": "2026-09-27T12:21:11.817Z"
+    },
+    {
+      "id": "ortu-972326b7",
+      "user_id": "usr-ortu-dd47ef42",
+      "nama": "sada",
+      "no_wa": "084535345243",
+      "email": "asda@gmail.com",
+      "alamat": "sada",
+      "hubungan": "ibu",
+      "created_at": "2026-10-04T06:40:26.903Z",
+      "updated_at": "2026-10-04T06:40:26.903Z"
+    },
+    {
+      "id": "ortu-481a69df",
+      "user_id": "usr-ortu-99e54a83",
+      "nama": "Bunda Bintang 92950",
+      "no_wa": "08129295078",
+      "email": "bunda.92950@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "created_at": "2026-10-04T08:03:26.387Z",
+      "updated_at": "2026-10-04T08:03:26.387Z"
+    }
+  ],
+  "program": [
+    {
+      "id": "prg-001",
+      "kode": "pra-membaca",
+      "nama": "Pra Membaca",
+      "deskripsi": "Fondasi awal sebelum membaca. Anak dikenalkan bentuk huruf alfabet, angka, dan stimulasi motorik halus.",
+      "target_capaian": [
+        "Mengenal 26 huruf alfabet",
+        "Koordinasi tangan dan mata",
+        "Motorik halus dasar",
+        "Kesiapan fokus belajar"
+      ],
+      "durasi_estimasi": "1-2 bulan",
+      "rentang_usia": "3-4 tahun",
+      "urutan": 0,
+      "icon": "🌱",
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "prg-002",
+      "kode": "level-1",
+      "nama": "Membaca Level 1",
+      "deskripsi": "Pengenalan suku kata konsonan-vokal (KV). Belajar menggabungkan huruf vokal dan konsonan dengan metode fonik bertahap.",
+      "target_capaian": [
+        "Membaca suku kata terbuka (ba, bi, bu, be, bo)",
+        "Mengenal bunyi fonem huruf",
+        "Menggabungkan dua suku kata mudah",
+        "Membaca 50+ suku kata"
+      ],
+      "durasi_estimasi": "2-3 bulan",
+      "rentang_usia": "4-5 tahun",
+      "urutan": 1,
+      "icon": "📚",
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "prg-003",
+      "kode": "level-2",
+      "nama": "Membaca Level 2",
+      "deskripsi": "Membaca kata utuh dan suku kata tertutup (KVK). Merangkai suku kata menjadi kata sederhana bermakna.",
+      "target_capaian": [
+        "Membaca kata 2 suku kata berakhiran konsonan",
+        "Mengenal 100+ kosakata sehari-hari",
+        "Memahami arti kata bacaan",
+        "Membaca tanpa mengeja bersuara"
+      ],
+      "durasi_estimasi": "2-3 bulan",
+      "rentang_usia": "4-6 tahun",
+      "urutan": 2,
+      "icon": "🔤",
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "prg-004",
+      "kode": "level-3",
+      "nama": "Membaca Level 3",
+      "deskripsi": "Membaca kalimat sederhana dan diftong/digraf (ng, ny). Membaca lancar dengan intonasi yang tepat.",
+      "target_capaian": [
+        "Membaca kata dengan diftong & digraf (ng, ny)",
+        "Membaca kalimat 3-5 kata",
+        "Memahami intonasi tanda baca",
+        "Mampu menjawab pertanyaan isi kalimat"
+      ],
+      "durasi_estimasi": "2-3 bulan",
+      "rentang_usia": "5-6 tahun",
+      "urutan": 3,
+      "icon": "📖",
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "prg-005",
+      "kode": "lanjutan",
+      "nama": "Membaca Lanjutan",
+      "deskripsi": "Membaca cerita lengkap dan buku cerita anak. Membaca mandiri dan pemahaman isi bacaan tingkat lanjut.",
+      "target_capaian": [
+        "Membaca cerita pendek 2-3 paragraf",
+        "Menyimpulkan isi bacaan sederhana",
+        "Menceritakan kembali alur cerita",
+        "Membaca mandiri penuh rasa percaya diri"
+      ],
+      "durasi_estimasi": "3-4 bulan",
+      "rentang_usia": "5-7 tahun",
+      "urutan": 4,
+      "icon": "🦋",
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "kelas": [
+    {
+      "id": "kls-001",
+      "nama": "Pagi A - Level 2 (Bintang)",
+      "program_id": "prg-003",
+      "guru_id": "guru-001",
+      "jadwal_hari": [
+        "Senin",
+        "Rabu",
+        "Jumat"
+      ],
+      "jam_mulai": "08:30",
+      "jam_selesai": "09:30",
+      "kapasitas": 7,
+      "status": "aktif",
+      "created_at": "2026-01-10T00:00:00.000Z",
+      "updated_at": "2026-10-04T08:03:16.382Z"
+    },
+    {
+      "id": "kls-002",
+      "nama": "Siang B - Level 1 (Aisyah)",
+      "program_id": "prg-002",
+      "guru_id": "guru-001",
+      "jadwal_hari": [
+        "Selasa",
+        "Kamis",
+        "Sabtu"
+      ],
+      "jam_mulai": "13:30",
+      "jam_selesai": "14:30",
+      "kapasitas": 6,
+      "status": "aktif",
+      "created_at": "2026-01-15T00:00:00.000Z",
+      "updated_at": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "kls-003",
+      "nama": "Pagi C - Level 3",
+      "program_id": "prg-004",
+      "guru_id": "guru-002",
+      "jadwal_hari": [
+        "Senin",
+        "Rabu",
+        "Jumat"
+      ],
+      "jam_mulai": "10:00",
+      "jam_selesai": "11:00",
+      "kapasitas": 6,
+      "status": "aktif",
+      "created_at": "2026-02-01T00:00:00.000Z",
+      "updated_at": "2026-02-01T00:00:00.000Z"
+    }
+  ],
+  "siswa": [
+    {
+      "id": "siswa-001",
+      "orangtua_id": "ortu-001",
+      "nama": "Bintang Arya Putra",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2021-05-15",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-01-15",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-01-15T00:00:00.000Z",
+      "updated_at": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "siswa-002",
+      "orangtua_id": "ortu-002",
+      "nama": "Aisyah Putri Santoso",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2021-08-20",
+      "jenis_kelamin": "P",
+      "level_saat_ini": "level-1",
+      "kelas_id": "kls-002",
+      "foto_url": null,
+      "tanggal_masuk": "2026-01-20",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-01-20T00:00:00.000Z",
+      "updated_at": "2026-01-20T00:00:00.000Z"
+    },
+    {
+      "id": "siswa-003",
+      "orangtua_id": "ortu-001",
+      "nama": "Cahaya Bulan (Adik Bintang)",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2022-10-10",
+      "jenis_kelamin": "P",
+      "level_saat_ini": "pra-membaca",
+      "kelas_id": null,
+      "foto_url": null,
+      "tanggal_masuk": "2026-02-01",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-02-01T00:00:00.000Z",
+      "updated_at": "2026-02-01T00:00:00.000Z"
+    },
+    {
+      "id": "siswa-211963f9",
+      "orangtua_id": "ortu-1d998c49",
+      "nama": "Zahra Almira",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2021-09-12",
+      "jenis_kelamin": "P",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-09-27",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-09-27T12:10:19.553Z",
+      "updated_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "siswa-280be536",
+      "orangtua_id": "ortu-06239d9a",
+      "nama": "Bintang Tes 71632",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-1",
+      "kelas_id": "kls-002",
+      "foto_url": null,
+      "tanggal_masuk": "2026-09-27",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-09-27T12:21:11.817Z",
+      "updated_at": "2026-09-27T12:21:11.976Z"
+    },
+    {
+      "id": "siswa-7f164a8e",
+      "orangtua_id": "ortu-972326b7",
+      "nama": "asasd",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2023-07-04",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-10-04",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-10-04T06:40:26.903Z",
+      "updated_at": "2026-10-04T06:40:26.903Z"
+    },
+    {
+      "id": "siswa-79e85791",
+      "orangtua_id": "ortu-b7f5a735",
+      "nama": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-10-04",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-10-04T07:51:05.505Z",
+      "updated_at": "2026-10-04T07:51:05.505Z"
+    },
+    {
+      "id": "siswa-05c93bcb",
+      "orangtua_id": "ortu-972326b7",
+      "nama": "sadasd",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2023-03-04",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-10-04",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-10-04T08:02:49.840Z",
+      "updated_at": "2026-10-04T08:02:49.840Z"
+    },
+    {
+      "id": "siswa-d2b0c2d8",
+      "orangtua_id": "ortu-b7f5a735",
+      "nama": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-10-04",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-10-04T08:03:03.312Z",
+      "updated_at": "2026-10-04T08:03:03.312Z"
+    },
+    {
+      "id": "siswa-a0a48d66",
+      "orangtua_id": "ortu-481a69df",
+      "nama": "Bintang Tes 92950",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "level_saat_ini": "level-2",
+      "kelas_id": "kls-001",
+      "foto_url": null,
+      "tanggal_masuk": "2026-10-04",
+      "tanggal_keluar": null,
+      "status": "aktif",
+      "alasan_keluar": null,
+      "created_at": "2026-10-04T08:03:26.387Z",
+      "updated_at": "2026-10-04T08:03:26.387Z"
+    }
+  ],
+  "sesi_belajar": [
+    {
+      "id": "sesi-001",
+      "kelas_id": "kls-001",
+      "guru_id": "guru-001",
+      "modul_id": "mod-003",
+      "guru_pengganti_id": null,
+      "periode_id": null,
+      "tanggal": "2026-09-22",
+      "jam_mulai": "08:30",
+      "jam_selesai": "09:30",
+      "materi": "Membaca kata dua suku kata (kuda, buku, bola)",
+      "catatan_umum": "Semua siswa hadir dan antusias mencoba menebak kata.",
+      "status_sesi": "selesai",
+      "alasan_batal": null,
+      "created_at": "2026-09-22T09:30:00.000Z"
+    },
+    {
+      "id": "sesi-002",
+      "kelas_id": "kls-001",
+      "guru_id": "guru-001",
+      "modul_id": "mod-004",
+      "guru_pengganti_id": null,
+      "periode_id": null,
+      "tanggal": "2026-09-24",
+      "jam_mulai": "08:30",
+      "jam_selesai": "09:30",
+      "materi": "Membaca kalimat pendek 3 kata",
+      "catatan_umum": "Latihan intonasi dan kecepatan membaca.",
+      "status_sesi": "selesai",
+      "alasan_batal": null,
+      "created_at": "2026-09-24T09:30:00.000Z"
+    },
+    {
+      "id": "sesi-003",
+      "kelas_id": "kls-001",
+      "guru_id": "guru-001",
+      "modul_id": "mod-004",
+      "guru_pengganti_id": null,
+      "periode_id": null,
+      "tanggal": "2026-09-26",
+      "jam_mulai": "08:30",
+      "jam_selesai": "09:30",
+      "materi": "Review kosakata & game membaca kartu kata",
+      "catatan_umum": "Bintang meraih nilai tertinggi dalam kuis kartu!",
+      "status_sesi": "selesai",
+      "alasan_batal": null,
+      "created_at": "2026-09-26T09:30:00.000Z"
+    },
+    {
+      "id": "sesi-004",
+      "kelas_id": "kls-001",
+      "guru_id": "guru-001",
+      "modul_id": null,
+      "guru_pengganti_id": null,
+      "periode_id": null,
+      "tanggal": "2026-09-27",
+      "jam_mulai": "08:30",
+      "jam_selesai": "09:30",
+      "materi": "Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu",
+      "catatan_umum": "Siswa sangat aktif dan kooperatif.",
+      "status_sesi": "selesai",
+      "alasan_batal": null,
+      "created_at": "2026-09-27T12:08:53.791Z"
+    },
+    {
+      "id": "sesi-005",
+      "kelas_id": "kls-002",
+      "guru_id": "guru-001",
+      "modul_id": null,
+      "guru_pengganti_id": null,
+      "periode_id": null,
+      "tanggal": "2026-09-27",
+      "jam_mulai": "08:30",
+      "jam_selesai": "09:30",
+      "materi": "Langkah 1: Senam Otak & Pengenalan Huruf Vokal",
+      "catatan_umum": "Siswa sangat aktif dan kooperatif.",
+      "status_sesi": "selesai",
+      "alasan_batal": null,
+      "created_at": "2026-09-27T12:21:11.917Z"
+    }
+  ],
+  "absensi": [
+    {
+      "id": "abs-001",
+      "sesi_id": "sesi-001",
+      "siswa_id": "siswa-001",
+      "status": "hadir",
+      "created_at": "2026-09-22T08:35:00.000Z"
+    },
+    {
+      "id": "abs-001b",
+      "sesi_id": "sesi-001",
+      "siswa_id": "siswa-211963f9",
+      "status": "hadir",
+      "created_at": "2026-09-22T08:35:00.000Z"
+    },
+    {
+      "id": "abs-002",
+      "sesi_id": "sesi-002",
+      "siswa_id": "siswa-001",
+      "status": "hadir",
+      "created_at": "2026-09-24T08:35:00.000Z"
+    },
+    {
+      "id": "abs-002b",
+      "sesi_id": "sesi-002",
+      "siswa_id": "siswa-211963f9",
+      "status": "izin",
+      "created_at": "2026-09-24T08:35:00.000Z"
+    },
+    {
+      "id": "abs-003",
+      "sesi_id": "sesi-003",
+      "siswa_id": "siswa-001",
+      "status": "hadir",
+      "created_at": "2026-09-26T08:35:00.000Z"
+    },
+    {
+      "id": "abs-003b",
+      "sesi_id": "sesi-003",
+      "siswa_id": "siswa-211963f9",
+      "status": "hadir",
+      "created_at": "2026-09-26T08:35:00.000Z"
+    },
+    {
+      "id": "abs-004",
+      "sesi_id": "sesi-004",
+      "siswa_id": "siswa-001",
+      "status": "hadir",
+      "created_at": "2026-09-27T08:35:00.000Z"
+    },
+    {
+      "id": "abs-004b",
+      "sesi_id": "sesi-004",
+      "siswa_id": "siswa-211963f9",
+      "status": "hadir",
+      "created_at": "2026-09-27T08:35:00.000Z"
+    },
+    {
+      "id": "abs-005",
+      "sesi_id": "sesi-005",
+      "siswa_id": "siswa-002",
+      "status": "hadir",
+      "created_at": "2026-09-27T13:35:00.000Z"
+    }
+  ],
+  "nilai_sesi": [
+    {
+      "id": "ns-001",
+      "sesi_id": "sesi-001",
+      "siswa_id": "siswa-001",
+      "nilai": 85,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Bintang sangat antusias, pengucapan kata sangat jelas.",
+      "created_at": "2026-09-22T09:30:00.000Z"
+    },
+    {
+      "id": "ns-001b",
+      "sesi_id": "sesi-001",
+      "siswa_id": "siswa-211963f9",
+      "nilai": 88,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Zahra cepat memahami bunyi konsonan.",
+      "created_at": "2026-09-22T09:30:00.000Z"
+    },
+    {
+      "id": "ns-002",
+      "sesi_id": "sesi-002",
+      "siswa_id": "siswa-001",
+      "nilai": 88,
+      "mood": 4,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Membaca kalimat pendek lancar tanpa terbata-bata.",
+      "created_at": "2026-09-24T09:30:00.000Z"
+    },
+    {
+      "id": "ns-003",
+      "sesi_id": "sesi-003",
+      "siswa_id": "siswa-001",
+      "nilai": 92,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Sangat fokus saat bermain kartu kata, nilai kuis sempurna.",
+      "created_at": "2026-09-26T09:30:00.000Z"
+    },
+    {
+      "id": "ns-003b",
+      "sesi_id": "sesi-003",
+      "siswa_id": "siswa-211963f9",
+      "nilai": 90,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Lancar membaca kartu kata acak.",
+      "created_at": "2026-09-26T09:30:00.000Z"
+    },
+    {
+      "id": "ns-004",
+      "sesi_id": "sesi-004",
+      "siswa_id": "siswa-001",
+      "nilai": 92,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Lancar membaca huruf dan suku kata awal ba-bi-bu.",
+      "created_at": "2026-09-27T09:30:00.000Z"
+    },
+    {
+      "id": "ns-004b",
+      "sesi_id": "sesi-004",
+      "siswa_id": "siswa-211963f9",
+      "nilai": 92,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Sangat kooperatif saat pengenalan bunyi ba-bi-bu.",
+      "created_at": "2026-09-27T09:30:00.000Z"
+    },
+    {
+      "id": "ns-005",
+      "sesi_id": "sesi-005",
+      "siswa_id": "siswa-002",
+      "nilai": 90,
+      "mood": 5,
+      "langkah_selesai": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "catatan": "Aisyah ceria dan cepat mengenal huruf vokal A-I-U-E-O.",
+      "created_at": "2026-09-27T14:30:00.000Z"
+    }
+  ],
+  "catatan_guru": [
+    {
+      "id": "cg-001",
+      "siswa_id": "siswa-001",
+      "guru_id": "guru-001",
+      "tanggal": "2026-09-26",
+      "catatan": "Bintang sudah siap untuk asesmen kenaikan ke Level 3 minggu depan. Mohon bunda dampingi membaca dongeng 10 menit di rumah.",
+      "tipe": "progress",
+      "created_at": "2026-09-26T10:00:00.000Z"
+    },
+    {
+      "id": "cg-1cd88519",
+      "siswa_id": "siswa-797f2f8c",
+      "guru_id": "guru-001",
+      "tanggal": "2026-09-27",
+      "catatan": "Ananda Bintang lancar membaca huruf dan suku kata awal ba-bi-bu.",
+      "tipe": "progress",
+      "created_at": "2026-09-27T12:14:58.288Z"
+    },
+    {
+      "id": "cg-65cfb6b0",
+      "siswa_id": "siswa-2bd681eb",
+      "guru_id": "guru-001",
+      "tanggal": "2026-09-27",
+      "catatan": "Ananda Bintang lancar membaca huruf dan suku kata awal ba-bi-bu.",
+      "tipe": "progress",
+      "created_at": "2026-09-27T12:16:51.241Z"
+    },
+    {
+      "id": "cg-f0ee9a9f",
+      "guru_id": "guru-001",
+      "tanggal": "2026-09-27",
+      "catatan": "Ananda Bintang lancar membaca huruf dan suku kata awal ba-bi-bu.",
+      "tipe": "progress",
+      "created_at": "2026-09-27T12:19:53.327Z"
+    },
+    {
+      "id": "cg-dad25556",
+      "guru_id": "guru-001",
+      "tanggal": "2026-09-27",
+      "catatan": "Ananda Bintang lancar membaca huruf dan suku kata awal ba-bi-bu.",
+      "tipe": "progress",
+      "created_at": "2026-09-27T12:20:43.790Z"
+    },
+    {
+      "id": "cg-11191d16",
+      "siswa_id": "siswa-280be536",
+      "guru_id": "guru-001",
+      "tanggal": "2026-09-27",
+      "catatan": "Ananda Bintang lancar membaca huruf dan suku kata awal ba-bi-bu.",
+      "tipe": "progress",
+      "created_at": "2026-09-27T12:21:11.917Z"
+    }
+  ],
+  "progress_indikator": [
+    {
+      "id": "pi-001",
+      "siswa_id": "siswa-001",
+      "bulan": "2026-09",
+      "mengenal_huruf": 95,
+      "membaca_suku_kata": 90,
+      "membaca_kata": 85,
+      "membaca_kalimat": 75,
+      "membaca_cerita": 60,
+      "updated_by": "guru-001",
+      "created_at": "2026-09-01T00:00:00.000Z",
+      "updated_at": "2026-09-26T00:00:00.000Z"
+    },
+    {
+      "id": "pi-002",
+      "siswa_id": "siswa-002",
+      "bulan": "2026-09",
+      "mengenal_huruf": 88,
+      "membaca_suku_kata": 70,
+      "membaca_kata": 50,
+      "membaca_kalimat": 30,
+      "membaca_cerita": 20,
+      "updated_by": "guru-001",
+      "created_at": "2026-09-01T00:00:00.000Z",
+      "updated_at": "2026-09-25T00:00:00.000Z"
+    },
+    {
+      "id": "pi-1acea2f2",
+      "siswa_id": "siswa-211963f9",
+      "bulan": "2026-09",
+      "mengenal_huruf": 20,
+      "membaca_suku_kata": 0,
+      "membaca_kata": 0,
+      "membaca_kalimat": 0,
+      "membaca_cerita": 0,
+      "updated_by": "Admin",
+      "created_at": "2026-09-27T12:10:19.553Z",
+      "updated_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "pi-62665797",
+      "siswa_id": "siswa-280be536",
+      "bulan": "2026-09",
+      "mengenal_huruf": 90,
+      "membaca_suku_kata": 85,
+      "membaca_kata": 75,
+      "membaca_kalimat": 60,
+      "membaca_cerita": 50,
+      "updated_by": "Bu Sari Rahayu, S.Pd.",
+      "created_at": "2026-09-27T12:21:11.817Z",
+      "updated_at": "2026-09-27T12:21:11.940Z"
+    },
+    {
+      "id": "pi-ad1d8e11",
+      "siswa_id": "siswa-7f164a8e",
+      "bulan": "2026-10",
+      "mengenal_huruf": 20,
+      "membaca_suku_kata": 0,
+      "membaca_kata": 0,
+      "membaca_kalimat": 0,
+      "membaca_cerita": 0,
+      "updated_by": "Admin",
+      "created_at": "2026-10-04T06:40:26.903Z",
+      "updated_at": "2026-10-04T06:40:26.903Z"
+    },
+    {
+      "id": "pi-350458e4",
+      "siswa_id": "siswa-79e85791",
+      "bulan": "2026-10",
+      "mengenal_huruf": 20,
+      "membaca_suku_kata": 0,
+      "membaca_kata": 0,
+      "membaca_kalimat": 0,
+      "membaca_cerita": 0,
+      "updated_by": "Admin",
+      "created_at": "2026-10-04T07:51:05.505Z",
+      "updated_at": "2026-10-04T07:51:05.505Z"
+    },
+    {
+      "id": "pi-3e5fa452",
+      "siswa_id": "siswa-05c93bcb",
+      "bulan": "2026-10",
+      "mengenal_huruf": 20,
+      "membaca_suku_kata": 0,
+      "membaca_kata": 0,
+      "membaca_kalimat": 0,
+      "membaca_cerita": 0,
+      "updated_by": "Admin",
+      "created_at": "2026-10-04T08:02:49.840Z",
+      "updated_at": "2026-10-04T08:02:49.840Z"
+    },
+    {
+      "id": "pi-11f42228",
+      "siswa_id": "siswa-d2b0c2d8",
+      "bulan": "2026-10",
+      "mengenal_huruf": 20,
+      "membaca_suku_kata": 0,
+      "membaca_kata": 0,
+      "membaca_kalimat": 0,
+      "membaca_cerita": 0,
+      "updated_by": "Admin",
+      "created_at": "2026-10-04T08:03:03.312Z",
+      "updated_at": "2026-10-04T08:03:03.312Z"
+    },
+    {
+      "id": "pi-a7844ad9",
+      "siswa_id": "siswa-a0a48d66",
+      "bulan": "2026-10",
+      "mengenal_huruf": 20,
+      "membaca_suku_kata": 0,
+      "membaca_kata": 0,
+      "membaca_kalimat": 0,
+      "membaca_cerita": 0,
+      "updated_by": "Admin",
+      "created_at": "2026-10-04T08:03:26.387Z",
+      "updated_at": "2026-10-04T08:03:26.387Z"
+    }
+  ],
+  "kosakata": [
+    {
+      "id": "voc-001",
+      "siswa_id": "siswa-001",
+      "kata": "buku",
+      "kategori": "kata",
+      "dikuasai": true,
+      "tanggal_dikuasai": "2026-09-20",
+      "created_at": "2026-09-20T00:00:00.000Z"
+    },
+    {
+      "id": "voc-002",
+      "siswa_id": "siswa-001",
+      "kata": "kuda",
+      "kategori": "kata",
+      "dikuasai": true,
+      "tanggal_dikuasai": "2026-09-22",
+      "created_at": "2026-09-22T00:00:00.000Z"
+    },
+    {
+      "id": "voc-003",
+      "siswa_id": "siswa-001",
+      "kata": "bola",
+      "kategori": "kata",
+      "dikuasai": true,
+      "tanggal_dikuasai": "2026-09-22",
+      "created_at": "2026-09-22T00:00:00.000Z"
+    },
+    {
+      "id": "voc-004",
+      "siswa_id": "siswa-001",
+      "kata": "rumah",
+      "kategori": "kata",
+      "dikuasai": true,
+      "tanggal_dikuasai": "2026-09-24",
+      "created_at": "2026-09-24T00:00:00.000Z"
+    },
+    {
+      "id": "voc-005",
+      "siswa_id": "siswa-001",
+      "kata": "burung",
+      "kategori": "kata",
+      "dikuasai": false,
+      "tanggal_dikuasai": null,
+      "created_at": "2026-09-26T00:00:00.000Z"
+    }
+  ],
+  "riwayat_level": [
+    {
+      "id": "rl-001",
+      "siswa_id": "siswa-001",
+      "level": "pra-membaca",
+      "tanggal_mulai": "2026-01-15",
+      "tanggal_selesai": "2026-03-30",
+      "status": "selesai",
+      "progress_persen": 100,
+      "created_at": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "rl-002",
+      "siswa_id": "siswa-001",
+      "level": "level-1",
+      "tanggal_mulai": "2026-04-01",
+      "tanggal_selesai": "2026-06-30",
+      "status": "selesai",
+      "progress_persen": 100,
+      "created_at": "2026-04-01T00:00:00.000Z"
+    },
+    {
+      "id": "rl-003",
+      "siswa_id": "siswa-001",
+      "level": "level-2",
+      "tanggal_mulai": "2026-07-01",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 81,
+      "created_at": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "rl-60de57af",
+      "siswa_id": "siswa-211963f9",
+      "level": "level-2",
+      "tanggal_mulai": "2026-09-27",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "rl-afbfc0c7",
+      "siswa_id": "siswa-280be536",
+      "level": "level-1",
+      "tanggal_mulai": "2026-09-27",
+      "tanggal_selesai": "2026-09-27",
+      "status": "selesai",
+      "progress_persen": 100,
+      "created_at": "2026-09-27T12:21:11.817Z"
+    },
+    {
+      "id": "rl-5adee05b",
+      "siswa_id": "siswa-280be536",
+      "level": "level-1",
+      "tanggal_mulai": "2026-09-27",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-09-27T12:21:11.976Z"
+    },
+    {
+      "id": "rl-305535b7",
+      "siswa_id": "siswa-7f164a8e",
+      "level": "level-2",
+      "tanggal_mulai": "2026-10-04",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-10-04T06:40:26.903Z"
+    },
+    {
+      "id": "rl-db1654b1",
+      "siswa_id": "siswa-79e85791",
+      "level": "level-2",
+      "tanggal_mulai": "2026-10-04",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-10-04T07:51:05.505Z"
+    },
+    {
+      "id": "rl-83a6b1a1",
+      "siswa_id": "siswa-05c93bcb",
+      "level": "level-2",
+      "tanggal_mulai": "2026-10-04",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-10-04T08:02:49.840Z"
+    },
+    {
+      "id": "rl-392813eb",
+      "siswa_id": "siswa-d2b0c2d8",
+      "level": "level-2",
+      "tanggal_mulai": "2026-10-04",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-10-04T08:03:03.312Z"
+    },
+    {
+      "id": "rl-c3cad9c0",
+      "siswa_id": "siswa-a0a48d66",
+      "level": "level-2",
+      "tanggal_mulai": "2026-10-04",
+      "tanggal_selesai": null,
+      "status": "sedang",
+      "progress_persen": 0,
+      "created_at": "2026-10-04T08:03:26.387Z"
+    }
+  ],
+  "asesmen": [
+    {
+      "id": "asm-001",
+      "siswa_id": "siswa-001",
+      "guru_id": "guru-001",
+      "dari_level": "level-1",
+      "ke_level": "level-2",
+      "nilai_tertulis": 90,
+      "nilai_praktik": 92,
+      "checklist_indikator": [
+        "Lancar membaca suku kata terbuka",
+        "Mampu menggabung kata dua suku kata",
+        "Fokus menyimak cerita pendek"
+      ],
+      "catatan": "Bintang lulus level 1 dengan nilai sangat memuaskan.",
+      "rekomendasi": "lulus",
+      "status": "disetujui",
+      "disetujui_oleh": "usr-admin-001",
+      "tanggal_disetujui": "2026-06-30T10:00:00.000Z",
+      "catatan_admin": "Selamat untuk Bintang! Kelas baru dialokasikan ke Pagi A.",
+      "created_at": "2026-06-28T00:00:00.000Z"
+    },
+    {
+      "id": "asm-080dd35a",
+      "siswa_id": "siswa-280be536",
+      "guru_id": "guru-001",
+      "dari_level": "pra-membaca",
+      "ke_level": "level-1",
+      "nilai_tertulis": 92,
+      "nilai_praktik": 95,
+      "checklist_indikator": [
+        "huruf_vokal",
+        "huruf_konsonan",
+        "suku_kata_terbuka"
+      ],
+      "catatan": "Ananda telah menyelesaikan target pra-membaca dan siap naik ke Level 1.",
+      "rekomendasi": "lulus",
+      "status": "disetujui",
+      "disetujui_oleh": "Admin AHE Karang Joang",
+      "tanggal_disetujui": "2026-09-27",
+      "catatan_admin": null,
+      "created_at": "2026-09-27T12:21:11.955Z"
+    }
+  ],
+  "pencapaian": [
+    {
+      "id": "ach-001",
+      "siswa_id": "siswa-001",
+      "nama_badge": "Bintang Teladan Hadir",
+      "ikon": "⭐",
+      "kategori": "kehadiran",
+      "deskripsi": "Kehadiran 100% sepanjang bulan September",
+      "tanggal_raih": "2026-09-25",
+      "created_at": "2026-09-25T00:00:00.000Z"
+    },
+    {
+      "id": "ach-002",
+      "siswa_id": "siswa-001",
+      "nama_badge": "Master 50 Kosakata",
+      "ikon": "🏅",
+      "kategori": "kosakata",
+      "deskripsi": "Berhasil menguasai lebih dari 50 kosakata kata utuh",
+      "tanggal_raih": "2026-09-24",
+      "created_at": "2026-09-24T00:00:00.000Z"
+    },
+    {
+      "id": "ach-003",
+      "siswa_id": "siswa-001",
+      "nama_badge": "Juara Level 1",
+      "ikon": "🏆",
+      "kategori": "milestone",
+      "deskripsi": "Lulus Level 1 Membaca AHE dengan predikat memuaskan",
+      "tanggal_raih": "2026-06-30",
+      "created_at": "2026-06-30T00:00:00.000Z"
+    },
+    {
+      "id": "badge-41555a77",
+      "siswa_id": "siswa-102a673f",
+      "nama_badge": "Naik ke LEVEL-1",
+      "ikon": "Award",
+      "kategori": "milestone",
+      "deskripsi": "Berhasil menyelesaikan tahapan level-2 dan resmi naik ke level level-1.",
+      "tanggal_raih": "2026-09-27",
+      "created_at": "2026-09-27T12:11:27.907Z"
+    },
+    {
+      "id": "badge-6158f152",
+      "siswa_id": "siswa-970569c9",
+      "nama_badge": "Naik ke LEVEL-1",
+      "ikon": "Award",
+      "kategori": "milestone",
+      "deskripsi": "Berhasil menyelesaikan tahapan level-2 dan resmi naik ke level level-1.",
+      "tanggal_raih": "2026-09-27",
+      "created_at": "2026-09-27T12:13:43.818Z"
+    },
+    {
+      "id": "badge-6079765b",
+      "siswa_id": "siswa-797f2f8c",
+      "nama_badge": "Naik ke LEVEL-1",
+      "ikon": "Award",
+      "kategori": "milestone",
+      "deskripsi": "Berhasil menyelesaikan tahapan level-2 dan resmi naik ke level level-1.",
+      "tanggal_raih": "2026-09-27",
+      "created_at": "2026-09-27T12:14:58.411Z"
+    },
+    {
+      "id": "badge-3106a223",
+      "siswa_id": "siswa-2bd681eb",
+      "nama_badge": "Naik ke LEVEL-1",
+      "ikon": "Award",
+      "kategori": "milestone",
+      "deskripsi": "Berhasil menyelesaikan tahapan level-2 dan resmi naik ke level level-1.",
+      "tanggal_raih": "2026-09-27",
+      "created_at": "2026-09-27T12:16:51.351Z"
+    },
+    {
+      "id": "badge-5a0bb4c0",
+      "siswa_id": "siswa-280be536",
+      "nama_badge": "Naik ke LEVEL-1",
+      "ikon": "Award",
+      "kategori": "milestone",
+      "deskripsi": "Berhasil menyelesaikan tahapan level-1 dan resmi naik ke level level-1.",
+      "tanggal_raih": "2026-09-27",
+      "created_at": "2026-09-27T12:21:11.976Z"
+    }
+  ],
+  "pendaftaran": [
+    {
+      "id": "reg-001",
+      "no_registrasi": "REG-2026-001",
+      "nama_anak": "Zahra Almira",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2021-09-12",
+      "jenis_kelamin": "P",
+      "nama_ortu": "Ahmad Fauzi",
+      "no_wa_ortu": "081298765432",
+      "email_ortu": "ahmad.fauzi@gmail.com",
+      "alamat": "Jl. Karang Joang Km. 13 RT 05",
+      "hubungan": "ayah",
+      "program_diminati": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah les, ingin persiapan masuk TK",
+      "sumber_info": "Instagram AHE",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-211963f9",
+      "created_at": "2026-09-27T07:30:00.000Z",
+      "updated_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "reg-6ce3129e",
+      "no_registrasi": "REG-2026-002",
+      "nama_anak": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang",
+      "no_wa_ortu": "081299998888",
+      "email_ortu": "bunda.bintang@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "ditunda",
+      "catatan_admin": "Masuk ke antrean waiting list urutan ke-2",
+      "alasan_tolak": null,
+      "siswa_id": null,
+      "created_at": "2026-09-27T12:08:52.317Z",
+      "updated_at": "2026-10-04T07:50:33.629Z"
+    },
+    {
+      "id": "reg-b2df8f78",
+      "no_registrasi": "REG-2026-003",
+      "nama_anak": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang",
+      "no_wa_ortu": "081299998888",
+      "email_ortu": "bunda.bintang@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-79e85791",
+      "created_at": "2026-09-27T12:09:22.617Z",
+      "updated_at": "2026-10-04T07:51:05.505Z"
+    },
+    {
+      "id": "reg-b8a52523",
+      "no_registrasi": "REG-2026-004",
+      "nama_anak": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang",
+      "no_wa_ortu": "081299998888",
+      "email_ortu": "bunda.bintang@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-d2b0c2d8",
+      "created_at": "2026-09-27T12:10:00.131Z",
+      "updated_at": "2026-10-04T08:03:03.312Z"
+    },
+    {
+      "id": "reg-2499e158",
+      "no_registrasi": "REG-2026-005",
+      "nama_anak": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang",
+      "no_wa_ortu": "081299998888",
+      "email_ortu": "bunda.bintang@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-102a673f",
+      "created_at": "2026-09-27T12:11:27.276Z",
+      "updated_at": "2026-09-27T12:11:27.562Z"
+    },
+    {
+      "id": "reg-7337db40",
+      "no_registrasi": "REG-2026-006",
+      "nama_anak": "Bintang Tes Integrasi",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang",
+      "no_wa_ortu": "081299998888",
+      "email_ortu": "bunda.bintang@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-970569c9",
+      "created_at": "2026-09-27T12:13:43.170Z",
+      "updated_at": "2026-09-27T12:13:43.384Z"
+    },
+    {
+      "id": "reg-04d384f0",
+      "no_registrasi": "REG-2026-007",
+      "nama_anak": "Bintang Tes 97853",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang 97853",
+      "no_wa_ortu": "08129785378",
+      "email_ortu": "bunda.97853@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-797f2f8c",
+      "created_at": "2026-09-27T12:14:57.875Z",
+      "updated_at": "2026-09-27T12:14:58.112Z"
+    },
+    {
+      "id": "reg-9e26d36d",
+      "no_registrasi": "REG-2026-008",
+      "nama_anak": "Bintang Tes 10820",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang 10820",
+      "no_wa_ortu": "08121082078",
+      "email_ortu": "bunda.10820@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-2bd681eb",
+      "created_at": "2026-09-27T12:16:50.839Z",
+      "updated_at": "2026-09-27T12:16:51.090Z"
+    },
+    {
+      "id": "reg-0d745149",
+      "no_registrasi": "REG-2026-009",
+      "nama_anak": "Bintang Tes 92950",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang 92950",
+      "no_wa_ortu": "08129295078",
+      "email_ortu": "bunda.92950@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Dialokasikan dari waiting list ke kelas Pagi A - Level 2 (Bintang)",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-a0a48d66",
+      "created_at": "2026-09-27T12:19:52.970Z",
+      "updated_at": "2026-10-04T08:03:26.387Z"
+    },
+    {
+      "id": "reg-02f49845",
+      "no_registrasi": "REG-2026-010",
+      "nama_anak": "Bintang Tes 43534",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang 43534",
+      "no_wa_ortu": "08124353478",
+      "email_ortu": "bunda.43534@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "menunggu",
+      "catatan_admin": null,
+      "alasan_tolak": null,
+      "siswa_id": null,
+      "created_at": "2026-09-27T12:20:43.541Z",
+      "updated_at": "2026-09-27T12:20:43.541Z"
+    },
+    {
+      "id": "reg-11d7d633",
+      "no_registrasi": "REG-2026-011",
+      "nama_anak": "Bintang Tes 71632",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-05-10",
+      "jenis_kelamin": "L",
+      "nama_ortu": "Bunda Bintang 71632",
+      "no_wa_ortu": "08127163278",
+      "email_ortu": "bunda.71632@gmail.com",
+      "alamat": "Jl. Soekarno Hatta Km 11 No 45, Balikpapan",
+      "hubungan": "ibu",
+      "program_diminati": "Pra Membaca",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah bimbel",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-280be536",
+      "created_at": "2026-09-27T12:21:11.637Z",
+      "updated_at": "2026-09-27T12:21:11.817Z"
+    },
+    {
+      "id": "reg-658fed7d",
+      "no_registrasi": "REG-2026-012",
+      "nama_anak": "aasdada",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2020-06-17",
+      "jenis_kelamin": "L",
+      "nama_ortu": "sadasd",
+      "no_wa_ortu": "0878567412312",
+      "email_ortu": "asdasd",
+      "alamat": "adsad",
+      "hubungan": "ibu",
+      "program_diminati": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Sudah hafal beberapa huruf",
+      "sumber_info": "Instagram",
+      "status": "menunggu",
+      "catatan_admin": null,
+      "alasan_tolak": null,
+      "siswa_id": null,
+      "created_at": "2026-09-27T12:51:59.872Z",
+      "updated_at": "2026-09-27T12:51:59.872Z"
+    },
+    {
+      "id": "reg-a32719b6",
+      "no_registrasi": "REG-2026-013",
+      "nama_anak": "asasd",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2022-02-01",
+      "jenis_kelamin": "L",
+      "nama_ortu": "asdasd",
+      "no_wa_ortu": "0232412131231",
+      "email_ortu": "asda@gmail.com",
+      "alamat": "asdasd",
+      "hubungan": "ibu",
+      "program_diminati": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah les membaca",
+      "sumber_info": "Instagram",
+      "status": "ditunda",
+      "catatan_admin": "Masuk ke antrean waiting list urutan ke-1",
+      "alasan_tolak": null,
+      "siswa_id": null,
+      "created_at": "2026-10-04T05:14:51.213Z",
+      "updated_at": "2026-10-04T12:51:20.680Z"
+    },
+    {
+      "id": "reg-bb5f3581",
+      "no_registrasi": "REG-2026-014",
+      "tipe_pendaftaran": "reguler",
+      "nama_anak": "sadasd",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2023-03-04",
+      "jenis_kelamin": "L",
+      "nama_ortu": "sada",
+      "no_wa_ortu": "084535345243",
+      "email_ortu": "asda@gmail.com",
+      "alamat": "sada",
+      "hubungan": "ibu",
+      "program_diminati": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah les membaca",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Dialokasikan dari waiting list ke kelas Pagi A - Level 2 (Bintang)",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-05c93bcb",
+      "created_at": "2026-10-04T06:18:04.544Z",
+      "updated_at": "2026-10-04T08:02:49.840Z"
+    },
+    {
+      "id": "reg-a06bf219",
+      "no_registrasi": "REG-2026-015",
+      "tipe_pendaftaran": "reguler",
+      "nama_anak": "asasd",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2023-02-04",
+      "jenis_kelamin": "L",
+      "nama_ortu": "sada",
+      "no_wa_ortu": "084535345243",
+      "email_ortu": "asda@gmail.com",
+      "alamat": "sad",
+      "hubungan": "ibu",
+      "program_diminati": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah les membaca",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Masuk ke antrean waiting list urutan ke-1",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-7f164a8e",
+      "created_at": "2026-10-04T06:19:08.216Z",
+      "updated_at": "2026-10-04T07:50:16.644Z"
+    },
+    {
+      "id": "reg-616c7cfe",
+      "no_registrasi": "TRL-2026-016",
+      "tipe_pendaftaran": "trial",
+      "nama_anak": "asasd",
+      "tempat_lahir": "Balikpapan",
+      "tanggal_lahir": "2023-07-04",
+      "jenis_kelamin": "L",
+      "nama_ortu": "sada",
+      "no_wa_ortu": "084535345243",
+      "email_ortu": "asda@gmail.com",
+      "alamat": "sada",
+      "hubungan": "ibu",
+      "program_diminati": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "pengalaman": "Belum pernah les membaca",
+      "sumber_info": "Instagram",
+      "status": "diterima",
+      "catatan_admin": "Pendaftaran disetujui.",
+      "alasan_tolak": null,
+      "siswa_id": "siswa-7f164a8e",
+      "created_at": "2026-10-04T06:27:01.110Z",
+      "updated_at": "2026-10-04T06:40:26.903Z"
+    }
+  ],
+  "galeri": [
+    {
+      "id": "gal-001",
+      "caption": "Sesi belajar suku kata seru!",
+      "kategori": "Belajar",
+      "urutan": 1,
+      "image_url": "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "gal-002",
+      "caption": "Aktivitas membaca bersama teman",
+      "kategori": "Belajar",
+      "urutan": 2,
+      "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "gal-003",
+      "caption": "Penyerahan sertifikat kelulusan Level 1",
+      "kategori": "Prestasi",
+      "urutan": 3,
+      "image_url": "https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "gal-004",
+      "caption": "Bermain kartu huruf warna-warni",
+      "kategori": "Aktivitas",
+      "urutan": 4,
+      "image_url": "https://images.unsplash.com/photo-1564981797816-1043664bf78d?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-04T00:00:00.000Z"
+    },
+    {
+      "id": "gal-005",
+      "caption": "Kelas motorik halus pra-membaca",
+      "kategori": "Aktivitas",
+      "urutan": 5,
+      "image_url": "https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-05T00:00:00.000Z"
+    },
+    {
+      "id": "gal-006",
+      "caption": "Kunjungan ke perpustakaan kota",
+      "kategori": "Outing",
+      "urutan": 6,
+      "image_url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-06T00:00:00.000Z"
+    },
+    {
+      "id": "gal-007",
+      "caption": "Perayaan hari buku nasional 2024",
+      "kategori": "Event",
+      "urutan": 7,
+      "image_url": "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-07T00:00:00.000Z"
+    },
+    {
+      "id": "gal-008",
+      "caption": "Demo membaca untuk orang tua",
+      "kategori": "Event",
+      "urutan": 8,
+      "image_url": "https://images.unsplash.com/photo-1540479859555-17af45c78602?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-08T00:00:00.000Z"
+    },
+    {
+      "id": "gal-009",
+      "caption": "Anak-anak antusias belajar bersama",
+      "kategori": "Belajar",
+      "urutan": 9,
+      "image_url": "https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-09T00:00:00.000Z"
+    },
+    {
+      "id": "gal-010",
+      "caption": "Mewarnai sambil belajar huruf",
+      "kategori": "Aktivitas",
+      "urutan": 10,
+      "image_url": "https://images.unsplash.com/photo-1603354363425-60bfaa356f88?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "gal-011",
+      "caption": "Wisuda mini siswa Level 3",
+      "kategori": "Prestasi",
+      "urutan": 11,
+      "image_url": "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-11T00:00:00.000Z"
+    },
+    {
+      "id": "gal-012",
+      "caption": "Game edukatif interaktif",
+      "kategori": "Belajar",
+      "urutan": 12,
+      "image_url": "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=600&auto=format&fit=crop",
+      "created_at": "2026-01-12T00:00:00.000Z"
+    },
+    {
+      "id": "gal-b63a5057",
+      "image_url": "/uploads/galeri/foto-1791294517227-9d304104.jpeg",
+      "caption": "Main biliar",
+      "kategori": "Belajar",
+      "urutan": 13,
+      "created_at": "2026-10-06T13:48:37.252Z"
+    }
+  ],
+  "testimoni": [
+    {
+      "id": "tst-001",
+      "nama_ortu": "Ibu Sari Dewi",
+      "nama_anak": "Bintang (5 tahun)",
+      "usia_anak": "5 tahun",
+      "ulasan": "Luar biasa! Dalam 3 bulan, Bintang sudah bisa membaca buku cerita sendiri. Metode AHE sangat menyenangkan, anak tidak merasa terpaksa belajar sama sekali.",
+      "rating": 5,
+      "program": "Membaca Level 2",
+      "is_tampil": true,
+      "created_at": "2026-08-10T00:00:00.000Z"
+    },
+    {
+      "id": "tst-002",
+      "nama_ortu": "Bapak Ahmad Fauzi",
+      "nama_anak": "Zahra (4 tahun)",
+      "usia_anak": "4 tahun",
+      "ulasan": "Zahra dulunya susah sekali diajak belajar, tapi sejak ikut AHE dia jadi semangat. Guru-gurunya sabar dan kreatif. Sangat recommended untuk orang tua!",
+      "rating": 5,
+      "program": "Membaca Level 1",
+      "is_tampil": true,
+      "created_at": "2026-08-15T00:00:00.000Z"
+    },
+    {
+      "id": "tst-003",
+      "nama_ortu": "Ibu Rina Pratiwi",
+      "nama_anak": "Arjuna (6 tahun)",
+      "usia_anak": "6 tahun",
+      "ulasan": "Arjuna masuk AHE belum bisa baca sama sekali. Sekarang sudah Level 3 dan bisa baca kalimat panjang! Progress reportnya juga membantu saya pantau perkembangan.",
+      "rating": 5,
+      "program": "Membaca Level 3",
+      "is_tampil": true,
+      "created_at": "2026-08-20T00:00:00.000Z"
+    },
+    {
+      "id": "tst-004",
+      "nama_ortu": "Ibu Marlina",
+      "nama_anak": "Dika (5 tahun)",
+      "usia_anak": "5 tahun",
+      "ulasan": "Biaya sangat terjangkau tapi kualitasnya tidak kalah dengan lembaga besar. Dika senang karena belajarnya sambil bermain. Terima kasih AHE Karangjoang!",
+      "rating": 5,
+      "program": "Membaca Level 1",
+      "is_tampil": true,
+      "created_at": "2026-08-25T00:00:00.000Z"
+    },
+    {
+      "id": "tst-005",
+      "nama_ortu": "Bapak Hendra Wijaya",
+      "nama_anak": "Kirana (4 tahun)",
+      "usia_anak": "4 tahun",
+      "ulasan": "Kirana baru masuk Pra Membaca tapi sudah hafal semua huruf hanya dalam 6 minggu. Metode visual dan lagu-lagunya sangat efektif untuk anak usia dini.",
+      "rating": 5,
+      "program": "Pra Membaca",
+      "is_tampil": true,
+      "created_at": "2026-09-01T00:00:00.000Z"
+    },
+    {
+      "id": "tst-006",
+      "nama_ortu": "Ibu Dewi Susanti",
+      "nama_anak": "Raffa (6 tahun)",
+      "usia_anak": "6 tahun",
+      "ulasan": "Raffa sekarang sudah bisa membaca cerita sendiri sebelum tidur! Ini mimpi saya sebagai orang tua. AHE benar-benar mengubah kehidupan kami.",
+      "rating": 5,
+      "program": "Membaca Lanjutan",
+      "is_tampil": true,
+      "created_at": "2026-09-05T00:00:00.000Z"
+    },
+    {
+      "id": "testi-9ab0c352",
+      "nama_ortu": "saw",
+      "nama_anak": "saw",
+      "usia_anak": "5 tahun",
+      "ulasan": "saw",
+      "rating": 5,
+      "program": "Membaca Fonik",
+      "is_tampil": true,
+      "created_at": "2026-10-06T13:25:09.387Z"
+    }
+  ],
+  "faq": [
+    {
+      "id": "faq-001",
+      "pertanyaan": "Berapa usia minimal untuk mendaftar di AHE Karangjoang?",
+      "jawaban": "Usia minimal adalah 3 tahun untuk program Pra Membaca. Untuk program Level 1 ke atas, usia minimal 4 tahun. Kami menyesuaikan kurikulum dengan tahap perkembangan setiap anak.",
+      "urutan": 1,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-002",
+      "pertanyaan": "Berapa lama program belajar di AHE?",
+      "jawaban": "Setiap level membutuhkan waktu 1–4 bulan tergantung kemampuan anak. Rata-rata anak dapat menyelesaikan seluruh program (dari Pra Membaca hingga Lanjutan) dalam 12–18 bulan. Namun kami tidak terburu-buru — setiap anak punya kecepatan belajarnya sendiri.",
+      "urutan": 2,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-003",
+      "pertanyaan": "Berapa biaya program di AHE Karangjoang?",
+      "jawaban": "Biaya bervariasi per program dan sangat terjangkau. Silakan hubungi kami via WhatsApp untuk informasi biaya terkini. Kami juga menyediakan opsi cicilan dan subsidi untuk keluarga yang membutuhkan.",
+      "urutan": 3,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-004",
+      "pertanyaan": "Apakah tersedia kelas trial/percobaan?",
+      "jawaban": "Ya! Kami menyediakan 1 kelas trial GRATIS untuk setiap pendaftar baru. Kelas trial berlangsung 60 menit dan mencakup sesi pengenalan metode AHE, asesmen awal kemampuan anak, serta konsultasi dengan guru.",
+      "urutan": 4,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-005",
+      "pertanyaan": "Berapa jumlah siswa per kelas?",
+      "jawaban": "Maksimal 6 siswa per kelas untuk memastikan setiap anak mendapatkan perhatian individual dari guru pengajar secara optimal sesuai standar AHE Pusat.",
+      "urutan": 5,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-006",
+      "pertanyaan": "Bagaimana jika anak belum bisa membaca sama sekali?",
+      "jawaban": "Tidak masalah sama sekali! Program Pra Membaca kami dirancang khusus untuk anak yang belum mengenal huruf sama sekali. Kami mulai dari stimulasi motorik dan pengenalan fonik secara bertahap.",
+      "urutan": 6,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-007",
+      "pertanyaan": "Apakah orang tua bisa memantau perkembangan belajar anak?",
+      "jawaban": "Tentu! Orang tua mendapatkan akses portal wali murid untuk melihat laporan perkembangan berkala, catatan guru setiap sesi, rekap presensi kehadiran, hingga piagam kelulusan level.",
+      "urutan": 7,
+      "is_aktif": true,
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-ab2bf252",
+      "pertanyaan": "saw",
+      "jawaban": "saw",
+      "urutan": 8,
+      "is_aktif": true,
+      "created_at": "2026-10-06T13:25:05.903Z"
+    }
+  ],
+  "pengaturan": [
+    {
+      "key": "site_name",
+      "value": "Bimba AHE Karang Joang",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "key": "site_tagline",
+      "value": "Bimbingan Belajar Membaca Anak Usia Dini & Pra-SD",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "key": "contact_phone",
+      "value": "+62 812-3456-7890",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "key": "contact_whatsapp",
+      "value": "6281234567890",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "key": "contact_email",
+      "value": "admin@ahe-karangjoang.id",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "key": "contact_address",
+      "value": "Jl. Soekarno Hatta Km. 11, RT 08 No. 42, Karang Joang, Balikpapan Utara, Kota Balikpapan",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "key": "contact_hours",
+      "value": "Senin – Sabtu, 08:00 – 16:30 WITA",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "log_aktivitas": [
+    {
+      "id": "log-001",
+      "user_id": "usr-admin-001",
+      "aksi": "Inisialisasi Sistem",
+      "detail": "Database awal dan akun percontohan berhasil di-setup",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "log-1ca9ce51",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T11:56:39.615Z"
+    },
+    {
+      "id": "log-02155462",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T11:57:10.863Z"
+    },
+    {
+      "id": "log-1416e347",
+      "user_id": "usr-ortu-001",
+      "aksi": "Login",
+      "detail": "User Sari Dewi (Ibu Bintang) (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T11:57:46.258Z"
+    },
+    {
+      "id": "log-03cc8101",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:00:53.431Z"
+    },
+    {
+      "id": "log-1ba8b37f",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes Integrasi mendaftar via web dengan no. reg REG-2026-002",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:08:52.317Z"
+    },
+    {
+      "id": "log-001cc2be",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:08:53.004Z"
+    },
+    {
+      "id": "log-1706d3bf",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:08:53.743Z"
+    },
+    {
+      "id": "log-19df955b",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-eb126eab untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:08:53.791Z"
+    },
+    {
+      "id": "log-9143041b",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes Integrasi mendaftar via web dengan no. reg REG-2026-003",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:09:22.617Z"
+    },
+    {
+      "id": "log-83d7f799",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:09:22.689Z"
+    },
+    {
+      "id": "log-001d387b",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:09:22.815Z"
+    },
+    {
+      "id": "log-0e83eac6",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-9f5b8b7c untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:09:22.858Z"
+    },
+    {
+      "id": "log-f9d19330",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes Integrasi mendaftar via web dengan no. reg REG-2026-004",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:10:00.131Z"
+    },
+    {
+      "id": "log-58384619",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:10:00.202Z"
+    },
+    {
+      "id": "log-768606fe",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:10:00.325Z"
+    },
+    {
+      "id": "log-d7a75c7e",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-2fd0edc8 untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:10:00.358Z"
+    },
+    {
+      "id": "log-1d06dd30",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:10:19.484Z"
+    },
+    {
+      "id": "log-936eba8b",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-001 (Zahra Almira) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:10:19.553Z"
+    },
+    {
+      "id": "log-1a8088cf",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes Integrasi mendaftar via web dengan no. reg REG-2026-005",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.276Z"
+    },
+    {
+      "id": "log-f133a241",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.375Z"
+    },
+    {
+      "id": "log-f1ccea88",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-005 (Bintang Tes Integrasi) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.562Z"
+    },
+    {
+      "id": "log-bfb2eb1c",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.669Z"
+    },
+    {
+      "id": "log-922ea9de",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-575643f0 untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.721Z"
+    },
+    {
+      "id": "log-63368dd0",
+      "user_id": "usr-tutor-001",
+      "aksi": "Ajukan Asesmen",
+      "detail": "Mengajukan kenaikan level Bintang Tes Integrasi ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.876Z"
+    },
+    {
+      "id": "log-564922dc",
+      "user_id": "usr-admin-001",
+      "aksi": "Setujui Asesmen",
+      "detail": "Menyetujui kenaikan level Bintang Tes Integrasi dari level-2 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:27.907Z"
+    },
+    {
+      "id": "log-7bdfa239",
+      "user_id": "usr-ortu-e87038cc",
+      "aksi": "Login",
+      "detail": "User Bunda Bintang (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:28.009Z"
+    },
+    {
+      "id": "log-0dc15b37",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:11:42.057Z"
+    },
+    {
+      "id": "log-b7dcd91b",
+      "user_id": "usr-ortu-e87038cc",
+      "aksi": "Login",
+      "detail": "User Bunda Bintang (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:12:28.258Z"
+    },
+    {
+      "id": "log-308582e9",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes Integrasi mendaftar via web dengan no. reg REG-2026-006",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:13:43.171Z"
+    },
+    {
+      "id": "log-1e1b7314",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:13:43.284Z"
+    },
+    {
+      "id": "log-69a6d350",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-006 (Bintang Tes Integrasi) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:13:43.384Z"
+    },
+    {
+      "id": "log-b70d41c2",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:13:43.496Z"
+    },
+    {
+      "id": "log-49a27d82",
+      "user_id": "usr-tutor-001",
+      "aksi": "Ajukan Asesmen",
+      "detail": "Mengajukan kenaikan level Bintang Tes Integrasi ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:13:43.781Z"
+    },
+    {
+      "id": "log-f7c35732",
+      "user_id": "usr-admin-001",
+      "aksi": "Setujui Asesmen",
+      "detail": "Menyetujui kenaikan level Bintang Tes Integrasi dari level-2 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:13:43.818Z"
+    },
+    {
+      "id": "log-e476eda4",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:17.351Z"
+    },
+    {
+      "id": "log-945aabe3",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes 97853 mendaftar via web dengan no. reg REG-2026-007",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:57.875Z"
+    },
+    {
+      "id": "log-1e5947fa",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:57.966Z"
+    },
+    {
+      "id": "log-a2db7377",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-007 (Bintang Tes 97853) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:58.112Z"
+    },
+    {
+      "id": "log-cb268fed",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:58.214Z"
+    },
+    {
+      "id": "log-cbfef681",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-d68b5f6a untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:58.288Z"
+    },
+    {
+      "id": "log-6cf0c64a",
+      "user_id": "usr-tutor-001",
+      "aksi": "Ajukan Asesmen",
+      "detail": "Mengajukan kenaikan level Bintang Tes 97853 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:58.380Z"
+    },
+    {
+      "id": "log-bf63d00a",
+      "user_id": "usr-admin-001",
+      "aksi": "Setujui Asesmen",
+      "detail": "Menyetujui kenaikan level Bintang Tes 97853 dari level-2 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:58.411Z"
+    },
+    {
+      "id": "log-a40c800f",
+      "user_id": "usr-ortu-3a6bc3ae",
+      "aksi": "Login",
+      "detail": "User Bunda Bintang 97853 (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:14:58.495Z"
+    },
+    {
+      "id": "log-51c70795",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:24.159Z"
+    },
+    {
+      "id": "log-85ec1708",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes 10820 mendaftar via web dengan no. reg REG-2026-008",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:50.839Z"
+    },
+    {
+      "id": "log-ea704f57",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:50.936Z"
+    },
+    {
+      "id": "log-c42854fb",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-008 (Bintang Tes 10820) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.090Z"
+    },
+    {
+      "id": "log-de8e6265",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.189Z"
+    },
+    {
+      "id": "log-fdeeff88",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-7bf1414d untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.242Z"
+    },
+    {
+      "id": "log-e2215969",
+      "user_id": "usr-tutor-001",
+      "aksi": "Update Indikator",
+      "detail": "Memperbarui indikator perkembangan Bintang Tes 10820 bulan 2026-09",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.291Z"
+    },
+    {
+      "id": "log-85ff3874",
+      "user_id": "usr-tutor-001",
+      "aksi": "Ajukan Asesmen",
+      "detail": "Mengajukan kenaikan level Bintang Tes 10820 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.322Z"
+    },
+    {
+      "id": "log-4f22463b",
+      "user_id": "usr-admin-001",
+      "aksi": "Setujui Asesmen",
+      "detail": "Menyetujui kenaikan level Bintang Tes 10820 dari level-2 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.351Z"
+    },
+    {
+      "id": "log-aee80d00",
+      "user_id": "usr-ortu-bd2e19d0",
+      "aksi": "Login",
+      "detail": "User Bunda Bintang 10820 (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:16:51.442Z"
+    },
+    {
+      "id": "log-e2c4cb4d",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:17:16.852Z"
+    },
+    {
+      "id": "log-091e1026",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes 92950 mendaftar via web dengan no. reg REG-2026-009",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:19:52.970Z"
+    },
+    {
+      "id": "log-3e3e3e0c",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:19:53.095Z"
+    },
+    {
+      "id": "log-42ccf4f2",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:19:53.280Z"
+    },
+    {
+      "id": "log-5f88042b",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-9bbe6a68 untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:19:53.327Z"
+    },
+    {
+      "id": "log-881b86ca",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes 43534 mendaftar via web dengan no. reg REG-2026-010",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:20:43.541Z"
+    },
+    {
+      "id": "log-7a60186f",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:20:43.617Z"
+    },
+    {
+      "id": "log-ac828bce",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:20:43.762Z"
+    },
+    {
+      "id": "log-a10a3430",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-bbca750d untuk kelas Pagi A - Level 2 (Bintang) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:20:43.790Z"
+    },
+    {
+      "id": "log-622bd080",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa Bintang Tes 71632 mendaftar via web dengan no. reg REG-2026-011",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.637Z"
+    },
+    {
+      "id": "log-0787381d",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.705Z"
+    },
+    {
+      "id": "log-f03603ef",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-011 (Bintang Tes 71632) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.817Z"
+    },
+    {
+      "id": "log-9d79a97b",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.892Z"
+    },
+    {
+      "id": "log-eac3922a",
+      "user_id": "usr-tutor-001",
+      "aksi": "Input Sesi Belajar",
+      "detail": "Mencatat sesi sesi-11e9ad3e untuk kelas Siang B - Level 1 (Aisyah) (Langkah 2: Tunjuk Bunyi Suku Kata Ba-Bi-Bu)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.917Z"
+    },
+    {
+      "id": "log-923cadf6",
+      "user_id": "usr-tutor-001",
+      "aksi": "Update Indikator",
+      "detail": "Memperbarui indikator perkembangan Bintang Tes 71632 bulan 2026-09",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.940Z"
+    },
+    {
+      "id": "log-742b884e",
+      "user_id": "usr-tutor-001",
+      "aksi": "Ajukan Asesmen",
+      "detail": "Mengajukan kenaikan level Bintang Tes 71632 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.955Z"
+    },
+    {
+      "id": "log-a6c01128",
+      "user_id": "usr-admin-001",
+      "aksi": "Setujui Asesmen",
+      "detail": "Menyetujui kenaikan level Bintang Tes 71632 dari level-1 ke level-1",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:11.976Z"
+    },
+    {
+      "id": "log-9a81d38f",
+      "user_id": "usr-ortu-a5f78dd8",
+      "aksi": "Login",
+      "detail": "User Bunda Bintang 71632 (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:21:12.054Z"
+    },
+    {
+      "id": "log-bd5df68f",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:46:42.011Z"
+    },
+    {
+      "id": "log-dfc9dfc3",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:51:10.388Z"
+    },
+    {
+      "id": "log-6637dba6",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa aasdada mendaftar via web dengan no. reg REG-2026-012",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T12:51:59.872Z"
+    },
+    {
+      "id": "log-82fcedc3",
+      "user_id": "usr-ortu-001",
+      "aksi": "Login",
+      "detail": "User Sari Dewi (Ibu Bintang) (orangtua) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T13:20:29.990Z"
+    },
+    {
+      "id": "log-fc31175f",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-09-27T13:21:27.989Z"
+    },
+    {
+      "id": "log-0c996eb4",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T05:00:45.853Z"
+    },
+    {
+      "id": "log-afe5755a",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa asasd mendaftar via web dengan no. reg REG-2026-013",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T05:14:51.213Z"
+    },
+    {
+      "id": "log-5070995b",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa sadasd mendaftar program reguler via web dengan no. reg REG-2026-014",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T06:18:04.544Z"
+    },
+    {
+      "id": "log-fd441f2a",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa asasd mendaftar program reguler via web dengan no. reg REG-2026-015",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T06:19:08.216Z"
+    },
+    {
+      "id": "log-d552db84",
+      "user_id": "publik",
+      "aksi": "Pendaftaran Online",
+      "detail": "Calon siswa asasd mendaftar kelas trial via web dengan no. reg TRL-2026-016",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T06:27:01.110Z"
+    },
+    {
+      "id": "log-999a7b09",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran TRL-2026-016 (asasd) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T06:40:26.903Z"
+    },
+    {
+      "id": "log-9952040a",
+      "user_id": "admin",
+      "aksi": "Reset Password Ortu",
+      "detail": "Mereset kata sandi akun orang tua Sari Dewi (sari.dewi@ahe.id)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:07:30.331Z"
+    },
+    {
+      "id": "log-7ff503fc",
+      "user_id": "admin",
+      "aksi": "Reset Password Ortu",
+      "detail": "Mereset kata sandi akun orang tua Sari Dewi (sari.dewi@ahe.id)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:07:42.379Z"
+    },
+    {
+      "id": "log-c1837ea2",
+      "user_id": "admin",
+      "aksi": "Masuk Waiting List",
+      "detail": "Pendaftaran reg-a06bf219 masuk daftar tunggu.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:50:16.645Z"
+    },
+    {
+      "id": "log-7568ba97",
+      "user_id": "admin",
+      "aksi": "Masuk Waiting List",
+      "detail": "Pendaftaran reg-6ce3129e masuk daftar tunggu.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:50:33.629Z"
+    },
+    {
+      "id": "log-666dcc9e",
+      "user_id": "admin",
+      "aksi": "Alokasi Waiting List",
+      "detail": "Antrean wl-1dfe547b dialokasikan ke kelas Pagi A - Level 2 (Bintang)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:50:40.831Z"
+    },
+    {
+      "id": "log-4dfd1954",
+      "user_id": "admin",
+      "aksi": "Hapus Waiting List",
+      "detail": "Menghapus antrean wl-1dfe547b dari waiting list.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:50:58.235Z"
+    },
+    {
+      "id": "log-31b5fe75",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-003 (Bintang Tes Integrasi) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:51:05.505Z"
+    },
+    {
+      "id": "log-dd3203c2",
+      "user_id": "admin",
+      "aksi": "Alokasi Waiting List",
+      "detail": "Antrean wl-086775f3 dialokasikan ke kelas Pagi A - Level 2 (Bintang)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T07:51:40.507Z"
+    },
+    {
+      "id": "log-e4ead2d8",
+      "user_id": "admin",
+      "aksi": "Hapus Waiting List",
+      "detail": "Menghapus antrean wl-086775f3 dari waiting list.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:02:23.485Z"
+    },
+    {
+      "id": "log-6ec1c948",
+      "user_id": "admin",
+      "aksi": "Masuk Waiting List",
+      "detail": "Pendaftaran reg-bb5f3581 masuk daftar tunggu.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:02:44.484Z"
+    },
+    {
+      "id": "log-1904f368",
+      "user_id": "admin",
+      "aksi": "Alokasi Waiting List",
+      "detail": "Siswa antrean wl-4a2dce76 (sadasd) resmi masuk ke kelas Pagi A - Level 2 (Bintang)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:02:49.840Z"
+    },
+    {
+      "id": "log-62646ef8",
+      "user_id": "admin",
+      "aksi": "Hapus Waiting List",
+      "detail": "Menghapus antrean wl-4a2dce76 dari waiting list.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:02:55.458Z"
+    },
+    {
+      "id": "log-a842c0ff",
+      "user_id": "admin",
+      "aksi": "Persetujuan Pendaftaran",
+      "detail": "Pendaftaran REG-2026-004 (Bintang Tes Integrasi) disetujui. Siswa terdaftar resmi.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:03:03.312Z"
+    },
+    {
+      "id": "log-01d95973",
+      "user_id": "system",
+      "aksi": "Edit Kelas",
+      "detail": "Memperbarui konfigurasi kelas Pagi A - Level 2 (Bintang)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:03:16.382Z"
+    },
+    {
+      "id": "log-47065de0",
+      "user_id": "admin",
+      "aksi": "Masuk Waiting List",
+      "detail": "Pendaftaran reg-0d745149 masuk daftar tunggu.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:03:20.080Z"
+    },
+    {
+      "id": "log-f4736b9f",
+      "user_id": "admin",
+      "aksi": "Alokasi Waiting List",
+      "detail": "Siswa antrean wl-14f4be49 (Bintang Tes 92950) resmi masuk ke kelas Pagi A - Level 2 (Bintang)",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:03:26.387Z"
+    },
+    {
+      "id": "log-fe9f0d1c",
+      "user_id": "admin",
+      "aksi": "Hapus Waiting List",
+      "detail": "Menghapus antrean wl-14f4be49 dari waiting list.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T08:08:38.312Z"
+    },
+    {
+      "id": "log-065dce74",
+      "user_id": "admin",
+      "aksi": "Masuk Waiting List",
+      "detail": "Pendaftaran reg-a32719b6 masuk daftar tunggu.",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T12:51:20.680Z"
+    },
+    {
+      "id": "log-27576b17",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T13:20:19.745Z"
+    },
+    {
+      "id": "log-821c10e9",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T13:27:58.254Z"
+    },
+    {
+      "id": "log-6c0bbdd3",
+      "user_id": "usr-tutor-001",
+      "aksi": "Login",
+      "detail": "User Bu Sari Rahayu, S.Pd. (tutor) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T13:41:25.219Z"
+    },
+    {
+      "id": "log-37d721a1",
+      "user_id": "usr-admin-001",
+      "aksi": "Login",
+      "detail": "User Admin AHE Karang Joang (admin) berhasil masuk",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-04T13:41:45.965Z"
+    },
+    {
+      "id": "log-e633be4a",
+      "user_id": "usr-admin-001",
+      "aksi": "Tambah Galeri",
+      "detail": "Menambahkan foto galeri: Main biliar",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-10-06T13:48:37.252Z"
+    }
+  ],
+  "modul": [
+    {
+      "id": "mod-001",
+      "program_id": "prg-001",
+      "kode": "MOD-PRA-01",
+      "judul": "Pengenalan Huruf Vokal A I U E O",
+      "deskripsi": "Mengenal bentuk dan bunyi 5 huruf vokal utama dengan kartu bergambar",
+      "urutan": 1,
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "mod-002",
+      "program_id": "prg-002",
+      "kode": "MOD-L1-01",
+      "judul": "Suku Kata B & C (ba bi bu be bo, ca ci cu ce co)",
+      "deskripsi": "Membaca gabungan huruf B dan C dengan vokal terbuka",
+      "urutan": 1,
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "mod-003",
+      "program_id": "prg-003",
+      "kode": "MOD-L2-01",
+      "judul": "Kata Dua Suku Kata Bermakna",
+      "deskripsi": "Membaca kata utuh tanpa mengeja bunyi per huruf",
+      "urutan": 1,
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "mod-004",
+      "program_id": "prg-003",
+      "kode": "MOD-L2-02",
+      "judul": "Kalimat Tiga Kata Sederhana",
+      "deskripsi": "Membaca kalimat pendek dengan tanda titik dan jeda intonasi",
+      "urutan": 2,
+      "created_at": "2026-01-10T00:00:00.000Z",
+      "updated_at": "2026-01-10T00:00:00.000Z"
+    }
+  ],
+  "modul_siswa": [
+    {
+      "id": "ms-001",
+      "modul_id": "mod-003",
+      "siswa_id": "siswa-001",
+      "sesi_id": "sesi-001",
+      "status": "selesai",
+      "nilai": 85,
+      "tanggal_selesai": "2026-09-22",
+      "created_at": "2026-09-22T09:30:00.000Z",
+      "updated_at": "2026-09-22T09:30:00.000Z"
+    },
+    {
+      "id": "ms-002",
+      "modul_id": "mod-004",
+      "siswa_id": "siswa-001",
+      "sesi_id": "sesi-002",
+      "status": "selesai",
+      "nilai": 88,
+      "tanggal_selesai": "2026-09-24",
+      "created_at": "2026-09-24T09:30:00.000Z",
+      "updated_at": "2026-09-24T09:30:00.000Z"
+    }
+  ],
+  "materi_pendukung": [],
+  "waiting_list": [
+    {
+      "id": "wl-2829b5be",
+      "pendaftaran_id": "reg-a32719b6",
+      "program_id": "prg-001",
+      "preferensi_jadwal": "pagi",
+      "urutan_antrian": 1,
+      "status": "menunggu",
+      "catatan": "Menunggu pembukaan kuota kelas baru",
+      "created_at": "2026-10-04T12:51:20.680Z",
+      "updated_at": "2026-10-04T12:51:20.680Z"
+    }
+  ],
+  "riwayat_pindah_kelas": [],
+  "notifikasi": [
+    {
+      "id": "notif-001",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Baru Masuk",
+      "pesan": "Zahra Almira mendaftar ke program Pra Membaca. Mohon verifikasi pendaftaran.",
+      "tipe": "pendaftaran",
+      "link": "/admin/pendaftaran",
+      "is_read": false,
+      "created_at": "2026-09-27T07:30:00.000Z"
+    },
+    {
+      "id": "notif-002",
+      "user_id": "usr-ortu-001",
+      "judul": "Catatan Baru dari Tutor",
+      "pesan": "Bu Sari Rahayu menambahkan catatan progress untuk Bintang Arya Putra.",
+      "tipe": "tutor",
+      "link": "/dashboard",
+      "is_read": false,
+      "created_at": "2026-09-26T10:00:00.000Z"
+    },
+    {
+      "id": "notif-b432bba1",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes Integrasi (Orang tua: Bunda Bintang) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:08:52.317Z"
+    },
+    {
+      "id": "notif-ac32ba7c",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes Integrasi (Orang tua: Bunda Bintang) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:09:22.617Z"
+    },
+    {
+      "id": "notif-5e7b09c6",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes Integrasi (Orang tua: Bunda Bintang) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:10:00.131Z"
+    },
+    {
+      "id": "notif-be3ecaef",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes Integrasi (Orang tua: Bunda Bintang) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:11:27.276Z"
+    },
+    {
+      "id": "notif-8dc17124",
+      "user_id": "usr-admin-001",
+      "judul": "Pengajuan Kenaikan Level",
+      "pesan": "Tutor mengajukan asesmen kenaikan level untuk Bintang Tes Integrasi dari pra-membaca ke level-1.",
+      "tipe": "system",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:11:27.876Z"
+    },
+    {
+      "id": "notif-39d74406",
+      "user_id": "usr-ortu-e87038cc",
+      "judul": "Selamat! Ananda Naik Level",
+      "pesan": "Alhamdulillah, ananda Bintang Tes Integrasi telah resmi naik jenjang ke LEVEL-1. Terus dukung semangat belajarnya!",
+      "tipe": "achievement",
+      "link": "/dashboard",
+      "is_read": false,
+      "created_at": "2026-09-27T12:11:27.907Z"
+    },
+    {
+      "id": "notif-40184262",
+      "user_id": "usr-tutor-001",
+      "judul": "Pengajuan Kenaikan Disetujui",
+      "pesan": "Asesmen kenaikan level untuk Bintang Tes Integrasi telah disetujui Admin.",
+      "tipe": "system",
+      "link": "/tutor",
+      "is_read": false,
+      "created_at": "2026-09-27T12:11:27.907Z"
+    },
+    {
+      "id": "notif-e987182c",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes Integrasi (Orang tua: Bunda Bintang) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:13:43.171Z"
+    },
+    {
+      "id": "notif-364207ff",
+      "user_id": "usr-admin-001",
+      "judul": "Pengajuan Kenaikan Level",
+      "pesan": "Tutor mengajukan asesmen kenaikan level untuk Bintang Tes Integrasi dari pra-membaca ke level-1.",
+      "tipe": "system",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:13:43.781Z"
+    },
+    {
+      "id": "notif-fd70b1d7",
+      "user_id": "usr-ortu-e87038cc",
+      "judul": "Selamat! Ananda Naik Level",
+      "pesan": "Alhamdulillah, ananda Bintang Tes Integrasi telah resmi naik jenjang ke LEVEL-1. Terus dukung semangat belajarnya!",
+      "tipe": "achievement",
+      "link": "/dashboard",
+      "is_read": false,
+      "created_at": "2026-09-27T12:13:43.818Z"
+    },
+    {
+      "id": "notif-496d8e3f",
+      "user_id": "usr-tutor-001",
+      "judul": "Pengajuan Kenaikan Disetujui",
+      "pesan": "Asesmen kenaikan level untuk Bintang Tes Integrasi telah disetujui Admin.",
+      "tipe": "system",
+      "link": "/tutor",
+      "is_read": false,
+      "created_at": "2026-09-27T12:13:43.818Z"
+    },
+    {
+      "id": "notif-08f3331f",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes 97853 (Orang tua: Bunda Bintang 97853) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:14:57.875Z"
+    },
+    {
+      "id": "notif-c2b0ee59",
+      "user_id": "usr-admin-001",
+      "judul": "Pengajuan Kenaikan Level",
+      "pesan": "Tutor mengajukan asesmen kenaikan level untuk Bintang Tes 97853 dari pra-membaca ke level-1.",
+      "tipe": "system",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:14:58.380Z"
+    },
+    {
+      "id": "notif-113f444d",
+      "user_id": "usr-ortu-3a6bc3ae",
+      "judul": "Selamat! Ananda Naik Level",
+      "pesan": "Alhamdulillah, ananda Bintang Tes 97853 telah resmi naik jenjang ke LEVEL-1. Terus dukung semangat belajarnya!",
+      "tipe": "achievement",
+      "link": "/dashboard",
+      "is_read": false,
+      "created_at": "2026-09-27T12:14:58.411Z"
+    },
+    {
+      "id": "notif-f0fff6c2",
+      "user_id": "usr-tutor-001",
+      "judul": "Pengajuan Kenaikan Disetujui",
+      "pesan": "Asesmen kenaikan level untuk Bintang Tes 97853 telah disetujui Admin.",
+      "tipe": "system",
+      "link": "/tutor",
+      "is_read": false,
+      "created_at": "2026-09-27T12:14:58.411Z"
+    },
+    {
+      "id": "notif-2421128f",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes 10820 (Orang tua: Bunda Bintang 10820) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:16:50.839Z"
+    },
+    {
+      "id": "notif-7c4e687f",
+      "user_id": "usr-admin-001",
+      "judul": "Pengajuan Kenaikan Level",
+      "pesan": "Tutor mengajukan asesmen kenaikan level untuk Bintang Tes 10820 dari pra-membaca ke level-1.",
+      "tipe": "system",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:16:51.322Z"
+    },
+    {
+      "id": "notif-f8e59ec4",
+      "user_id": "usr-ortu-bd2e19d0",
+      "judul": "Selamat! Ananda Naik Level",
+      "pesan": "Alhamdulillah, ananda Bintang Tes 10820 telah resmi naik jenjang ke LEVEL-1. Terus dukung semangat belajarnya!",
+      "tipe": "achievement",
+      "link": "/dashboard",
+      "is_read": false,
+      "created_at": "2026-09-27T12:16:51.351Z"
+    },
+    {
+      "id": "notif-ddcdc1aa",
+      "user_id": "usr-tutor-001",
+      "judul": "Pengajuan Kenaikan Disetujui",
+      "pesan": "Asesmen kenaikan level untuk Bintang Tes 10820 telah disetujui Admin.",
+      "tipe": "system",
+      "link": "/tutor",
+      "is_read": false,
+      "created_at": "2026-09-27T12:16:51.351Z"
+    },
+    {
+      "id": "notif-e93f6f42",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes 92950 (Orang tua: Bunda Bintang 92950) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:19:52.970Z"
+    },
+    {
+      "id": "notif-e5ebbe2a",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes 43534 (Orang tua: Bunda Bintang 43534) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:20:43.541Z"
+    },
+    {
+      "id": "notif-857d359d",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "Bintang Tes 71632 (Orang tua: Bunda Bintang 71632) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:21:11.637Z"
+    },
+    {
+      "id": "notif-222421f6",
+      "user_id": "usr-admin-001",
+      "judul": "Pengajuan Kenaikan Level",
+      "pesan": "Tutor mengajukan asesmen kenaikan level untuk Bintang Tes 71632 dari pra-membaca ke level-1.",
+      "tipe": "system",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:21:11.955Z"
+    },
+    {
+      "id": "notif-bff1b8d5",
+      "user_id": "usr-ortu-a5f78dd8",
+      "judul": "Selamat! Ananda Naik Level",
+      "pesan": "Alhamdulillah, ananda Bintang Tes 71632 telah resmi naik jenjang ke LEVEL-1. Terus dukung semangat belajarnya!",
+      "tipe": "achievement",
+      "link": "/dashboard",
+      "is_read": false,
+      "created_at": "2026-09-27T12:21:11.976Z"
+    },
+    {
+      "id": "notif-6d59ff46",
+      "user_id": "usr-tutor-001",
+      "judul": "Pengajuan Kenaikan Disetujui",
+      "pesan": "Asesmen kenaikan level untuk Bintang Tes 71632 telah disetujui Admin.",
+      "tipe": "system",
+      "link": "/tutor",
+      "is_read": false,
+      "created_at": "2026-09-27T12:21:11.976Z"
+    },
+    {
+      "id": "notif-084a8dd7",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "aasdada (Orang tua: sadasd) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-09-27T12:51:59.872Z"
+    },
+    {
+      "id": "notif-91259eff",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Siswa Baru",
+      "pesan": "asasd (Orang tua: asdasd) baru saja mendaftar. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-10-04T05:14:51.213Z"
+    },
+    {
+      "id": "notif-8a51d322",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Reguler Baru",
+      "pesan": "sadasd (Orang tua: sada) mendaftar pendaftaran reguler. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-10-04T06:18:04.544Z"
+    },
+    {
+      "id": "notif-03d7ab07",
+      "user_id": "usr-admin-001",
+      "judul": "Pendaftaran Reguler Baru",
+      "pesan": "asasd (Orang tua: sada) mendaftar pendaftaran reguler. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-10-04T06:19:08.216Z"
+    },
+    {
+      "id": "notif-6c8c8ee2",
+      "user_id": "usr-admin-001",
+      "judul": "Kelas Trial Baru",
+      "pesan": "asasd (Orang tua: sada) mendaftar kelas trial. Mohon diverifikasi.",
+      "tipe": "pendaftaran",
+      "link": "/admin",
+      "is_read": false,
+      "created_at": "2026-10-04T06:27:01.110Z"
+    }
+  ],
+  "video_pembelajaran": [
+    {
+      "id": "vid-001",
+      "guru_id": "guru-001",
+      "judul": "Latihan Senam Fonik Huruf Vokal A I U E O di Rumah",
+      "deskripsi": "Video panduan untuk ayah bunda mendampingi anak melafalkan bunyi huruf dengan gerakan tangan ceria.",
+      "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "level": "level-1",
+      "target_tipe": "kelas",
+      "target_id": "kls-001",
+      "created_at": "2026-09-20T00:00:00.000Z",
+      "updated_at": "2026-09-20T00:00:00.000Z"
+    }
+  ],
+  "video_siswa": [],
+  "periode_akademik": [
+    {
+      "id": "prd-001",
+      "nama": "Semester Ganjil 2026/2027",
+      "tanggal_mulai": "2026-07-01",
+      "tanggal_selesai": "2026-12-31",
+      "status": "aktif",
+      "catatan": "Periode aktif berjalan saat ini",
+      "created_at": "2026-07-01T00:00:00.000Z",
+      "updated_at": "2026-07-01T00:00:00.000Z"
+    }
+  ]
+}
