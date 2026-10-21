@@ -38,8 +38,8 @@ export function HeroSection() {
         }}
       />
 
-      <div className="container-custom relative z-10 py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="container-custom relative z-10 py-20 md:py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left: Text */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -133,12 +133,12 @@ export function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Right: Illustration + Stats */}
+          {/* Right: Illustration + Stats — hidden on mobile to avoid overflow */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="relative"
+            className="relative hidden lg:block"
           >
             {/* Main illustration card */}
             <div className="relative mx-auto max-w-sm lg:max-w-none pt-40">
@@ -202,7 +202,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-10 md:mt-16"
         >
           {stats.map((stat, i) => (
             <motion.div

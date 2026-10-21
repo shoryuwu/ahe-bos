@@ -30,9 +30,10 @@ export interface PendaftaranItem {
   tanggal_lahir?: string;
   nama_ortu: string;
   no_wa_ortu?: string;
+  no_wa?: string;
   program_nama?: string;
   program_diminati?: string;
-  preferensi_jadwal?: string;
+  preferensi_jadwal?: string | string[];
   status: string;
 }
 
@@ -80,6 +81,7 @@ export interface OrangtuaAdminItem {
   no_wa?: string;
   user_active?: boolean;
   alamat?: string;
+  siswa?: any[];
   anak?: Array<{
     id: string;
     nama: string;
@@ -96,6 +98,7 @@ export interface GuruAdminItem {
   total_kelas?: number;
   total_siswa?: number;
   spesialisasi?: string[];
+  kelas?: any[];
   kelas_list?: Array<{
     id: string;
     nama: string;

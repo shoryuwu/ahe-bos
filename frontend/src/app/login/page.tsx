@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BookOpen, Sparkles, Shield, UserCheck, Heart, ArrowRight, Lock, Mail, AlertCircle, Loader2 } from "lucide-react";
+import { BookOpen, Sparkles, Shield, UserCheck, Heart, ArrowRight, ArrowLeft, Lock, Mail, AlertCircle, Loader2, Eye, EyeOff } from "lucide-react";
 
 function LoginFormContent() {
   const router = useRouter();
@@ -12,6 +12,7 @@ function LoginFormContent() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -119,7 +120,7 @@ function LoginFormContent() {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-violet-50 via-purple-50 to-orange-50">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
           <p className="text-sm font-medium text-slate-600">Memeriksa status sesi...</p>
@@ -129,15 +130,15 @@ function LoginFormContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50">
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-linear-to-br from-violet-50 via-purple-50 to-orange-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-2 mb-3 group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-fuchsia-600 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/25 group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-linear-to-tr from-purple-600 via-fuchsia-600 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/25 group-hover:scale-105 transition-transform">
               <BookOpen className="w-6 h-6" />
             </div>
             <div className="text-left">
-              <span className="block text-2xl font-extrabold tracking-tight bg-gradient-to-r from-purple-700 via-fuchsia-600 to-orange-600 bg-clip-text text-transparent">
+              <span className="block text-2xl font-extrabold tracking-tight bg-linear-to-r from-purple-700 via-fuchsia-600 to-orange-600 bg-clip-text text-transparent">
                 AHE Karang Joang
               </span>
               <span className="block text-xs font-semibold text-purple-700 tracking-wider uppercase -mt-1">
@@ -230,13 +231,21 @@ function LoginFormContent() {
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="block w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all"
+                  className="block w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
@@ -244,7 +253,7 @@ function LoginFormContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-fuchsia-600 to-orange-500 hover:from-purple-700 hover:via-fuchsia-700 hover:to-orange-600 shadow-md shadow-purple-600/20 hover:shadow-lg hover:shadow-purple-600/30 transition-all disabled:opacity-60 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-linear-to-r from-purple-600 via-fuchsia-600 to-orange-500 hover:from-purple-700 hover:via-fuchsia-700 hover:to-orange-600 shadow-md shadow-purple-600/20 hover:shadow-lg hover:shadow-purple-600/30 transition-all disabled:opacity-60 cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -262,8 +271,9 @@ function LoginFormContent() {
           </form>
 
           <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <Link href="/" className="hover:text-purple-600 transition-colors">
-              ← Kembali ke Beranda
+            <Link href="/" className="inline-flex items-center gap-1.5 hover:text-purple-600 transition-colors">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Kembali ke Beranda</span>
             </Link>
             <Link href="/daftar" className="font-semibold text-purple-600 hover:text-purple-700">
               Daftar Peserta Didik Baru
@@ -288,3 +298,6 @@ export default function LoginPage() {
     </Suspense>
   );
 }
+
+
+

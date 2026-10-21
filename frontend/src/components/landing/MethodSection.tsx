@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, RotateCw, BookOpen, Sparkles, PenTool, Gamepad2 } from "lucide-react";
+import { Brain, RotateCw, BookOpen, Sparkles, PenTool, Gamepad2, ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 import { methodSteps } from "@/data";
 import { cn } from "@/lib/utils";
@@ -175,14 +175,14 @@ export function MethodSection() {
                       disabled={activeStep === 0}
                       className="flex-1 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      ← Sebelumnya
+                      <span className="inline-flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> Sebelumnya</span>
                     </button>
                     <button
                       onClick={() => setActiveStep(Math.min(methodSteps.length - 1, activeStep + 1))}
                       disabled={activeStep === methodSteps.length - 1}
                       className="flex-1 py-2.5 rounded-xl gradient-brand text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      Selanjutnya →
+                      <span className="inline-flex items-center justify-center gap-1">Selanjutnya <ChevronRight className="w-4 h-4" /></span>
                     </button>
                   </div>
                 </div>

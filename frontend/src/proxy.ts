@@ -7,7 +7,7 @@ const PROTECTED_ROUTES: Record<string, string[]> = {
   "/dashboard": ["orangtua", "admin"],
 };
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Find if this path falls under any protected prefix

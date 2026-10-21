@@ -126,26 +126,33 @@ export function GuruTab({
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">
                     Kelas yang Diampu:
                   </span>
-                  {g.kelas_list && g.kelas_list.length > 0 ? (
-                    <div className="space-y-1.5">
-                      {g.kelas_list.map((k) => (
-                        <div
-                          key={k.id}
-                          className="p-2 rounded-xl bg-muted/40 border border-border/60 flex items-center justify-between text-xs"
-                        >
-                          <div>
-                            <span className="font-bold text-foreground block text-xs">{k.nama}</span>
-                            {k.jam && <span className="text-[10px] text-muted-foreground">{k.jam} WITA</span>}
+                  {(() => {
+                    const classes = Array.isArray(g.kelas) ? g.kelas : (Array.isArray(g.kelas_list) ? g.kelas_list : []);
+                    return classes.length > 0 ? (
+                      <div className="space-y-1.5">
+                        {classes.map((k: any) => (
+                          <div
+                            key={k.id}
+                            className="p-2 rounded-xl bg-muted/40 border border-border/60 flex items-center justify-between text-xs"
+                          >
+                            <div>
+                              <span className="font-bold text-foreground block text-xs">{k.nama}</span>
+                              {(k.jam || k.jam_mulai) && (
+                                <span className="text-[10px] text-muted-foreground">
+                                  {k.jam || `${k.jam_mulai} - ${k.jam_selesai}`} WITA
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-extrabold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                              {k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.length : 0)}/{k.kapasitas || 6}
+                            </span>
                           </div>
-                          <span className="text-[10px] font-extrabold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                            {k.siswa_count || 0}/{k.kapasitas || 6}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-xs text-muted-foreground italic">Belum memegang kelas aktif</span>
-                  )}
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground italic">Belum memegang kelas aktif</span>
+                    );
+                  })()}
                 </div>
               </div>
 

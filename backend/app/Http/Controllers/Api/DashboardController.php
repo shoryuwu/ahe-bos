@@ -78,24 +78,25 @@ class DashboardController extends Controller
     {
         $user = $request->user();
         if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
         }
 
-        $orangtua = Orangtua::where('user_id', $user->id)->first();
-        if (!$orangtua) {
-            // Cek orangtua berdasarkan email
-            $orangtua = Orangtua::where('email', $user->email)->first();
-        }
+        $orangtua = Orangtua::where('user_id', $user->id)->first()
+            ?? Orangtua::where('email', $user->email)->first();
 
         if (!$orangtua) {
-            return response()->json(['error' => 'Data profil orang tua belum terhubung'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Data profil orang tua belum terhubung',
+            ], 404);
         }
 
-        $siswa = Siswa::with([
+        $allSiswa = Siswa::with([
             'kelas.program',
             'kelas.guru',
             'riwayatLevel',
             'pencapaian',
+            'kosakata',
             'progressIndikator' => function ($q) {
                 $q->orderBy('bulan', 'desc')->take(6);
             },
@@ -110,11 +111,29 @@ class DashboardController extends Controller
             }
         ])->where('orangtua_id', $orangtua->id)->get();
 
+        // Reshape each siswa to include computed fields expected by frontend
+        $children = $allSiswa->map(function ($s) {
+            return array_merge($s->toArray(), [
+                'tutor' => $s->kelas?->guru ?? null,
+            ]);
+        });
+
+        // Pick which child to detail: query param or first child
+        $targetId = $request->query('siswa_id');
+        $childDetail = $targetId
+            ? $children->firstWhere('id', $targetId)
+            : $children->first();
+
         return response()->json([
-            'orangtua' => $orangtua,
-            'siswa' => $siswa,
+            'success' => true,
+            'data' => [
+                'ortu'        => $orangtua,
+                'children'    => $children,
+                'childDetail' => $childDetail,
+            ],
         ]);
     }
+
 
     public function tutorJadwal(Request $request)
     {
@@ -149,6 +168,8 @@ class DashboardController extends Controller
             ->get();
 
         return response()->json([
+            'success' => true,
+            'data' => $kelas,
             'guru' => $guru,
             'kelas' => $kelas,
             'sesi_hari_ini' => $sesiHariIni,

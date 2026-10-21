@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\AkunController;
 use App\Http\Controllers\Api\NotifikasiController;
 use App\Http\Controllers\Api\LogAktivitasController;
 use App\Http\Controllers\Api\UploadController;
+use App\Http\Controllers\Api\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/modul/{id}', [ModulController::class, 'show']);
     Route::get('/modul/siswa/{siswaId}', [ModulController::class, 'siswaProgress']);
 
+    // Laporan (Rapor & Sertifikat)
+    Route::get('/laporan/rapor/{siswaId}', [LaporanController::class, 'rapor']);
+
     /*
     |--------------------------------------------------------------------------
     | Admin Routes (Role: admin)
@@ -144,6 +148,12 @@ Route::middleware('auth:sanctum')->group(function () {
         // Kelas Management
         Route::post('/kelas', [KelasController::class, 'store']);
         Route::put('/kelas/{id}', [KelasController::class, 'update']);
+        Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
+
+        // Program Management
+        Route::post('/program', [ProgramController::class, 'store']);
+        Route::put('/program/{id}', [ProgramController::class, 'update']);
+        Route::delete('/program/{id}', [ProgramController::class, 'destroy']);
 
         // Pendaftaran Management
         Route::get('/pendaftaran', [PendaftaranController::class, 'index']);

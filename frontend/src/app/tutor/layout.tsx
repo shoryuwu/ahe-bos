@@ -15,22 +15,37 @@ export default function TutorLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     async function loadUser() {
       try {
-        const res = await fetch("/api/auth/me");
+        const token = localStorage.getItem("ahe_token");
+        if (!token) {
+          router.replace("/login");
+          return;
+        }
+        const res = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
         if (!res.ok) {
+          localStorage.removeItem("ahe_token");
+          localStorage.removeItem("ahe_user");
+          document.cookie = "ahe_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+          document.cookie = "ahe_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
           router.replace("/login");
           return;
         }
         const json = await res.json();
-        if (json.success && json.data) {
-          if (json.data.role !== "tutor" && json.data.role !== "admin") {
-            router.replace("/login");
-            return;
-          }
+        const userData = json.user || json.data;
+        if (userData && (userData.role === "tutor" || userData.role === "admin")) {
           setUser({
-            nama: json.data.nama,
-            role: json.data.role,
+            nama: userData.nama,
+            role: userData.role,
           });
         } else {
+          localStorage.removeItem("ahe_token");
+          localStorage.removeItem("ahe_user");
+          document.cookie = "ahe_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+          document.cookie = "ahe_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
           router.replace("/login");
         }
       } catch {

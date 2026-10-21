@@ -116,16 +116,20 @@ class AuthController extends Controller
             $profile = $user->orangtua;
         }
 
+        $userData = [
+            'id' => $user->id,
+            'nama' => $user->nama ?? $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'is_active' => $user->is_active,
+            'password_reset_required' => $user->password_reset_required,
+            'profile' => $profile,
+        ];
+
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'nama' => $user->nama ?? $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'is_active' => $user->is_active,
-                'password_reset_required' => $user->password_reset_required,
-                'profile' => $profile,
-            ]
+            'success' => true,
+            'data' => $userData,
+            'user' => $userData,
         ]);
     }
 

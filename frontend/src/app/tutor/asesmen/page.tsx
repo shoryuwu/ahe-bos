@@ -49,18 +49,24 @@ export default function TutorAsesmenPage() {
   useEffect(() => {
     async function loadData() {
       try {
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
         const [sRes, aRes] = await Promise.all([
-          fetch("/api/siswa").then((r) => r.json()),
-          fetch("/api/asesmen").then((r) => r.json()),
+          fetch("/api/siswa", { headers }).then((r) => r.json()),
+          fetch("/api/asesmen", { headers }).then((r) => r.json()),
         ]);
 
-        if (sRes.success && sRes.data.items.length > 0) {
-          setStudents(sRes.data.items);
-          setSelectedStudentId(sRes.data.items[0].id);
-          setDariLevel(sRes.data.items[0].level_saat_ini);
+        const studentList = sRes.data?.items || sRes.data || [];
+        if (Array.isArray(studentList) && studentList.length > 0) {
+          setStudents(studentList);
+          setSelectedStudentId(studentList[0].id);
+          setDariLevel(studentList[0].level_saat_ini);
         }
-        if (aRes.success) {
-          setAsesmenList(aRes.data);
+        const asesmenItems = aRes.data || aRes || [];
+        if (Array.isArray(asesmenItems)) {
+          setAsesmenList(asesmenItems);
         }
       } catch {
         setError("Gagal memuat data asesmen.");
@@ -96,9 +102,16 @@ export default function TutorAsesmenPage() {
     setSuccess(null);
 
     try {
+      const token = localStorage.getItem("ahe_token");
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
       const res = await fetch("/api/asesmen", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           siswa_id: selectedStudentId,
           dari_level: dariLevel,
@@ -112,16 +125,17 @@ export default function TutorAsesmenPage() {
       });
 
       const json = await res.json();
-      if (!res.ok || !json.success) {
-        setError(json.error || "Gagal mengirim pengajuan asesmen.");
+      if (!res.ok) {
+        setError(json.error || json.message || "Gagal mengirim pengajuan asesmen.");
       } else {
         setSuccess(
           "Pengajuan asesmen kenaikan level berhasil dikirim ke Administrator untuk persetujuan resmi."
         );
         setCatatan("");
         // Reload list
-        const aRes = await fetch("/api/asesmen").then((r) => r.json());
-        if (aRes.success) setAsesmenList(aRes.data);
+        const aRes = await fetch("/api/asesmen", { headers }).then((r) => r.json());
+        const asesmenItems = aRes.data || aRes || [];
+        if (Array.isArray(asesmenItems)) setAsesmenList(asesmenItems);
       }
     } catch {
       setError("Terjadi kesalahan jaringan.");

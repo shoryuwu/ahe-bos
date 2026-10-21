@@ -48,11 +48,18 @@ export default function TutorProgressPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch("/api/siswa");
-        const json = await res.json();
-        if (json.success && json.data.items.length > 0) {
-          setStudents(json.data.items);
-          setSelectedStudentId(json.data.items[0].id);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const res = await fetch("/api/siswa", { headers });
+        if (res.ok) {
+          const json = await res.json();
+          const list = json.data?.items || json.data || [];
+          if (Array.isArray(list) && list.length > 0) {
+            setStudents(list);
+            setSelectedStudentId(list[0].id);
+          }
         }
       } catch {
         setError("Gagal memuat data siswa.");
@@ -69,7 +76,10 @@ export default function TutorProgressPage() {
 
     async function loadIndicators() {
       try {
-        const res = await fetch(`/api/progress-indikator/siswa/${selectedStudentId}`);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch(`/api/progress-indikator/siswa/${selectedStudentId}`, { headers });
         const json = await res.json();
         if (json.success && Array.isArray(json.data)) {
           const match = json.data.find((item: any) => item.bulan === bulan);
@@ -108,9 +118,15 @@ export default function TutorProgressPage() {
     setSuccess(null);
 
     try {
+      const token = localStorage.getItem("ahe_token");
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      if (token) headers.Authorization = `Bearer ${token}`;
       const res = await fetch(`/api/progress-indikator/siswa/${selectedStudentId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           bulan,
           ...indicators,
