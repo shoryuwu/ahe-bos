@@ -66,14 +66,21 @@ export default function InputSesiPage() {
   useEffect(() => {
     async function loadInitialData() {
       try {
-        const res = await fetch("/api/jadwal/tutor");
-        const json = await res.json();
-        if (json.success && json.data.length > 0) {
-          setKelasList(json.data);
-          const firstClass = json.data[0];
-          setSelectedKelasId(firstClass.id);
-          setJamMulai(firstClass.jam_mulai || "08:30");
-          setJamSelesai(firstClass.jam_selesai || "09:30");
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const res = await fetch("/api/dashboard/tutor/jadwal", { headers });
+        if (res.ok) {
+          const json = await res.json();
+          const list = json.kelas || json.data || [];
+          if (Array.isArray(list) && list.length > 0) {
+            setKelasList(list);
+            const firstClass = list[0];
+            setSelectedKelasId(firstClass.id);
+            setJamMulai(firstClass.jam_mulai || "08:30");
+            setJamSelesai(firstClass.jam_selesai || "09:30");
+          }
         }
       } catch {
         setError("Gagal memuat jadwal kelas tutor.");
@@ -110,7 +117,10 @@ export default function InputSesiPage() {
     // Fetch modules
     async function fetchModules() {
       try {
-        const res = await fetch("/api/modul");
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch("/api/modul", { headers });
         const json = await res.json();
         if (json.success) {
           setModulList(json.data);
@@ -213,7 +223,7 @@ export default function InputSesiPage() {
   return (
     <div className="space-y-6">
       {/* Top Banner Header */}
-      <div className="bg-gradient-to-r from-fuchsia-600 via-purple-600 to-orange-500 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-purple-600/15">
+      <div className="bg-linear-to-r from-fuchsia-600 via-purple-600 to-orange-500 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-purple-600/15">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full inline-block mb-2">
@@ -264,7 +274,7 @@ export default function InputSesiPage() {
               >
                 {kelasList.map((k) => (
                   <option key={k.id} value={k.id}>
-                    {k.nama} ({k.program})
+                    {k.nama} ({(k.program as any)?.nama || (typeof k.program === "string" ? k.program : "-")})
                   </option>
                 ))}
               </select>
@@ -461,7 +471,7 @@ export default function InputSesiPage() {
 
                     {/* 6 Langkah Metode AHE Pills */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5 flex items-center gap-1">
+                      <label className="flex text-xs font-bold text-slate-700 uppercase mb-1.5 items-center gap-1">
                         <Sparkles className="w-3.5 h-3.5 text-orange-500" />
                         Langkah Metode AHE yang Diselesaikan:
                       </label>
@@ -525,7 +535,7 @@ export default function InputSesiPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-orange-500 hover:opacity-90 text-sm font-extrabold text-white shadow-xl shadow-fuchsia-600/25 transition-all cursor-pointer disabled:opacity-60"
+            className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-linear-to-r from-fuchsia-600 via-purple-600 to-orange-500 hover:opacity-90 text-sm font-extrabold text-white shadow-xl shadow-fuchsia-600/25 transition-all cursor-pointer disabled:opacity-60"
           >
             {saving ? (
               <>

@@ -114,19 +114,22 @@ export function OrangtuaTab({
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex flex-wrap gap-1.5">
-                        {o.anak && o.anak.length > 0 ? (
-                          o.anak.map((c) => (
-                            <Badge
-                              key={c.id}
-                              variant="outline"
-                              className="bg-primary/10 text-primary border-primary/20 text-[10px] font-bold"
-                            >
-                              {c.nama} ({c.level})
-                            </Badge>
-                          ))
-                        ) : (
-                          <span className="text-[11px] text-muted-foreground">-</span>
-                        )}
+                        {(() => {
+                          const children = Array.isArray(o.siswa) ? o.siswa : (Array.isArray(o.anak) ? o.anak : []);
+                          return children.length > 0 ? (
+                            children.map((c: any) => (
+                              <Badge
+                                key={c.id}
+                                variant="outline"
+                                className="bg-primary/10 text-primary border-primary/20 text-[10px] font-bold"
+                              >
+                                {c.nama} ({c.level_saat_ini || c.level || "-"})
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-[11px] text-muted-foreground">-</span>
+                          );
+                        })()}
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-muted-foreground max-w-xs truncate">

@@ -14,7 +14,10 @@ export default function SertifikatPrintPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch(`/api/siswa/${siswaId}`);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch(`/api/siswa/${siswaId}`, { headers });
         const json = await res.json();
         if (json.success) {
           setData(json.data);
@@ -27,6 +30,7 @@ export default function SertifikatPrintPage() {
     }
     loadData();
   }, [siswaId]);
+
 
   if (loading) {
     return (
@@ -108,7 +112,7 @@ export default function SertifikatPrintPage() {
             Telah dinyatakan <strong>LULUS DENGAN PREDIKAT BAIK</strong> pada tahapan kurikulum membaca:
           </p>
 
-          <div className="inline-block bg-gradient-to-r from-purple-100 via-fuchsia-100 to-orange-100 border border-purple-200 px-6 py-2 rounded-2xl">
+          <div className="inline-block bg-linear-to-r from-purple-100 via-fuchsia-100 to-orange-100 border border-purple-200 px-6 py-2 rounded-2xl">
             <span className="text-base font-extrabold uppercase text-purple-900 tracking-wider">
               {data.level_saat_ini.toUpperCase()}
             </span>

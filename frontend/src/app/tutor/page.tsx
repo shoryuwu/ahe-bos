@@ -10,61 +10,71 @@ import {
   CheckCircle2,
   BookOpen,
   ArrowRight,
-  Sparkles,
   Loader2,
   TrendingUp,
 } from "lucide-react";
 
-interface KelasSummary {
+interface KelasFromAPI {
   id: string;
   nama: string;
-  program: string;
+  program: {
+    id: string;
+    nama: string;
+    kode: string;
+    icon?: string;
+  };
   jam_mulai: string;
   jam_selesai: string;
-  jumlah_siswa: number;
+  kapasitas: number;
   jadwal_hari: string[];
-  siswa: { id: string; nama: string; level: string }[];
+  siswa: { id: string; nama: string; level_saat_ini?: string }[];
+}
+
+interface SesiFromAPI {
+  id: string;
+  tanggal: string;
+  materi: string;
+  status_sesi: string;
+  kelas?: { id: string; nama: string };
+  absensi?: { status: string }[];
+  nilai?: { nilai: number }[];
 }
 
 export default function TutorOverviewPage() {
-  const [classes, setClasses] = useState<KelasSummary[]>([]);
-  const [recentSessions, setRecentSessions] = useState<any[]>([]);
+  const [classes, setClasses] = useState<KelasFromAPI[]>([]);
+  const [recentSessions, setRecentSessions] = useState<SesiFromAPI[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        const [kRes, sRes] = await fetch("/api/jadwal/tutor").then((r) => r.json());
-        const sessRes = await fetch("/api/sesi").then((r) => r.json());
-
-        if (kRes && kRes.success) {
-          setClasses(kRes.data);
-        }
-        if (sessRes && sessRes.success) {
-          setRecentSessions(sessRes.data.slice(0, 5));
-        }
-      } catch {
-        // Handle error gracefully
-      } finally {
-        setLoading(false);
-      }
-    }
-
     async function loadDataProper() {
       try {
-        const resClasses = await fetch("/api/jadwal/tutor");
-        const jsonClasses = await resClasses.json();
-        if (jsonClasses.success) {
-          setClasses(jsonClasses.data);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const resJadwal = await fetch("/api/dashboard/tutor/jadwal", { headers });
+        if (resJadwal.ok) {
+          const json = await resJadwal.json();
+          // API returns: { guru, kelas: [...], sesi_hari_ini: [...], sesi_terakhir: [...] }
+          const kelasList = json.kelas || json.data || [];
+          setClasses(Array.isArray(kelasList) ? kelasList : []);
+
+          const sesiTerakhir = json.sesi_terakhir || [];
+          if (Array.isArray(sesiTerakhir) && sesiTerakhir.length > 0) {
+            setRecentSessions(sesiTerakhir.slice(0, 5));
+            return; // skip second fetch
+          }
         }
 
-        const resSessions = await fetch("/api/sesi");
-        const jsonSessions = await resSessions.json();
-        if (jsonSessions.success) {
-          setRecentSessions(jsonSessions.data.slice(0, 5));
+        // Fallback: hit /api/sesi for session list
+        const resSesi = await fetch("/api/sesi", { headers });
+        if (resSesi.ok) {
+          const json = await resSesi.json();
+          const list = json.data || json.sesi || [];
+          setRecentSessions(Array.isArray(list) ? list.slice(0, 5) : []);
         }
       } catch {
-        //
+        // silently fail
       } finally {
         setLoading(false);
       }
@@ -81,12 +91,24 @@ export default function TutorOverviewPage() {
     );
   }
 
-  const totalSiswa = classes.reduce((acc, curr) => acc + curr.jumlah_siswa, 0);
+  const totalSiswa = classes.reduce((acc, curr) => acc + (curr.siswa?.length ?? 0), 0);
+
+  function getHadirCount(sesi: SesiFromAPI): string {
+    if (!sesi.absensi || sesi.absensi.length === 0) return "-";
+    const hadir = sesi.absensi.filter((a) => a.status === "hadir").length;
+    return `${hadir} / ${sesi.absensi.length}`;
+  }
+
+  function getRataRata(sesi: SesiFromAPI): string {
+    if (!sesi.nilai || sesi.nilai.length === 0) return "-";
+    const avg = sesi.nilai.reduce((sum, n) => sum + (n.nilai ?? 0), 0) / sesi.nilai.length;
+    return `${Math.round(avg)} / 100`;
+  }
 
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-fuchsia-600 via-purple-600 to-orange-500 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-purple-600/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-linear-to-r from-fuchsia-600 via-purple-600 to-orange-500 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-purple-600/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full inline-block mb-2">
             Selamat Mengajar!
@@ -148,59 +170,67 @@ export default function TutorOverviewPage() {
             Jadwal Kelas Aktif Anda
           </h3>
           <Link href="/tutor/jadwal" className="text-xs font-bold text-fuchsia-600 hover:underline">
-            Lihat Semua Jadwal →
+            Lihat Semua Jadwal
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {classes.map((cls) => (
-            <div
-              key={cls.id}
-              className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">
-                    {cls.program}
-                  </span>
-                  <span className="text-xs font-semibold text-slate-500">
-                    {cls.jumlah_siswa} / 6 Siswa
-                  </span>
-                </div>
-                <h4 className="text-base font-bold text-slate-900">{cls.nama}</h4>
-                <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>
-                    {cls.jam_mulai} - {cls.jam_selesai} WITA
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {cls.jadwal_hari.map((h) => (
-                    <span key={h} className="text-[10px] font-medium bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg">
-                      {h}
+        {classes.length === 0 ? (
+          <div className="bg-white rounded-3xl p-8 border border-slate-200 text-center text-sm text-slate-400">
+            Tidak ada kelas aktif yang diampu saat ini.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {classes.map((cls) => (
+              <div
+                key={cls.id}
+                className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">
+                      {cls.program?.nama ?? "-"}
                     </span>
-                  ))}
+                    <span className="text-xs font-semibold text-slate-500">
+                      {cls.siswa?.length ?? 0} / {cls.kapasitas} Siswa
+                    </span>
+                  </div>
+                  <h4 className="text-base font-bold text-slate-900">{cls.nama}</h4>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>
+                      {cls.jam_mulai} – {cls.jam_selesai} WITA
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {(cls.jadwal_hari ?? []).map((h) => (
+                      <span key={h} className="text-[10px] font-medium bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg">
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-xs text-slate-500">
+                    {(cls.siswa?.length ?? 0) > 0
+                      ? `${cls.siswa.length} anak terdaftar`
+                      : "Belum ada siswa"}
+                  </span>
+                  <Link
+                    href="/tutor/input-sesi"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-fuchsia-600 hover:text-fuchsia-700"
+                  >
+                    Catat KBM
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
                 </div>
               </div>
-
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs text-slate-500">
-                  {cls.siswa.length > 0 ? `${cls.siswa.length} anak terdaftar` : "Belum ada siswa"}
-                </span>
-                <Link
-                  href={`/tutor/input-sesi`}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-fuchsia-600 hover:text-fuchsia-700"
-                >
-                  Catat KBM
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Recent Sessions List */}
+      {/* Recent Sessions */}
       <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
         <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -224,15 +254,19 @@ export default function TutorOverviewPage() {
               <tbody className="divide-y divide-slate-100">
                 {recentSessions.map((s) => (
                   <tr key={s.id} className="hover:bg-slate-50/60">
-                    <td className="py-3 font-semibold text-slate-800">{s.tanggal}</td>
-                    <td className="py-3 text-slate-700">{s.kelas?.nama || "-"}</td>
-                    <td className="py-3 font-medium text-slate-900">{s.materi}</td>
-                    <td className="py-3 text-slate-600">
-                      {s.hadir_count} / {s.total_siswa} Hadir
+                    <td className="py-3 font-semibold text-slate-800">
+                      {s.tanggal
+                        ? new Date(s.tanggal).toLocaleDateString("id-ID", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "-"}
                     </td>
-                    <td className="py-3 font-bold text-fuchsia-600">
-                      {s.rata_rata_nilai ? `${s.rata_rata_nilai} / 100` : "-"}
-                    </td>
+                    <td className="py-3 text-slate-700">{s.kelas?.nama ?? "-"}</td>
+                    <td className="py-3 font-medium text-slate-900 max-w-45 truncate">{s.materi}</td>
+                    <td className="py-3 text-slate-600">{getHadirCount(s)}</td>
+                    <td className="py-3 font-bold text-fuchsia-600">{getRataRata(s)}</td>
                   </tr>
                 ))}
               </tbody>

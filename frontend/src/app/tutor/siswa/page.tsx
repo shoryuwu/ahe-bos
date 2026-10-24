@@ -18,10 +18,15 @@ export default function TutorSiswaPage() {
   useEffect(() => {
     async function loadStudents() {
       try {
-        const res = await fetch("/api/siswa");
-        const json = await res.json();
-        if (json.success) {
-          setStudents(json.data.items);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const res = await fetch("/api/siswa", { headers });
+        if (res.ok) {
+          const json = await res.json();
+          const list = json.data?.items || json.data || [];
+          setStudents(Array.isArray(list) ? list : []);
         }
       } catch {
         //
@@ -38,9 +43,16 @@ export default function TutorSiswaPage() {
 
     setSubmittingNote(true);
     try {
+      const token = localStorage.getItem("ahe_token");
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
       const res = await fetch("/api/catatan-guru", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           siswa_id: selectedStudent.id,
           catatan: noteText,

@@ -5,16 +5,30 @@ import Link from "next/link";
 import { Calendar, Clock, Users, BookOpen, PenTool, ArrowRight, Loader2 } from "lucide-react";
 
 export default function TutorJadwalPage() {
-  const [classes, setClasses] = useState<any[]>([]);
+  const [classes, setClasses] = useState<{
+    id: string;
+    nama: string;
+    program: { id: string; nama: string; kode?: string; icon?: string } | null;
+    jam_mulai: string;
+    jam_selesai: string;
+    kapasitas: number;
+    jadwal_hari: string[];
+    siswa: { id: string; nama: string; level_saat_ini?: string }[];
+  }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadSchedule() {
       try {
-        const res = await fetch("/api/jadwal/tutor");
-        const json = await res.json();
-        if (json.success) {
-          setClasses(json.data);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const res = await fetch("/api/dashboard/tutor/jadwal", { headers });
+        if (res.ok) {
+          const json = await res.json();
+          const list = json.kelas || json.data || [];
+          setClasses(Array.isArray(list) ? list : []);
         }
       } catch {
         //
@@ -61,7 +75,7 @@ export default function TutorJadwalPage() {
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">
-                {cls.program}
+                {cls.program?.nama ?? "-"}
               </span>
               <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                 <Clock className="w-4 h-4 text-purple-600" />
@@ -88,13 +102,13 @@ export default function TutorJadwalPage() {
             {/* List of enrolled students in this class */}
             <div className="pt-2">
               <span className="text-xs font-bold text-slate-700 block mb-2">
-                Daftar Peserta Didik ({cls.siswa.length} / {cls.kapasitas}):
+                Daftar Peserta Didik ({cls.siswa?.length ?? 0} / {cls.kapasitas}):
               </span>
-              {cls.siswa.length === 0 ? (
+              {(cls.siswa?.length ?? 0) === 0 ? (
                 <p className="text-xs text-slate-400">Belum ada siswa di kelas ini.</p>
               ) : (
                 <div className="space-y-1.5">
-                  {cls.siswa.map((st: any) => (
+                  {(cls.siswa ?? []).map((st) => (
                     <div
                       key={st.id}
                       className="flex items-center justify-between p-2 rounded-xl bg-slate-50 text-xs font-medium text-slate-800"
@@ -105,7 +119,7 @@ export default function TutorJadwalPage() {
                         </div>
                         <span>{st.nama}</span>
                       </div>
-                      <span className="text-[10px] text-slate-500 uppercase">{st.level}</span>
+                      <span className="text-[10px] text-slate-500 uppercase">{st.level_saat_ini ?? "-"}</span>
                     </div>
                   ))}
                 </div>

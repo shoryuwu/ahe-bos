@@ -82,10 +82,14 @@ class KelasController extends Controller
             return response()->json(['error' => 'Kelas tidak ditemukan'], 404);
         }
 
-        $kelas->update($request->only([
+        $data = array_filter($request->only([
             'nama', 'program_id', 'guru_id', 'jadwal_hari',
             'jam_mulai', 'jam_selesai', 'kapasitas', 'status'
-        ]));
+        ]), function ($val) {
+            return !is_null($val) && $val !== '';
+        });
+
+        $kelas->update($data);
 
         LogAktivitas::catat($request->user()?->id, 'update_kelas', "Mengubah data kelas {$kelas->nama}", $request->ip());
 
@@ -104,5 +108,20 @@ class KelasController extends Controller
 
         $siswa = $kelas->siswa()->with('orangtua')->get();
         return response()->json(['data' => $siswa]);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $kelas = Kelas::find($id);
+        if (!$kelas) {
+            return response()->json(['error' => 'Kelas tidak ditemukan'], 404);
+        }
+
+        $nama = $kelas->nama;
+        $kelas->delete();
+
+        LogAktivitas::catat($request->user()?->id, 'hapus_kelas', "Menghapus kelas {$nama}", $request->ip());
+
+        return response()->json(['success' => true, 'message' => "Kelas {$nama} berhasil dihapus"]);
     }
 }

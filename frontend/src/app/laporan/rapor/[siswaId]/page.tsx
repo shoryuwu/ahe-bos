@@ -15,7 +15,10 @@ export default function RaporPrintPage() {
   useEffect(() => {
     async function loadRapor() {
       try {
-        const res = await fetch(`/api/laporan/rapor/${siswaId}`);
+        const token = localStorage.getItem("ahe_token");
+        const headers: HeadersInit = { Accept: "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch(`/api/laporan/rapor/${siswaId}`, { headers });
         const json = await res.json();
         if (json.success) {
           setData(json.data);

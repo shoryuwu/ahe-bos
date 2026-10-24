@@ -59,17 +59,27 @@ export default function ParentDashboard() {
   // Load Parent & Child Data
   async function loadData(childId?: string) {
     try {
+      const token = localStorage.getItem("ahe_token");
+      const headers: HeadersInit = { Accept: "application/json" };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
       const url = childId
         ? `/api/dashboard/parent/me?siswa_id=${childId}`
         : "/api/dashboard/parent/me";
-      const res = await fetch(url);
+      const res = await fetch(url, { headers });
       const json = await res.json();
 
       if (json.success && json.data) {
         setDashboardData(json.data);
+        // Set first child as default if no selection yet
+        if (!selectedChildId && json.data.children?.length > 0) {
+          setSelectedChildId(json.data.children[0].id);
+        }
         if (json.data.childDetail) {
           setSelectedChildId(json.data.childDetail.id);
         }
+      } else {
+        console.warn("Dashboard parent API:", json.message ?? "empty response");
       }
     } catch (err) {
       console.error("Gagal memuat dashboard:", err);
@@ -136,7 +146,66 @@ export default function ParentDashboard() {
     );
   }
 
-  const { kehadiran, indikator, kosakata, pencapaian, catatan, video, modul } = child;
+  // The API returns raw siswa fields — compute derived values safely here
+  const absensiList: { id: string; status: string; sesi?: { tanggal?: string; materi?: string } }[] = child.absensi ?? [];
+  const nilaiSesiList: { nilai: number; mood?: number; sesi?: { tanggal?: string; materi?: string } }[] = child.nilai_sesi ?? [];
+  const progressIndikatorList: ({ bulan?: string; mengenal_huruf?: number; membaca_suku_kata?: number; membaca_kata?: number; membaca_kalimat?: number; membaca_cerita?: number })[] = child.progress_indikator ?? [];
+  const pencapaian: { id: string; nama_badge: string; ikon: string; kategori: string; deskripsi: string; tanggal_raih: string }[] = child.pencapaian ?? [];
+  const catatan: { id: string; tanggal: string; catatan: string; tipe: string; guru?: { nama: string } }[] = child.catatan ?? [];
+  const kosakataRaw: { id: string; kata: string; kategori?: string; dikuasai: boolean }[] = child.kosakata ?? [];
+
+  // --- Kehadiran ---
+  const totalAbsensi = absensiList.length;
+  const hadirCount = absensiList.filter((a) => a.status === "hadir").length;
+  const izinCount  = absensiList.filter((a) => a.status === "izin").length;
+  const sakitCount = absensiList.filter((a) => a.status === "sakit").length;
+  const alphaCount = absensiList.filter((a) => a.status === "alpha").length;
+  const kehadiran = {
+    hadir: hadirCount,
+    total: totalAbsensi,
+    persentase: totalAbsensi > 0 ? Math.round((hadirCount / totalAbsensi) * 100) : 0,
+    izin:  izinCount,
+    sakit: sakitCount,
+    alpha: alphaCount,
+    // Riwayat: combine absensi entries with their sesi info
+    riwayat: absensiList.slice(0, 10).map((a) => ({
+      id: a.id,
+      status: a.status,
+      tanggal: a.sesi?.tanggal
+        ? new Date(a.sesi.tanggal).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" })
+        : "-",
+      materi: a.sesi?.materi ?? "-",
+    })),
+  };
+
+  // --- Progress indikator (ambil bulan terbaru) ---
+  const latestIndikator = progressIndikatorList[0] ?? {};
+  const indikator = {
+    bulan: latestIndikator.bulan ?? "-",
+    mengenal_huruf:    latestIndikator.mengenal_huruf    ?? 0,
+    membaca_suku_kata: latestIndikator.membaca_suku_kata ?? 0,
+    membaca_kata:      latestIndikator.membaca_kata      ?? 0,
+    membaca_kalimat:   latestIndikator.membaca_kalimat   ?? 0,
+    membaca_cerita:    latestIndikator.membaca_cerita    ?? 0,
+  };
+
+  // --- Kosakata ---
+  const kosakataDict = kosakataRaw.length > 0
+    ? kosakataRaw
+    : (child.kosakata ?? []);
+  const dikuasaiCount = kosakataDict.filter((k: { dikuasai: boolean }) => k.dikuasai).length;
+  const kosakata = {
+    dikuasai: dikuasaiCount,
+    total: kosakataDict.length,
+    persen: kosakataDict.length > 0 ? Math.round((dikuasaiCount / kosakataDict.length) * 100) : 0,
+    daftar: kosakataDict,
+  };
+
+  // --- Stub untuk video & modul (belum ada di API) ---
+  const video: unknown[] = [];
+  const modul: unknown[] = [];
+
+
 
   const indicatorList = [
     { label: "Mengenal Huruf", val: indikator.mengenal_huruf, color: "bg-purple-600" },
@@ -145,6 +214,7 @@ export default function ParentDashboard() {
     { label: "Membaca Kalimat", val: indikator.membaca_kalimat, color: "bg-emerald-600" },
     { label: "Membaca Cerita", val: indikator.membaca_cerita, color: "bg-blue-600" },
   ];
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -181,7 +251,7 @@ export default function ParentDashboard() {
         )}
 
         {/* HERO CHILD PROFILE BANNER */}
-        <div className="bg-gradient-to-r from-purple-700 via-fuchsia-600 to-orange-500 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-purple-700/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="bg-linear-to-r from-purple-700 via-fuchsia-600 to-orange-500 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-purple-700/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/20 backdrop-blur-xs border-2 border-white/40 flex items-center justify-center text-2xl font-black text-white shadow-inner">
               {child.nama.charAt(0)}
@@ -206,21 +276,21 @@ export default function ParentDashboard() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-[100px]">
+            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-25">
               <span className="text-[10px] uppercase font-bold text-white/70 block">
                 Kehadiran
               </span>
               <span className="text-xl font-black">{kehadiran.persentase}%</span>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-[100px]">
+            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-25">
               <span className="text-[10px] uppercase font-bold text-white/70 block">
                 Kosakata Dikuasai
               </span>
               <span className="text-xl font-black">{kosakata.dikuasai} Kata</span>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-[100px]">
+            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-25">
               <span className="text-[10px] uppercase font-bold text-white/70 block">
                 Badge Raih
               </span>
@@ -449,7 +519,7 @@ export default function ParentDashboard() {
             </div>
 
             {/* Dokumen Rapor & Sertifikat Resmi */}
-            <div className="bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-800 rounded-3xl p-6 text-white shadow-md space-y-4">
+            <div className="bg-linear-to-br from-purple-900 via-indigo-900 to-purple-800 rounded-3xl p-6 text-white shadow-md space-y-4">
               <div>
                 <span className="text-[10px] uppercase font-extrabold tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full inline-block mb-1">
                   Dokumen Belajar Resmi

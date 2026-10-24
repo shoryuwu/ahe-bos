@@ -294,57 +294,112 @@ export default function AdminDashboard() {
     setTimeout(() => setFeedback(null), 4000);
   }
 
+  // Authenticated fetch â€” automatically attaches Bearer token from localStorage
+  function authFetch(url: string, options: RequestInit = {}) {
+    const token = localStorage.getItem("ahe_token");
+    const headers: HeadersInit = {
+      Accept: "application/json",
+      ...(options.headers as Record<string, string> ?? {}),
+    };
+    if (token) (headers as Record<string, string>).Authorization = `Bearer ${token}`;
+    return fetch(url, { ...options, headers });
+  }
+
+
   // Load Admin Data
   async function loadAdminData() {
     setLoading(true);
     try {
+      const token = localStorage.getItem("ahe_token");
+      const authHeaders: HeadersInit = { Accept: "application/json" };
+      if (token) authHeaders.Authorization = `Bearer ${token}`;
+
+      const apiFetch = (url: string) =>
+        fetch(url, { headers: authHeaders }).then((r) => r.json()).catch(() => ({ success: false }));
+
       const [stRes, regRes, sisRes, ortRes, gurRes, kelRes, sesRes, asmRes, waitRes, setRes, faqRes, tesRes, galRes, logRes, prgRes, aknRes] =
         await Promise.all([
-          fetch("/api/dashboard/admin/stats").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/pendaftaran").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/siswa").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/orangtua").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/guru").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/kelas").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/sesi").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/asesmen").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/waiting-list").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/pengaturan").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/faq?all=true").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/testimoni?all=true").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/galeri").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/log-aktivitas").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/program").then((r) => r.json()).catch(() => ({ success: false })),
-          fetch("/api/akun").then((r) => r.json()).catch(() => ({ success: false })),
+          apiFetch("/api/dashboard/admin/stats"),
+          apiFetch("/api/pendaftaran"),
+          apiFetch("/api/siswa"),
+          apiFetch("/api/orangtua"),
+          apiFetch("/api/guru"),
+          apiFetch("/api/kelas"),
+          apiFetch("/api/sesi"),
+          apiFetch("/api/asesmen"),
+          apiFetch("/api/waiting-list"),
+          apiFetch("/api/pengaturan"),
+          apiFetch("/api/faq?all=true"),
+          apiFetch("/api/testimoni?all=true"),
+          apiFetch("/api/galeri"),
+          apiFetch("/api/log-aktivitas"),
+          apiFetch("/api/program"),
+          apiFetch("/api/akun"),
         ]);
 
-      if (stRes.success) setStats(stRes.data);
-      if (regRes.success) {
-        const list = Array.isArray(regRes.data)
-          ? regRes.data
-          : (regRes.data?.items || []);
-        setPendaftaranList(list);
+      // Format admin stats properly for DashboardTab
+      const distLevel: Record<string, number> = {};
+      if (Array.isArray(stRes.distribusi_level)) {
+        stRes.distribusi_level.forEach((item: any) => {
+          if (item && item.level_saat_ini) {
+            distLevel[item.level_saat_ini] = item.count;
+          }
+        });
+      } else if (stRes.distribusiLevel && typeof stRes.distribusiLevel === "object") {
+        Object.assign(distLevel, stRes.distribusiLevel);
       }
-      if (sisRes.success) setSiswaList(sisRes.data.items || []);
-      if (ortRes.success) setOrangtuaList(ortRes.data || []);
-      if (gurRes.success) setGuruList(gurRes.data || []);
-      if (kelRes.success) setKelasList(kelRes.data || []);
-      if (sesRes.success) setSesiList(sesRes.data || []);
-      if (asmRes.success) setAsesmenList(asmRes.data || []);
-      if (waitRes.success) setWaitingList(waitRes.data || []);
-      if (setRes.success) setSettingsMap(setRes.data || {});
-      if (faqRes.success) setFaqList(faqRes.data || []);
-      if (tesRes.success) setTestimoniList(tesRes.data || []);
-      if (galRes.success) setGaleriList(galRes.data || []);
-      if (logRes.success) setLogList(logRes.data || []);
-      if (prgRes.success) setProgramList(prgRes.data || []);
-      if (aknRes.success) setAkunList(aknRes.data || []);
+
+      const classesData = Array.isArray(kelRes.data) ? kelRes.data : [];
+
+      setStats({
+        kpi: {
+          siswaAktif: stRes.stats?.total_siswa ?? stRes.kpi?.siswaAktif ?? (Array.isArray(sisRes.data) ? sisRes.data.length : 0),
+          totalSiswa: stRes.stats?.total_siswa ?? stRes.kpi?.totalSiswa ?? (Array.isArray(sisRes.data) ? sisRes.data.length : 0),
+          persentaseKehadiran: stRes.stats?.persentase_kehadiran ?? stRes.kpi?.persentaseKehadiran ?? 100,
+          pendaftaranMenunggu: stRes.stats?.pendaftaran_menunggu ?? stRes.kpi?.pendaftaranMenunggu ?? 0,
+          asesmenMenunggu: stRes.stats?.asesmen_menunggu ?? stRes.kpi?.asesmenMenunggu ?? 0,
+          totalGuru: stRes.stats?.total_guru ?? stRes.kpi?.totalGuru ?? (Array.isArray(gurRes.data) ? gurRes.data.length : 0),
+          totalKelas: stRes.stats?.total_kelas ?? stRes.kpi?.totalKelas ?? (Array.isArray(kelRes.data) ? kelRes.data.length : 0),
+        },
+        distribusiLevel: distLevel,
+        kapasitasKelas: classesData.map((k: any) => ({
+          id: k.id,
+          nama: k.nama,
+          guru: typeof k.guru === "object" ? k.guru?.nama || "-" : k.guru_nama || k.guru || "-",
+          terisi: k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.length : 0),
+          kapasitas: k.kapasitas || 6,
+        })),
+      });
+
+      // Most endpoints return { data: [...] } without success:true
+      const regList = Array.isArray(regRes.data) ? regRes.data : (regRes.data?.items || []);
+      if (regList.length > 0 || regRes.data) setPendaftaranList(regList);
+
+      if (sisRes.data) setSiswaList(sisRes.data.items || sisRes.data || []);
+      if (ortRes.data) setOrangtuaList(ortRes.data || []);
+      if (gurRes.data) setGuruList(gurRes.data || []);
+      if (kelRes.data) setKelasList(kelRes.data || []);
+      if (sesRes.data) setSesiList(sesRes.data || []);
+      if (asmRes.data) setAsesmenList(asmRes.data || []);
+      if (waitRes.data) setWaitingList(waitRes.data || []);
+      // pengaturan may return { data: { key: value } } object
+      if (setRes.data) setSettingsMap(setRes.data || {});
+      // faq/testimoni may wrap in success+data
+      if (faqRes.data) setFaqList(faqRes.data || []);
+      if (tesRes.data) setTestimoniList(tesRes.data || []);
+      if (galRes.data) setGaleriList(galRes.data || []);
+      // log-aktivitas returns paginated: { data: [...], total, ... }
+      if (logRes.data) setLogList(Array.isArray(logRes.data) ? logRes.data : (logRes.data || []));
+      if (prgRes.data) setProgramList(prgRes.data || []);
+      if (aknRes.data) setAkunList(aknRes.data || []);
+
     } catch {
       notify("error", "Gagal menghubungkan ke data server.");
     } finally {
       setLoading(false);
     }
   }
+
 
   useEffect(() => {
     loadAdminData();
@@ -357,7 +412,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/pendaftaran/${acceptModalReg.id}/terima`, {
+      const res = await authFetch(`/api/pendaftaran/${acceptModalReg.id}/terima`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -386,7 +441,7 @@ export default function AdminDashboard() {
     if (!alasan) return;
 
     try {
-      const res = await fetch(`/api/pendaftaran/${id}/tolak`, {
+      const res = await authFetch(`/api/pendaftaran/${id}/tolak`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ alasan_tolak: alasan }),
@@ -409,7 +464,7 @@ export default function AdminDashboard() {
     if (!catatan) return;
 
     try {
-      const res = await fetch(`/api/pendaftaran/${id}/tunda`, {
+      const res = await authFetch(`/api/pendaftaran/${id}/tunda`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ catatan_admin: catatan }),
@@ -436,7 +491,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/siswa", {
+      const res = await authFetch("/api/siswa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newStudentForm),
@@ -476,7 +531,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/siswa/${statusModalStudent.id}/status`, {
+      const res = await authFetch(`/api/siswa/${statusModalStudent.id}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -511,7 +566,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/guru", {
+      const res = await authFetch("/api/guru", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTeacherForm),
@@ -544,7 +599,7 @@ export default function AdminDashboard() {
     if (!confirm(`Apakah Anda yakin ingin menonaktifkan/menghapus akun tutor ${nama}?`)) return;
 
     try {
-      const res = await fetch(`/api/guru/${id}`, { method: "DELETE" });
+      const res = await authFetch(`/api/guru/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         notify("success", `Tutor ${nama} berhasil dihapus.`);
@@ -577,7 +632,7 @@ export default function AdminDashboard() {
     if (!editTeacherModal) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/guru/${editTeacherModal.id}`, {
+      const res = await authFetch(`/api/guru/${editTeacherModal.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editTeacherForm),
@@ -614,7 +669,7 @@ export default function AdminDashboard() {
     if (!editParentModal) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/orangtua/${editParentModal.id}`, {
+      const res = await authFetch(`/api/orangtua/${editParentModal.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editParentForm),
@@ -639,7 +694,7 @@ export default function AdminDashboard() {
     if (!confirm(`Reset kata sandi akun login untuk ${parent.nama}? Password baru acak akan dibuatkan.`)) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/orangtua/${parent.id}/reset-password`, {
+      const res = await authFetch(`/api/orangtua/${parent.id}/reset-password`, {
         method: "POST",
       });
       const json = await res.json();
@@ -666,7 +721,7 @@ export default function AdminDashboard() {
     }
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/kelas", {
+      const res = await authFetch("/api/kelas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(addClassForm),
@@ -715,18 +770,18 @@ export default function AdminDashboard() {
     if (!editClassModal) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/kelas/${editClassModal.id}`, {
+      const res = await authFetch(`/api/kelas/${editClassModal.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editClassForm),
       });
       const json = await res.json();
-      if (json.success) {
+      if (res.ok && (json.data || json.message)) {
         notify("success", `Data kelas ${editClassForm.nama} berhasil diperbarui.`);
         setEditClassModal(null);
         loadAdminData();
       } else {
-        notify("error", json.error || "Gagal memperbarui data kelas.");
+        notify("error", json.error || json.message || "Gagal memperbarui data kelas.");
       }
     } catch {
       notify("error", "Terjadi kesalahan server.");
@@ -739,7 +794,7 @@ export default function AdminDashboard() {
   async function handleDeleteClass(id: string, nama: string) {
     if (!confirm(`Yakin ingin menonaktifkan rombel kelas ${nama}?`)) return;
     try {
-      const res = await fetch(`/api/kelas/${id}`, { method: "DELETE" });
+      const res = await authFetch(`/api/kelas/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         notify("success", `Kelas ${nama} berhasil dinonaktifkan.`);
@@ -756,7 +811,7 @@ export default function AdminDashboard() {
   async function handleViewClassStudents(kelas: any) {
     setClassStudentsModal({ kelas, students: [], loading: true });
     try {
-      const res = await fetch(`/api/kelas/${kelas.id}/siswa`);
+      const res = await authFetch(`/api/kelas/${kelas.id}/siswa`);
       const json = await res.json();
       if (json.success) {
         setClassStudentsModal({ kelas, students: json.data || [], loading: false });
@@ -775,7 +830,7 @@ export default function AdminDashboard() {
     setClassStudentsModal(null);
     setStudentDetailModal({ student: null, loading: true });
     try {
-      const res = await fetch(`/api/siswa/${id}`);
+      const res = await authFetch(`/api/siswa/${id}`);
       const json = await res.json();
       if (json.success) {
         setStudentDetailModal({ student: json.data, loading: false });
@@ -793,7 +848,7 @@ export default function AdminDashboard() {
   async function handleViewSessionDetail(id: string) {
     setSessionDetailModal({ sesi: null, loading: true });
     try {
-      const res = await fetch(`/api/sesi/${id}`);
+      const res = await authFetch(`/api/sesi/${id}`);
       const json = await res.json();
       if (json.success) {
         setSessionDetailModal({ sesi: json.data, loading: false });
@@ -825,7 +880,7 @@ export default function AdminDashboard() {
     if (!editStudentModal) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/siswa/${editStudentModal.id}`, {
+      const res = await authFetch(`/api/siswa/${editStudentModal.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editStudentForm),
@@ -854,7 +909,7 @@ export default function AdminDashboard() {
     if (!assignWaitingListModal || !selectedClassForWlAssign) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/waiting-list/${assignWaitingListModal.id}/assign`, {
+      const res = await authFetch(`/api/waiting-list/${assignWaitingListModal.id}/assign`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ kelas_id: selectedClassForWlAssign }),
@@ -887,7 +942,7 @@ export default function AdminDashboard() {
   async function handleDeleteWaitingList(id: string) {
     if (!confirm("Hapus antrean waiting list ini?")) return;
     try {
-      const res = await fetch(`/api/waiting-list/${id}`, { method: "DELETE" });
+      const res = await authFetch(`/api/waiting-list/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         notify("success", "Antrean berhasil dihapus dari waiting list.");
@@ -920,7 +975,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/waiting-list", {
+      const res = await authFetch("/api/waiting-list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -965,7 +1020,7 @@ export default function AdminDashboard() {
     }
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/pindah-kelas", {
+      const res = await authFetch("/api/pindah-kelas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1002,7 +1057,7 @@ export default function AdminDashboard() {
     }
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/akun", {
+      const res = await authFetch("/api/akun", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(addUserForm),
@@ -1032,7 +1087,7 @@ export default function AdminDashboard() {
     const actionText = user.is_active ? "menonaktifkan" : "mengaktifkan kembali";
     if (!confirm(`Yakin ingin ${actionText} akun ${user.nama}?`)) return;
     try {
-      const res = await fetch(`/api/akun/${user.id}`, {
+      const res = await authFetch(`/api/akun/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_active: !user.is_active }),
@@ -1052,7 +1107,7 @@ export default function AdminDashboard() {
   async function handleUnlockUser(user: any) {
     if (!confirm(`Buka kunci akun (unlock) untuk ${user.nama}?`)) return;
     try {
-      const res = await fetch(`/api/akun/${user.id}/unlock`, {
+      const res = await authFetch(`/api/akun/${user.id}/unlock`, {
         method: "POST",
       });
       const json = await res.json();
@@ -1071,7 +1126,7 @@ export default function AdminDashboard() {
     if (!confirm(`Reset kata sandi akun login untuk ${user.nama}? Password baru acak akan dibuatkan.`)) return;
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/akun/${user.id}/reset-password`, {
+      const res = await authFetch(`/api/akun/${user.id}/reset-password`, {
         method: "POST",
       });
       const json = await res.json();
@@ -1094,7 +1149,7 @@ export default function AdminDashboard() {
     if (!confirm("Setujui kenaikan jenjang membaca siswa ini? Badge dan riwayat level baru akan otomatis diterbitkan.")) return;
 
     try {
-      const res = await fetch(`/api/asesmen/${id}/approve`, {
+      const res = await authFetch(`/api/asesmen/${id}/approve`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
       });
@@ -1117,7 +1172,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/sesi/${substituteModalSesi.id}/pengganti`, {
+      const res = await authFetch(`/api/sesi/${substituteModalSesi.id}/pengganti`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ guru_pengganti_id: selectedPenggantiId }),
@@ -1145,7 +1200,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch(`/api/sesi/${cancelModalSesi.id}/batalkan`, {
+      const res = await authFetch(`/api/sesi/${cancelModalSesi.id}/batalkan`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ alasan_batal: alasanBatalSesi }),
@@ -1171,7 +1226,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/pengaturan", {
+      const res = await authFetch("/api/pengaturan", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settingsMap),
@@ -1196,7 +1251,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/faq", {
+      const res = await authFetch("/api/faq", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newFaqForm),
@@ -1220,7 +1275,7 @@ export default function AdminDashboard() {
   async function handleDeleteFaq(id: string) {
     if (!confirm("Hapus item FAQ ini?")) return;
     try {
-      const res = await fetch(`/api/faq/${id}`, { method: "DELETE" });
+      const res = await authFetch(`/api/faq/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         notify("success", "FAQ berhasil dihapus.");
@@ -1238,7 +1293,7 @@ export default function AdminDashboard() {
 
     setIsProcessing(true);
     try {
-      const res = await fetch("/api/testimoni", {
+      const res = await authFetch("/api/testimoni", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTestiForm),
@@ -1267,7 +1322,7 @@ export default function AdminDashboard() {
   // Handle Toggle Testimoni Tampil
   async function handleToggleTestimoni(id: string, current: boolean) {
     try {
-      const res = await fetch(`/api/testimoni/${id}`, {
+      const res = await authFetch(`/api/testimoni/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_tampil: !current }),
@@ -1286,7 +1341,7 @@ export default function AdminDashboard() {
   async function handleDeleteTestimoni(id: string) {
     if (!confirm("Hapus testimoni ini secara permanen?")) return;
     try {
-      const res = await fetch(`/api/testimoni/${id}`, { method: "DELETE" });
+      const res = await authFetch(`/api/testimoni/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         notify("success", "Testimoni berhasil dihapus.");
@@ -1310,7 +1365,7 @@ export default function AdminDashboard() {
       if (selectedGaleriFile) {
         const formData = new FormData();
         formData.append("file", selectedGaleriFile);
-        const upRes = await fetch("/api/upload", {
+        const upRes = await authFetch("/api/upload", {
           method: "POST",
           body: formData,
         });
@@ -1329,7 +1384,7 @@ export default function AdminDashboard() {
         return;
       }
 
-      const res = await fetch("/api/galeri", {
+      const res = await authFetch("/api/galeri", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1361,7 +1416,7 @@ export default function AdminDashboard() {
   async function handleDeleteGaleri(id: string) {
     if (!confirm("Hapus foto ini dari galeri?")) return;
     try {
-      const res = await fetch(`/api/galeri/${id}`, { method: "DELETE" });
+      const res = await authFetch(`/api/galeri/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         notify("success", "Foto berhasil dihapus dari galeri.");
@@ -1384,10 +1439,11 @@ export default function AdminDashboard() {
   });
 
   const filteredOrangtua = orangtuaList.filter((o) => {
+    const children = Array.isArray(o.siswa) ? o.siswa : (Array.isArray(o.anak) ? o.anak : []);
     return (
-      o.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      o.no_wa.includes(searchQuery) ||
-      (o.anak && o.anak.some((a: any) => a.nama.toLowerCase().includes(searchQuery.toLowerCase())))
+      (o.nama || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (o.no_wa || "").includes(searchQuery) ||
+      children.some((a: any) => (a.nama || "").toLowerCase().includes(searchQuery.toLowerCase()))
     );
   });
 
@@ -1738,7 +1794,7 @@ export default function AdminDashboard() {
                   >
                     {kelasList.map((k) => (
                       <option key={k.id} value={k.id}>
-                        {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) • Tutor: {k.guru_nama}
+                        {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) &bull; Tutor: {k.guru_nama}
                       </option>
                     ))}
                   </select>
@@ -2657,7 +2713,7 @@ export default function AdminDashboard() {
                 onClick={() => setClassStudentsModal(null)}
                 className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
               >
-                ✕
+                âœ•
               </button>
             </div>
 
@@ -2680,7 +2736,7 @@ export default function AdminDashboard() {
                       <div>
                         <span className="font-bold text-slate-900 block">{s.nama}</span>
                         <span className="text-[10px] text-slate-400">
-                          {s.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"} • Jenjang: {s.level_saat_ini}
+                          {s.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"} &bull; Jenjang: {s.level_saat_ini}
                         </span>
                       </div>
                     </div>
@@ -2754,7 +2810,10 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {studentDetailModal.student.tempat_lahir}, {studentDetailModal.student.tanggal_lahir} •{" "}
+                        {studentDetailModal.student.tempat_lahir},{" "}
+                        {studentDetailModal.student.tanggal_lahir
+                          ? new Date(studentDetailModal.student.tanggal_lahir).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" })
+                          : "-"} &bull;{" "}
                         {studentDetailModal.student.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
                       </p>
                     </div>
@@ -2764,7 +2823,7 @@ export default function AdminDashboard() {
                     onClick={() => setStudentDetailModal(null)}
                     className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
                   >
-                    ✕
+                    âœ•
                   </button>
                 </div>
 
@@ -3051,7 +3110,7 @@ export default function AdminDashboard() {
                     <option value="">Belum Memilih Kelas...</option>
                     {kelasList.map((k) => (
                       <option key={k.id} value={k.id}>
-                        {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) • Tutor: {k.guru_nama || k.guru?.nama || "-"}
+                        {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) &bull; Tutor: {k.guru_nama || k.guru?.nama || "-"}
                       </option>
                     ))}
                   </select>
@@ -3112,7 +3171,7 @@ export default function AdminDashboard() {
                       .filter((k) => k.status === "aktif" && (k.siswa_count || 0) < k.kapasitas)
                       .map((k) => (
                         <option key={k.id} value={k.id}>
-                          {k.nama} (Sisa Kuota: {k.kapasitas - (k.siswa_count || 0)} kursi) • Tutor: {k.guru_nama || k.guru?.nama || "-"}
+                          {k.nama} (Sisa Kuota: {k.kapasitas - (k.siswa_count || 0)} kursi) &bull; Tutor: {k.guru_nama || k.guru?.nama || "-"}
                         </option>
                       ))}
                   </select>
@@ -3189,7 +3248,7 @@ export default function AdminDashboard() {
                       )
                       .map((k) => (
                         <option key={k.id} value={k.id}>
-                          {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) • Jadwal: {k.jadwal_hari?.join(", ")} ({k.jam_mulai} WITA)
+                          {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) &bull; Jadwal: {k.jadwal_hari?.join(", ")} ({k.jam_mulai} WITA)
                         </option>
                       ))}
                   </select>
@@ -3498,7 +3557,9 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5 font-mono">
-                        {sessionDetailModal.sesi.tanggal} • {sessionDetailModal.sesi.jam_mulai} - {sessionDetailModal.sesi.jam_selesai} WITA
+                        {sessionDetailModal.sesi.tanggal
+                          ? new Date(sessionDetailModal.sesi.tanggal).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" })
+                          : "-"} &bull; {sessionDetailModal.sesi.jam_mulai} - {sessionDetailModal.sesi.jam_selesai} WITA
                       </p>
                     </div>
                   </div>
@@ -3507,7 +3568,7 @@ export default function AdminDashboard() {
                     onClick={() => setSessionDetailModal(null)}
                     className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
                   >
-                    ✕
+                    âœ•
                   </button>
                 </div>
 
@@ -3629,3 +3690,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

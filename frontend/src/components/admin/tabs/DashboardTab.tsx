@@ -287,7 +287,7 @@ export function DashboardTab({
               onClick={() => onTabChange("kelas")}
               className="text-xs"
             >
-              Kelola Semua Kelas →
+              Kelola Semua Kelas
             </Button>
           </div>
 
@@ -306,7 +306,7 @@ export function DashboardTab({
                         {k.nama}
                       </span>
                       <span className="text-[11px] text-muted-foreground block">
-                        Tutor: {k.guru}
+                        Tutor: {typeof k.guru === "object" ? (k.guru as any)?.nama ?? "-" : k.guru || "-"}
                       </span>
                     </div>
                     <div className="text-right">
@@ -351,7 +351,7 @@ export function DashboardTab({
                     {lvl.replace("-", " ")}
                   </span>
                   <span className="font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    {count} Siswa
+                    {typeof count === "object" ? (count as any)?.count ?? 0 : count} Siswa
                   </span>
                 </div>
               ))}

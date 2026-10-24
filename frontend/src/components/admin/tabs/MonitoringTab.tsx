@@ -111,7 +111,15 @@ export function MonitoringTab({
                 filteredSesi.map((s) => (
                   <tr key={s.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-5 py-3.5">
-                      <span className="font-bold text-foreground block">{s.tanggal}</span>
+                      <span className="font-bold text-foreground block">
+                        {s.tanggal
+                          ? new Date(s.tanggal).toLocaleDateString("id-ID", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "-"}
+                      </span>
                       <span className="text-[10px] text-muted-foreground font-mono">
                         {s.jam_mulai} - {s.jam_selesai} WITA
                       </span>

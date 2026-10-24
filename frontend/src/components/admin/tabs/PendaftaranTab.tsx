@@ -100,7 +100,7 @@ export function PendaftaranTab({
           >
             <span>Waiting List</span>
             {waitingList.length > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[var(--ahe-orange)] text-white font-black text-[10px] flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-ahe-orange text-white font-black text-[10px] flex items-center justify-center">
                 {waitingList.length}
               </span>
             )}
@@ -140,27 +140,34 @@ export function PendaftaranTab({
                       <td className="px-5 py-3.5">
                         <span className="font-bold text-foreground block">{p.nama_anak}</span>
                         <span className="text-[10px] text-muted-foreground">
-                          {p.tempat_lahir}, {p.tanggal_lahir}
+                          {p.tempat_lahir},{" "}
+                          {p.tanggal_lahir
+                            ? new Date(p.tanggal_lahir).toLocaleDateString("id-ID", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })
+                            : "-"}
                         </span>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className="font-semibold text-foreground block">{p.nama_ortu}</span>
                         <a
-                          href={`https://wa.me/${p.no_wa_ortu?.replace(/[^0-9]/g, "")}`}
+                          href={`https://wa.me/${(p.no_wa_ortu || p.no_wa || "").replace(/[^0-9]/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[11px] text-emerald-700 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-1"
                         >
                           <Phone className="w-3 h-3" />
-                          {p.no_wa_ortu}
+                          {p.no_wa_ortu || p.no_wa || "-"}
                         </a>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className="font-semibold text-foreground block">
-                          {p.program_nama || p.program_diminati}
+                          {p.program_nama || (typeof (p as any).program === "object" ? (p as any).program?.nama : (p as any).program) || (typeof p.program_diminati === "object" ? (p.program_diminati as any)?.nama : p.program_diminati)}
                         </span>
                         <span className="text-[10px] text-muted-foreground capitalize">
-                          Waktu: {p.preferensi_jadwal}
+                          Waktu: {Array.isArray(p.preferensi_jadwal) ? p.preferensi_jadwal.join(", ") : p.preferensi_jadwal || "-"}
                         </span>
                       </td>
                       <td className="px-5 py-3.5">
