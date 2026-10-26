@@ -183,9 +183,14 @@ export default function InputSesiPage() {
     setSuccess(null);
 
     try {
+      const token = localStorage.getItem("ahe_token");
       const res = await fetch("/api/sesi", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           kelas_id: selectedKelasId,
           tanggal,

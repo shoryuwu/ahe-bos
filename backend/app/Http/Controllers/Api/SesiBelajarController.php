@@ -66,9 +66,8 @@ class SesiBelajarController extends Controller
             'tanggal' => 'required|date',
             'materi' => 'required|string',
             'modul_id' => 'nullable|string',
-            'siswa_data' => 'nullable|array|max:2',
-        ], [
-            'siswa_data.max' => 'Satu sesi bimbingan maksimal 2 anak (kebijakan: 1 guru maksimal 2 anak per jam tatap muka).',
+            'siswa_data' => 'nullable|array',
+            'video_url' => 'nullable|string|max:500',
         ]);
 
         DB::beginTransaction();
@@ -103,7 +102,7 @@ class SesiBelajarController extends Controller
                         'id' => 'abs-' . Str::random(8),
                         'sesi_id' => $sesi->id,
                         'siswa_id' => $siswaId,
-                        'status' => $item['status_absensi'] ?? 'hadir',
+                        'status' => $item['status_absensi'] ?? $item['absensi'] ?? 'hadir',
                         'keterangan' => $item['keterangan_absensi'] ?? null,
                     ]);
 
