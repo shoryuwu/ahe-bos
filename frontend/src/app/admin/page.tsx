@@ -229,7 +229,7 @@ export default function AdminDashboard() {
     jadwal_hari: ["Senin", "Rabu", "Jumat"],
     jam_mulai: "08:30",
     jam_selesai: "09:30",
-    kapasitas: 6,
+    kapasitas: 2,
   });
 
   const [editClassModal, setEditClassModal] = useState<any | null>(null);
@@ -240,7 +240,7 @@ export default function AdminDashboard() {
     jadwal_hari: [] as string[],
     jam_mulai: "",
     jam_selesai: "",
-    kapasitas: 6,
+    kapasitas: 2,
     status: "aktif",
   });
 
@@ -367,7 +367,7 @@ export default function AdminDashboard() {
           nama: k.nama,
           guru: typeof k.guru === "object" ? k.guru?.nama || "-" : k.guru_nama || k.guru || "-",
           terisi: k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.length : 0),
-          kapasitas: k.kapasitas || 6,
+          kapasitas: k.kapasitas || 2,
         })),
       });
 
@@ -737,7 +737,7 @@ export default function AdminDashboard() {
           jadwal_hari: ["Senin", "Rabu", "Jumat"],
           jam_mulai: "08:30",
           jam_selesai: "09:30",
-          kapasitas: 6,
+          kapasitas: 2,
         });
         loadAdminData();
       } else {
@@ -760,7 +760,7 @@ export default function AdminDashboard() {
       jadwal_hari: Array.isArray(kelas.jadwal_hari) ? kelas.jadwal_hari : ["Senin", "Rabu", "Jumat"],
       jam_mulai: kelas.jam_mulai || "08:30",
       jam_selesai: kelas.jam_selesai || "09:30",
-      kapasitas: kelas.kapasitas || 6,
+      kapasitas: kelas.kapasitas || 2,
       status: kelas.status || "aktif",
     });
   }
@@ -1627,7 +1627,7 @@ export default function AdminDashboard() {
                       jadwal_hari: ["Senin", "Rabu", "Jumat"],
                       jam_mulai: "08:30",
                       jam_selesai: "09:30",
-                      kapasitas: 6,
+                      kapasitas: 2,
                     });
                     setShowAddClassModal(true);
                   }}
@@ -2543,13 +2543,13 @@ export default function AdminDashboard() {
                   <input
                     type="number"
                     min={1}
-                    max={10}
+                    max={2}
                     value={addClassForm.kapasitas}
                     onChange={(e) => setAddClassForm({ ...addClassForm, kapasitas: Number(e.target.value) })}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono"
                   />
-                  <span className="text-[10px] text-slate-400 mt-0.5 block">
-                    Standar AHE: maksimal 6 siswa per kelompok privat.
+                  <span className="text-[10px] text-purple-600 font-medium mt-0.5 block">
+                    Kebijakan AHE: 1 guru hanya mengajar maksimal 2 anak (semi-private).
                   </span>
                 </div>
               </div>
@@ -2666,11 +2666,14 @@ export default function AdminDashboard() {
                   <input
                     type="number"
                     min={1}
-                    max={10}
+                    max={2}
                     value={editClassForm.kapasitas}
                     onChange={(e) => setEditClassForm({ ...editClassForm, kapasitas: Number(e.target.value) })}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono"
                   />
+                  <span className="text-[10px] text-purple-600 font-medium mt-0.5 block">
+                    Maksimal 2 anak per kelas / guru.
+                  </span>
                 </div>
               </div>
 
@@ -2837,8 +2840,8 @@ export default function AdminDashboard() {
                       <span className="font-bold text-slate-900 block text-sm">
                         {studentDetailModal.student.kelas?.nama || "Belum dialokasikan"}
                       </span>
-                      <span className="text-slate-500 text-[11px] block">
-                        Tutor: {studentDetailModal.student.guru?.nama || "-"}
+                      <span className="text-purple-700 font-semibold text-xs block mt-0.5">
+                        Tutor: {studentDetailModal.student.tutor?.nama || studentDetailModal.student.kelas?.guru?.nama || "Belum Ditugaskan"}
                       </span>
                     </div>
                     {studentDetailModal.student.kelas && (
@@ -3221,9 +3224,16 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600">
-                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Rombel Saat Ini:</span>
-                  <span className="font-bold text-slate-900">{transferClassModal.kelas?.nama || "Belum ada kelas"}</span>
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1">
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Rombel & Tutor Saat Ini:</span>
+                  <span className="font-bold text-slate-900 block">{transferClassModal.kelas?.nama || "Belum ada kelas"}</span>
+                  <span className="text-purple-700 font-semibold text-[11px] block">
+                    Tutor Pembimbing: {transferClassModal.tutor?.nama || transferClassModal.kelas?.guru?.nama || "Belum Ada"}
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-purple-50 border border-purple-100 text-[11px] text-purple-900 leading-relaxed">
+                  💡 <strong>Fleksibilitas Tutor AHE:</strong> Siswa opsional dapat tetap bersama tutor yang sama di jadwal baru demi menjaga rasa percaya &amp; kenyamanan emosional anak.
                 </div>
 
                 <div>
@@ -3246,11 +3256,16 @@ export default function AdminDashboard() {
                           k.id !== transferClassModal.kelas_id &&
                           (k.siswa_count || 0) < k.kapasitas
                       )
-                      .map((k) => (
-                        <option key={k.id} value={k.id}>
-                          {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) &bull; Jadwal: {k.jadwal_hari?.join(", ")} ({k.jam_mulai} WITA)
-                        </option>
-                      ))}
+                      .map((k) => {
+                        const currentGuruId = transferClassModal.kelas?.guru_id || transferClassModal.tutor?.id;
+                        const isSameGuru = k.guru_id && currentGuruId && k.guru_id === currentGuruId;
+                        const guruName = k.guru_nama || k.guru?.nama || "-";
+                        return (
+                          <option key={k.id} value={k.id}>
+                            {k.nama} • Tutor: {guruName} {isSameGuru ? "(★ Tutor Sama)" : "(Tutor Baru)"} • Sisa: {k.kapasitas - (k.siswa_count || 0)} kursi
+                          </option>
+                        );
+                      })}
                   </select>
                 </div>
 
@@ -3265,9 +3280,10 @@ export default function AdminDashboard() {
                     }
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-white"
                   >
+                    <option value="Mempertahankan tutor yang sama di jadwal baru (kenyamanan anak)">Mempertahankan tutor yang sama di jadwal baru (kenyamanan anak)</option>
+                    <option value="Kondisional kepercayaan & adaptasi anak terhadap tutor">Kondisional kepercayaan & adaptasi anak terhadap tutor</option>
                     <option value="Penyesuaian jadwal orang tua">Penyesuaian jadwal orang tua</option>
                     <option value="Permintaan ganti sesi pagi/siang">Permintaan ganti sesi pagi/siang</option>
-                    <option value="Evaluasi adaptasi tutor & kelompok">Evaluasi adaptasi tutor & kelompok</option>
                     <option value="Alasan lainnya">Alasan lainnya</option>
                   </select>
                 </div>

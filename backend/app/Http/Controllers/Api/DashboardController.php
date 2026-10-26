@@ -108,6 +108,9 @@ class DashboardController extends Controller
             },
             'absensi' => function ($q) {
                 $q->with('sesi')->orderBy('created_at', 'desc')->take(20);
+            },
+            'asesmen' => function ($q) {
+                $q->with('guru')->orderBy('tanggal_pengajuan', 'desc')->take(10);
             }
         ])->where('orangtua_id', $orangtua->id)->get();
 

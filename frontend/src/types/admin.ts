@@ -65,7 +65,16 @@ export interface SiswaAdminItem {
   kelas?: {
     nama?: string;
     guru_nama?: string;
+    guru?: {
+      nama?: string;
+    };
   };
+  tutor?: {
+    id: string;
+    nama: string;
+    no_wa?: string;
+    email?: string;
+  } | null;
   orangtua?: {
     nama?: string;
     no_wa?: string;

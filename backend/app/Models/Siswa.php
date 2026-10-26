@@ -14,11 +14,25 @@ class Siswa extends Model
     public $incrementing = false;
     protected $guarded = [];
 
+    protected $appends = ['tutor'];
+
     protected $casts = [
         'tanggal_lahir' => 'date',
         'tanggal_masuk' => 'date',
         'tanggal_keluar' => 'date',
     ];
+
+    public function getTutorAttribute()
+    {
+        $guru = $this->kelas?->guru;
+        if (!$guru) return null;
+        return [
+            'id' => $guru->id,
+            'nama' => $guru->nama,
+            'no_wa' => $guru->no_wa,
+            'email' => $guru->email,
+        ];
+    }
 
     public function orangtua()
     {

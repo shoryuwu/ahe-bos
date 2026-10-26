@@ -55,8 +55,8 @@ export function KelasTab({
           </div>
         ) : (
           kelasList.map((k) => {
-            const isFull = (k.siswa_count || 0) >= (k.kapasitas || 6);
-            const percent = Math.min(100, Math.round(((k.siswa_count || 0) / (k.kapasitas || 6)) * 100));
+            const isFull = (k.siswa_count || 0) >= (k.kapasitas || 2);
+            const percent = Math.min(100, Math.round(((k.siswa_count || 0) / (k.kapasitas || 2)) * 100));
 
             return (
               <div
@@ -108,7 +108,7 @@ export function KelasTab({
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">Kapasitas:</span>
                       <span className="font-bold text-primary">
-                        {k.siswa_count || 0} / {k.kapasitas || 6} Siswa
+                        {k.siswa_count || 0} / {k.kapasitas || 2} Siswa
                       </span>
                     </div>
                   </div>

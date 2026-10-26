@@ -15,6 +15,8 @@ import {
   Star,
   Users,
   Sparkles,
+  Play,
+  Video,
 } from "lucide-react";
 
 interface KelasItem {
@@ -42,6 +44,7 @@ interface SiswaFormState {
   mood: number;
   langkah_selesai: number[];
   catatan: string;
+  video_url?: string;
 }
 
 export default function InputSesiPage() {
@@ -55,6 +58,7 @@ export default function InputSesiPage() {
   const [jamSelesai, setJamSelesai] = useState("09:30");
   const [materi, setMateri] = useState("");
   const [catatanUmum, setCatatanUmum] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
 
   const [siswaData, setSiswaData] = useState<SiswaFormState[]>([]);
   const [loading, setLoading] = useState(true);
@@ -190,19 +194,24 @@ export default function InputSesiPage() {
           modul_id: selectedModulId || null,
           materi,
           catatan_umum: catatanUmum,
-          siswa_data: siswaData,
+          video_url: videoUrl.trim() || null,
+          siswa_data: siswaData.map((s) => ({
+            ...s,
+            video_url: s.video_url?.trim() || videoUrl.trim() || null,
+          })),
         }),
       });
 
       const json = await res.json();
-      if (!res.ok || !json.success) {
-        setError(json.error || "Gagal menyimpan sesi belajar.");
+      if (!res.ok || (!json.success && !json.data)) {
+        setError(json.error || json.message || "Gagal menyimpan sesi belajar.");
       } else {
         setSuccess(
-          `Sesi belajar tanggal ${tanggal} berhasil disimpan! Absensi dan penilaian telah otomatis masuk ke dashboard orang tua.`
+          `Sesi belajar tanggal ${tanggal} berhasil disimpan! Absensi, penilaian, dan link video rekaman telah otomatis masuk ke dashboard orang tua.`
         );
         setMateri("");
         setCatatanUmum("");
+        setVideoUrl("");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch {
@@ -360,6 +369,24 @@ export default function InputSesiPage() {
               />
             </div>
           </div>
+
+          {/* Link Rekaman Video Sesi (YouTube Unlisted / Shorts / Drive) */}
+          <div className="pt-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase mb-1 flex items-center gap-1.5">
+              <Play className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
+              Link Video Rekaman Belajar Anak (YouTube / Shorts / Drive)
+            </label>
+            <input
+              type="url"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="contoh: https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:ring-2 focus:ring-fuchsia-600 focus:outline-none"
+            />
+            <p className="text-[11px] text-slate-400 mt-1">
+              📹 <strong>Dokumentasi Sesi:</strong> Video rekaman membaca ananda pada sesi ini akan otomatis dapat ditonton langsung oleh orang tua di Dashboard mereka.
+            </p>
+          </div>
         </div>
 
         {/* Step 2: Input Per Siswa (Quick Card Workstation) */}
@@ -507,6 +534,20 @@ export default function InputSesiPage() {
                         onChange={(e) => updateStudentField(idx, "catatan", e.target.value)}
                         placeholder="contoh: Pengucapan vokal sangat baik, perlu review kata berakhiran n di rumah"
                         className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:ring-2 focus:ring-fuchsia-600 focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Link Video Khusus Anak Ini (Opsional jika video terpisah) */}
+                    <div>
+                      <label className="block text-[11px] font-semibold text-slate-500 mb-1">
+                        Link Video Khusus Ananda Ini (Opsional — kosongkan jika memakai video sesi di atas):
+                      </label>
+                      <input
+                        type="url"
+                        value={s.video_url || ""}
+                        onChange={(e) => updateStudentField(idx, "video_url", e.target.value)}
+                        placeholder="https://youtu.be/... (opsional jika anak direkam terpisah)"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:ring-2 focus:ring-fuchsia-600 focus:outline-none"
                       />
                     </div>
                   </div>

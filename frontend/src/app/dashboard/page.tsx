@@ -46,6 +46,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { cn } from "@/lib/utils";
 
+const AHE_STEPS = [
+  { num: 1, label: "Senam Otak" },
+  { num: 2, label: "Tunjuk Bunyi" },
+  { num: 3, label: "Remas Kata" },
+  { num: 4, label: "Baca Kartu" },
+  { num: 5, label: "Tulis Fonik" },
+  { num: 6, label: "Dongeng Penutup" },
+];
+
+function getYouTubeEmbedUrl(url?: string | null): string | null {
+  if (!url) return null;
+  try {
+    const regExp = /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regExp);
+    if (match && match[1]) {
+      return `https://www.youtube.com/embed/${match[1]}?autoplay=1`;
+    }
+  } catch {
+    // fallback
+  }
+  return null;
+}
+
 export default function ParentDashboard() {
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState<any>(null);
@@ -148,7 +171,52 @@ export default function ParentDashboard() {
 
   // The API returns raw siswa fields — compute derived values safely here
   const absensiList: { id: string; status: string; sesi?: { tanggal?: string; materi?: string } }[] = child.absensi ?? [];
-  const nilaiSesiList: { nilai: number; mood?: number; sesi?: { tanggal?: string; materi?: string } }[] = child.nilai_sesi ?? [];
+  const nilaiSesiList: {
+    id?: string;
+    nilai: number;
+    mood?: number;
+    langkah_selesai?: number[];
+    catatan?: string | null;
+    video_url?: string | null;
+    sesi?: { tanggal?: string; materi?: string; video_url?: string | null };
+  }[] = child.nilai_sesi ?? child.nilaiSesi ?? [];
+
+  // Koleksi video rekaman belajar ananda di tiap sesi
+  const sessionVideos: {
+    id: string;
+    materi: string;
+    tanggal?: string;
+    nilai: number;
+    video_url: string;
+  }[] = nilaiSesiList
+    .filter((ns) => Boolean(ns.video_url || ns.sesi?.video_url))
+    .map((ns, idx) => ({
+      id: ns.id || `vid-${idx}`,
+      materi: ns.sesi?.materi || "Dokumentasi Praktik Membaca",
+      tanggal: ns.sesi?.tanggal,
+      nilai: ns.nilai,
+      video_url: (ns.video_url || ns.sesi?.video_url) as string,
+    }));
+  const asesmenList: {
+    id: string;
+    dari_level: string;
+    ke_level: string;
+    nilai_tertulis: number;
+    nilai_praktik: number;
+    status: string;
+    rekomendasi?: string;
+    catatan_evaluasi?: string | null;
+    tanggal_persetujuan?: string;
+    guru?: { nama: string };
+  }[] = child.asesmen ?? [];
+
+  const rataRataNilai =
+    nilaiSesiList.length > 0
+      ? Math.round(
+          nilaiSesiList.reduce((acc, curr) => acc + (curr.nilai || 0), 0) /
+            nilaiSesiList.length
+        )
+      : null;
   const progressIndikatorList: ({ bulan?: string; mengenal_huruf?: number; membaca_suku_kata?: number; membaca_kata?: number; membaca_kalimat?: number; membaca_cerita?: number })[] = child.progress_indikator ?? [];
   const pencapaian: { id: string; nama_badge: string; ikon: string; kategori: string; deskripsi: string; tanggal_raih: string }[] = child.pencapaian ?? [];
   const catatan: { id: string; tanggal: string; catatan: string; tipe: string; guru?: { nama: string } }[] = child.catatan ?? [];
@@ -292,6 +360,13 @@ export default function ParentDashboard() {
 
             <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-25">
               <span className="text-[10px] uppercase font-bold text-white/70 block">
+                Rata-rata Nilai
+              </span>
+              <span className="text-xl font-black">{rataRataNilai !== null ? `${rataRataNilai}` : "-"}</span>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-2xl p-3 text-center flex-1 md:flex-initial min-w-25">
+              <span className="text-[10px] uppercase font-bold text-white/70 block">
                 Badge Raih
               </span>
               <span className="text-xl font-black">{pencapaian.length} Badge</span>
@@ -407,6 +482,203 @@ export default function ParentDashboard() {
               </div>
             </div>
 
+            {/* Penilaian Individu & Hasil Belajar Sesi */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-purple-600" />
+                    Penilaian Individu Sesi Belajar &amp; Asesmen
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Nilai pemahaman materi harian, antusiasme (mood), penguasaan 6 langkah AHE, dan ujian level
+                  </p>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-800 bg-purple-50 border border-purple-200 px-2.5 py-1 rounded-full shrink-0 self-start sm:self-auto">
+                  Metode 6 Langkah AHE
+                </span>
+              </div>
+
+              {/* JIKA ADA HASIL ASESMEN KELULUSAN LEVEL */}
+              {asesmenList.length > 0 && (
+                <div className="space-y-2.5 pt-1">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                    Ujian Kenaikan Jenjang (Asesmen)
+                  </span>
+                  {asesmenList.map((asm) => (
+                    <div
+                      key={asm.id}
+                      className="p-4 rounded-2xl bg-linear-to-r from-emerald-50/80 to-teal-50/60 border border-emerald-200/80 text-xs space-y-2"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span className="font-bold text-slate-900 capitalize">
+                            Lulus Asesmen: {asm.dari_level} &rarr; {asm.ke_level}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-600 text-white">
+                          {asm.status}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 py-1 text-center">
+                        <div className="p-2 rounded-xl bg-white/80 border border-emerald-100">
+                          <span className="text-[10px] text-slate-500 block">Praktik Membaca</span>
+                          <span className="text-sm font-extrabold text-emerald-700">{asm.nilai_praktik} / 100</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-white/80 border border-emerald-100">
+                          <span className="text-[10px] text-slate-500 block">Tes Tertulis/Fonik</span>
+                          <span className="text-sm font-extrabold text-teal-700">{asm.nilai_tertulis} / 100</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-white/80 border border-emerald-100 col-span-2 sm:col-span-1">
+                          <span className="text-[10px] text-slate-500 block">Tutor Penguji</span>
+                          <span className="text-xs font-bold text-slate-800 line-clamp-1">{asm.guru?.nama || "Tutor AHE"}</span>
+                        </div>
+                      </div>
+
+                      {asm.catatan_evaluasi && (
+                        <p className="text-[11px] text-slate-700 italic bg-white/60 p-2.5 rounded-xl border border-emerald-100/60">
+                          &ldquo;{asm.catatan_evaluasi}&rdquo;
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* DAFTAR EVALUASI SESI HARIAN */}
+              <div className="space-y-3 pt-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Evaluasi Sesi Tatap Muka Terbaru
+                </span>
+
+                {nilaiSesiList.length === 0 ? (
+                  <div className="text-center py-6 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                    <Sparkles className="w-6 h-6 text-slate-300 mx-auto mb-1.5" />
+                    <p className="text-xs font-semibold text-slate-700">Belum ada penilaian sesi</p>
+                    <p className="text-[11px] text-slate-400 max-w-xs mx-auto mt-0.5">
+                      Nilai harian, indikator mood, dan capaian langkah fonik ananda akan langsung tampil di sini setelah tutor menyelesaikan KBM.
+                    </p>
+                  </div>
+                ) : (
+                  nilaiSesiList.slice(0, 5).map((ns, idx) => {
+                    const moodLevel = ns.mood || 3;
+                    const moodLabel =
+                      moodLevel >= 5
+                        ? "Sangat Bersemangat"
+                        : moodLevel === 4
+                        ? "Fokus & Ceria"
+                        : moodLevel === 3
+                        ? "Cukup Baik"
+                        : moodLevel === 2
+                        ? "Perlu Dukungan"
+                        : "Kurang Fit";
+
+                    return (
+                      <div
+                        key={ns.id || idx}
+                        className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 text-xs space-y-2.5 hover:bg-slate-50 transition-colors"
+                      >
+                        {/* Header Sesi: Tanggal & Nilai */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <span className="font-bold text-slate-900 block text-xs">
+                              {ns.sesi?.materi || "Sesi Bimbingan Membaca"}
+                            </span>
+                            <span className="text-[10px] text-slate-400 block mt-0.5">
+                              {ns.sesi?.tanggal
+                                ? new Date(ns.sesi.tanggal).toLocaleDateString("id-ID", {
+                                    weekday: "long",
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                  })
+                                : "Pertemuan Terakhir"}
+                            </span>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-purple-100 text-purple-900 font-extrabold text-xs">
+                              Nilai: {ns.nilai}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Indikator Mood / Antusiasme */}
+                        <div className="flex items-center gap-2 text-[11px] bg-white p-2 rounded-xl border border-slate-200/60">
+                          <span className="text-slate-400 font-semibold">Mood Belajar:</span>
+                          <span className="font-bold text-amber-600 flex items-center gap-0.5">
+                            {"★".repeat(moodLevel)}{"☆".repeat(Math.max(0, 5 - moodLevel))}
+                          </span>
+                          <span className="text-slate-600 font-medium text-[10.5px]">
+                            ({moodLabel})
+                          </span>
+                        </div>
+
+                        {/* 6 Langkah Metode AHE */}
+                        {ns.langkah_selesai && ns.langkah_selesai.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                              Langkah AHE Selesai:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {AHE_STEPS.map((step) => {
+                                const isDone = ns.langkah_selesai?.includes(step.num);
+                                return (
+                                  <span
+                                    key={step.num}
+                                    className={`text-[10px] px-2 py-0.5 rounded-lg font-semibold border ${
+                                      isDone
+                                        ? "bg-purple-50 text-purple-800 border-purple-200"
+                                        : "bg-white text-slate-300 border-slate-100 line-through"
+                                    }`}
+                                  >
+                                    {isDone ? "✓" : "•"} {step.label}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Catatan Sesi dari Guru */}
+                        {ns.catatan && (
+                          <div className="p-2.5 rounded-xl bg-blue-50/60 border border-blue-100 text-[11px] text-blue-950 flex items-start gap-2">
+                            <MessageSquare className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
+                            <div>
+                              <span className="font-bold text-blue-900 block text-[10px] uppercase">
+                                Catatan Tutor:
+                              </span>
+                              <p className="mt-0.5 leading-relaxed">{ns.catatan}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Link Video Rekaman Sesi dari Guru */}
+                        {(ns.video_url || ns.sesi?.video_url) && (
+                          <div className="pt-0.5">
+                            <button
+                              onClick={() =>
+                                setPlayingVideo({
+                                  judul: `Rekaman: ${ns.sesi?.materi || "Sesi Belajar"}`,
+                                  tanggal: ns.sesi?.tanggal,
+                                  url: ns.video_url || ns.sesi?.video_url,
+                                })
+                              }
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 font-bold text-xs transition-colors cursor-pointer"
+                            >
+                              <Play className="w-3.5 h-3.5 fill-rose-600 text-rose-600" />
+                              <span>Tonton Video Rekaman Sesi Ini (YouTube)</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+
             {/* Kosakata Mastered Shelf */}
             <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
@@ -448,39 +720,63 @@ export default function ParentDashboard() {
               </div>
             </div>
 
-            {/* Video Pembelajaran untuk Latihan di Rumah */}
-            {video && video.length > 0 && (
+            {/* Galeri Rekaman Video Sesi Belajar Anak */}
+            {sessionVideos.length > 0 && (
               <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <Play className="w-4 h-4 text-orange-500" />
-                  Video Panduan Belajar di Rumah
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {video.map((v: any) => (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                      <Play className="w-4 h-4 text-rose-600 fill-rose-600" />
+                      Video Rekaman Sesi Belajar Ananda ({sessionVideos.length} Video)
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Dokumentasi otentik saat ananda praktik membaca langsung bersama tutor
+                    </p>
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200">
+                    YouTube Dokumentasi
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  {sessionVideos.map((v) => (
                     <div
                       key={v.id}
-                      className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between space-y-2 hover:bg-slate-100/80 transition-colors"
+                      className="p-4 rounded-2xl bg-linear-to-br from-rose-50/40 via-white to-slate-50 border border-slate-200 flex flex-col justify-between space-y-3 hover:border-rose-300 transition-all shadow-xs"
                     >
                       <div>
-                        <span className="text-[10px] font-bold text-orange-600 uppercase">
-                          {v.level}
-                        </span>
-                        <h4 className="text-xs font-bold text-slate-900 line-clamp-1">
-                          {v.judul}
+                        <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1">
+                          <span className="font-bold uppercase text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">
+                            Nilai: {v.nilai}
+                          </span>
+                          <span>
+                            {v.tanggal
+                              ? new Date(v.tanggal).toLocaleDateString("id-ID", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                })
+                              : "-"}
+                          </span>
+                        </div>
+                        <h4 className="text-xs font-bold text-slate-900 line-clamp-2">
+                          {v.materi}
                         </h4>
-                        <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">
-                          {v.deskripsi}
-                        </p>
                       </div>
-                      <a
-                        href={v.youtube_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-600 hover:text-purple-700 pt-1"
+
+                      <button
+                        onClick={() =>
+                          setPlayingVideo({
+                            judul: v.materi,
+                            tanggal: v.tanggal,
+                            url: v.video_url,
+                          })
+                        }
+                        className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition-colors cursor-pointer shadow-xs"
                       >
-                        <Play className="w-3.5 h-3.5 fill-purple-600" />
-                        Tonton Video
-                      </a>
+                        <Play className="w-3.5 h-3.5 fill-white" />
+                        Tonton Video Rekaman
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -615,6 +911,81 @@ export default function ParentDashboard() {
             </div>
           </div>
         </div>
+
+        {/* MODAL PEMUTAR VIDEO YOUTUBE DOKUMENTASI SESI */}
+        {playingVideo && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-slate-900 text-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-white/10 flex flex-col">
+              <div className="p-4 flex items-center justify-between border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
+                    <Play className="w-4 h-4 fill-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-white line-clamp-1">
+                      {playingVideo.judul}
+                    </h4>
+                    {playingVideo.tanggal && (
+                      <span className="text-[10px] text-white/60 block">
+                        Sesi Tanggal:{" "}
+                        {new Date(playingVideo.tanggal).toLocaleDateString("id-ID", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={() => setPlayingVideo(null)}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="relative aspect-video w-full bg-black">
+                {getYouTubeEmbedUrl(playingVideo.url) ? (
+                  <iframe
+                    src={getYouTubeEmbedUrl(playingVideo.url) || ""}
+                    title={playingVideo.judul}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                    <Play className="w-10 h-10 text-rose-500 mb-2 opacity-80" />
+                    <p className="text-xs text-white/80 mb-3">
+                      Video dapat langsung ditonton melalui tautan berikut:
+                    </p>
+                    <a
+                      href={playingVideo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs inline-flex items-center gap-2"
+                    >
+                      Buka Video / Browser &rarr;
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-3.5 bg-slate-900 border-t border-white/10 flex items-center justify-between text-[11px] text-white/60">
+                <span>Dokumentasi Belajar AHE &bull; Privasi Peserta Didik</span>
+                <a
+                  href={playingVideo.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-rose-400 hover:text-rose-300 font-semibold"
+                >
+                  Buka di YouTube &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

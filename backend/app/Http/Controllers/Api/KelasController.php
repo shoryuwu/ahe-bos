@@ -50,8 +50,18 @@ class KelasController extends Controller
             'jadwal_hari' => 'required|array',
             'jam_mulai' => 'required|string',
             'jam_selesai' => 'required|string',
-            'kapasitas' => 'nullable|integer|min:1',
+            'kapasitas' => 'nullable|integer|min:1|max:2',
         ]);
+
+        $bentrok = $this->checkJadwalBentrok(
+            $request->guru_id,
+            $request->jadwal_hari,
+            $request->jam_mulai,
+            $request->jam_selesai
+        );
+        if ($bentrok) {
+            return response()->json(['error' => $bentrok], 422);
+        }
 
         $id = 'kls-' . Str::random(8);
 
@@ -63,7 +73,7 @@ class KelasController extends Controller
             'jadwal_hari' => $request->jadwal_hari,
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,
-            'kapasitas' => $request->kapasitas ?? 6,
+            'kapasitas' => $request->kapasitas ?? 2,
             'status' => 'aktif',
         ]);
 
@@ -77,9 +87,25 @@ class KelasController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'kapasitas' => 'nullable|integer|min:1|max:2',
+        ]);
+
         $kelas = Kelas::find($id);
         if (!$kelas) {
             return response()->json(['error' => 'Kelas tidak ditemukan'], 404);
+        }
+
+        $guruId = $request->guru_id ?? $kelas->guru_id;
+        $jadwalHari = $request->jadwal_hari ?? $kelas->jadwal_hari;
+        $jamMulai = $request->jam_mulai ?? $kelas->jam_mulai;
+        $jamSelesai = $request->jam_selesai ?? $kelas->jam_selesai;
+
+        if ($guruId && is_array($jadwalHari) && $jamMulai && $jamSelesai) {
+            $bentrok = $this->checkJadwalBentrok($guruId, $jadwalHari, $jamMulai, $jamSelesai, $id);
+            if ($bentrok) {
+                return response()->json(['error' => $bentrok], 422);
+            }
         }
 
         $data = array_filter($request->only([
@@ -123,5 +149,26 @@ class KelasController extends Controller
         LogAktivitas::catat($request->user()?->id, 'hapus_kelas', "Menghapus kelas {$nama}", $request->ip());
 
         return response()->json(['success' => true, 'message' => "Kelas {$nama} berhasil dihapus"]);
+    }
+
+    private function checkJadwalBentrok(string $guruId, array $jadwalHari, string $jamMulai, string $jamSelesai, ?string $ignoreKelasId = null): ?string
+    {
+        $existing = Kelas::where('guru_id', $guruId)
+            ->where('status', 'aktif')
+            ->when($ignoreKelasId, fn($q) => $q->where('id', '!=', $ignoreKelasId))
+            ->get();
+
+        foreach ($existing as $k) {
+            $hariIrisan = array_intersect($jadwalHari, (array) $k->jadwal_hari);
+            if (empty($hariIrisan)) continue;
+
+            // Overlap: newStart < existingEnd && newEnd > existingStart
+            if ($jamMulai < $k->jam_selesai && $jamSelesai > $k->jam_mulai) {
+                $hariStr = implode(', ', $hariIrisan);
+                return "Jadwal bentrok: Guru sudah mengajar di kelas '{$k->nama}' pada hari {$hariStr} jam {$k->jam_mulai} - {$k->jam_selesai}. Kebijakan AHE: 1 guru maksimal mengajar 2 anak dalam rentang 1 jam tatap muka.";
+            }
+        }
+
+        return null;
     }
 }

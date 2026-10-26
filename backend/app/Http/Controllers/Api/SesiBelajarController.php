@@ -66,7 +66,9 @@ class SesiBelajarController extends Controller
             'tanggal' => 'required|date',
             'materi' => 'required|string',
             'modul_id' => 'nullable|string',
-            'siswa_data' => 'nullable|array', // array of {siswa_id, status_absensi, nilai, mood, langkah_selesai, catatan}
+            'siswa_data' => 'nullable|array|max:2',
+        ], [
+            'siswa_data.max' => 'Satu sesi bimbingan maksimal 2 anak (kebijakan: 1 guru maksimal 2 anak per jam tatap muka).',
         ]);
 
         DB::beginTransaction();
@@ -87,6 +89,7 @@ class SesiBelajarController extends Controller
                 'tanggal' => $request->tanggal,
                 'materi' => $request->materi,
                 'catatan_umum' => $request->catatan_umum,
+                'video_url' => $request->video_url,
                 'status_sesi' => 'selesai',
             ]);
 
@@ -113,6 +116,7 @@ class SesiBelajarController extends Controller
                         'mood' => $item['mood'] ?? 3,
                         'langkah_selesai' => $item['langkah_selesai'] ?? [1, 2, 3, 4, 5, 6],
                         'catatan' => $item['catatan'] ?? null,
+                        'video_url' => $item['video_url'] ?? $request->video_url ?? null,
                     ]);
 
                     // Catatan Guru jika ada
@@ -133,6 +137,7 @@ class SesiBelajarController extends Controller
 
             DB::commit();
             return response()->json([
+                'success' => true,
                 'message' => 'Sesi belajar berhasil disimpan',
                 'data' => $sesi->load(['absensi.siswa', 'nilai.siswa'])
             ], 201);
@@ -149,7 +154,7 @@ class SesiBelajarController extends Controller
             return response()->json(['error' => 'Sesi belajar tidak ditemukan'], 404);
         }
 
-        $sesi->update($request->only(['materi', 'catatan_umum', 'status_sesi', 'modul_id', 'tanggal']));
+        $sesi->update($request->only(['materi', 'catatan_umum', 'status_sesi', 'modul_id', 'tanggal', 'video_url']));
 
         LogAktivitas::catat($request->user()?->id, 'update_sesi', "Mengubah sesi belajar {$sesi->id}", $request->ip());
 

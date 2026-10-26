@@ -149,8 +149,8 @@ export function SiswaTab({
                     </td>
                     <td className="px-5 py-3.5">
                       <span className="font-semibold text-foreground block">{s.kelas?.nama || "Belum ada"}</span>
-                      <span className="text-[11px] text-muted-foreground">
-                        Tutor: {s.kelas?.guru_nama || "-"}
+                      <span className="text-[11px] text-purple-700 dark:text-purple-400 font-medium block mt-0.5">
+                        Tutor: {s.tutor?.nama || s.kelas?.guru?.nama || s.kelas?.guru_nama || "Belum Ditugaskan"}
                       </span>
                     </td>
                     <td className="px-5 py-3.5">

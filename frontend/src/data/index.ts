@@ -220,7 +220,7 @@ export const faqs: FAQItem[] = [
   {
     id: "5",
     question: "Berapa banyak siswa dalam satu kelas?",
-    answer: "Maksimal 6 siswa per kelas untuk memastikan setiap anak mendapat perhatian penuh dari guru. Rasio guru-siswa yang kecil adalah kunci keberhasilan metode AHE.",
+    answer: "Maksimal 2 siswa per guru (sistem semi-private) untuk memastikan setiap anak mendapat perhatian penuh dari guru. Rasio guru-siswa yang sangat kecil (maksimal 2 anak) adalah kunci keberhasilan metode fonik AHE.",
   },
   {
     id: "6",

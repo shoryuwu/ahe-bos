@@ -144,7 +144,7 @@ export function GuruTab({
                               )}
                             </div>
                             <span className="text-[10px] font-extrabold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                              {k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.length : 0)}/{k.kapasitas || 6}
+                              {k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.length : 0)}/{k.kapasitas || 2}
                             </span>
                           </div>
                         ))}

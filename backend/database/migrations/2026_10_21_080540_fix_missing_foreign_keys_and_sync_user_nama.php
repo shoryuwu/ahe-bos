@@ -56,6 +56,15 @@ return new class extends Migration
                   ->on('siswa')
                   ->onDelete('set null');
         });
+
+        // ─── Perbaikan 4: Aturan Kapasitas 1 Guru Maksimal 2 Anak ─────────
+        DB::statement("UPDATE kelas SET kapasitas = 2 WHERE kapasitas > 2 OR kapasitas IS NULL");
+        DB::statement("ALTER TABLE kelas ALTER COLUMN kapasitas SET DEFAULT 2");
+        DB::statement("
+            UPDATE faq
+            SET jawaban = 'Maksimal 2 siswa per guru (sistem semi-private) untuk memastikan setiap anak mendapatkan perhatian individual dari guru pengajar secara optimal sesuai metode membaca fonik AHE.'
+            WHERE id = 'faq-005'
+        ");
     }
 
     /**

@@ -126,6 +126,18 @@ class PendaftaranController extends Controller
             return response()->json(['error' => 'Pendaftaran tidak ditemukan'], 404);
         }
 
+        $kelas = Kelas::withCount('siswa')->find($request->kelas_id);
+        if (!$kelas) {
+            return response()->json(['error' => 'Kelas tidak ditemukan'], 404);
+        }
+
+        $maxKapasitas = $kelas->kapasitas ?? 2;
+        if ($kelas->siswa_count >= $maxKapasitas) {
+            return response()->json([
+                'error' => "Kelas {$kelas->nama} sudah penuh (maksimal {$maxKapasitas} anak per guru)"
+            ], 422);
+        }
+
         DB::beginTransaction();
         try {
             // Find or create Orangtua & User account

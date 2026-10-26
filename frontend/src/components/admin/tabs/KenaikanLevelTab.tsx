@@ -5,6 +5,7 @@ import {
   Award,
   CheckCircle2,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -51,6 +52,13 @@ export function KenaikanLevelTab({
         <p className="text-xs text-muted-foreground">
           Verifikasi kelulusan siswa dan terbitkan pengakuan kenaikan jenjang membaca
         </p>
+      </div>
+
+      <div className="flex items-center gap-2.5 p-3.5 bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900 rounded-2xl text-xs text-purple-900 dark:text-purple-200">
+        <Sparkles className="w-4 h-4 text-purple-600 shrink-0" />
+        <span>
+          <strong>Kebijakan Tutor AHE:</strong> Saat kenaikan level disetujui, anak otomatis tetap dibimbing oleh tutor yang sama untuk menjaga rasa percaya &amp; kenyamanan belajar. Pergantian tutor bersifat opsional melalui menu pindah kelas jika ada kebutuhan khusus.
+        </span>
       </div>
 
       <div className="bg-card rounded-2xl border border-border shadow-xs overflow-hidden">
