@@ -80,10 +80,12 @@ export default function InputSesiPage() {
           const list = json.kelas || json.data || [];
           if (Array.isArray(list) && list.length > 0) {
             setKelasList(list);
-            const firstClass = list[0];
-            setSelectedKelasId(firstClass.id);
-            setJamMulai(firstClass.jam_mulai || "08:30");
-            setJamSelesai(firstClass.jam_selesai || "09:30");
+            const params = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+            const requestedKelasId = params?.get("kelas_id");
+            const matchedClass = (requestedKelasId && list.find((k: any) => k.id === requestedKelasId)) || list[0];
+            setSelectedKelasId(matchedClass.id);
+            setJamMulai(matchedClass.jam_mulai || "08:30");
+            setJamSelesai(matchedClass.jam_selesai || "09:30");
           }
         }
       } catch {

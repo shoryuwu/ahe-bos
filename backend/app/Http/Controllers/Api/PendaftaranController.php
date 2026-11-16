@@ -20,7 +20,7 @@ class PendaftaranController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pendaftaran::query();
+        $query = Pendaftaran::with('program');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -56,18 +56,53 @@ class PendaftaranController extends Controller
 
     public function store(Request $request)
     {
+        $noWa = $request->input('no_wa') ?? $request->input('no_wa_ortu');
+        $email = $request->input('email') ?? $request->input('email_ortu');
+        $hubungan = $request->input('hubungan_ortu') ?? $request->input('hubungan') ?? 'ibu';
+
+        if ($noWa !== null && !$request->filled('no_wa')) {
+            $request->merge(['no_wa' => $noWa]);
+        }
+
+        if (!$request->filled('email')) {
+            if (!empty($email)) {
+                $request->merge(['email' => $email]);
+            } elseif ($request->has('email_ortu') && !empty($noWa)) {
+                $cleanWa = preg_replace('/[^0-9]/', '', (string) $noWa) ?: Str::random(6);
+                $request->merge(['email' => "wali.{$cleanWa}@ahe.id"]);
+            }
+        }
+
+        $request->merge(['hubungan_ortu' => $hubungan]);
+
+        $minDate = now()->subYears(12)->toDateString();
+        $maxDate = now()->subYears(2)->toDateString();
+
         $request->validate([
             'tipe_pendaftaran' => 'nullable|in:reguler,trial',
             'nama_anak' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
+            'tanggal_lahir' => "required|date|before_or_equal:{$maxDate}|after_or_equal:{$minDate}",
             'jenis_kelamin' => 'required|in:L,P',
             'nama_ortu' => 'required|string|max:255',
             'hubungan_ortu' => 'nullable|string',
             'no_wa' => 'required|string',
             'email' => 'required|email',
             'alamat' => 'required|string',
-            'program_diminati' => 'required|string',
+            'program_diminati' => 'required|string|exists:program,id',
         ]);
+
+        $duplikat = Pendaftaran::whereRaw('LOWER(nama_anak) = ?', [strtolower(trim($request->nama_anak))])
+            ->whereRaw('LOWER(email) = ?', [strtolower(trim($request->email))])
+            ->whereDate('tanggal_lahir', $request->tanggal_lahir)
+            ->whereIn('status', ['menunggu', 'diterima', 'ditunda'])
+            ->exists();
+
+        if ($duplikat) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Pendaftaran atas nama anak dan email tersebut sudah tercatat di sistem'
+            ], 422);
+        }
 
         $year = date('Y');
         $prefix = ($request->tipe_pendaftaran === 'trial') ? "TRL-{$year}-" : "REG-{$year}-";
@@ -76,6 +111,19 @@ class PendaftaranController extends Controller
         $noRegistrasi = $prefix . str_pad($count, 3, '0', STR_PAD_LEFT);
 
         $id = 'reg-' . Str::random(8);
+
+        $prefJadwal = $request->preferensi_jadwal;
+        if (is_string($prefJadwal) && $prefJadwal !== '') {
+            $prefJadwal = [$prefJadwal];
+        }
+
+        $catatanKhusus = $request->catatan_khusus;
+        if (!$catatanKhusus && ($request->filled('pengalaman') || $request->filled('sumber_info'))) {
+            $parts = [];
+            if ($request->filled('pengalaman')) $parts[] = "Pengalaman: {$request->pengalaman}";
+            if ($request->filled('sumber_info')) $parts[] = "Sumber info: {$request->sumber_info}";
+            $catatanKhusus = implode(' | ', $parts);
+        }
 
         $pendaftaran = Pendaftaran::create([
             'id' => $id,
@@ -91,8 +139,8 @@ class PendaftaranController extends Controller
             'email' => $request->email,
             'alamat' => $request->alamat,
             'program_diminati' => $request->program_diminati,
-            'preferensi_jadwal' => $request->preferensi_jadwal,
-            'catatan_khusus' => $request->catatan_khusus,
+            'preferensi_jadwal' => $prefJadwal,
+            'catatan_khusus' => $catatanKhusus,
             'status' => 'menunggu',
         ]);
 
@@ -108,9 +156,16 @@ class PendaftaranController extends Controller
             );
         }
 
+        $pesan = ($pendaftaran->tipe_pendaftaran === 'trial')
+            ? 'Pendaftaran kelas trial gratis Anda telah kami terima dan sedang menunggu konfirmasi jadwal dari Admin AHE Karang Joang.'
+            : 'Berkas pendaftaran reguler Anda telah berhasil tercatat dan sedang dalam proses verifikasi oleh Admin AHE Karang Joang.';
+
         return response()->json([
+            'success' => true,
             'message' => 'Pendaftaran berhasil dikirim',
-            'data' => $pendaftaran
+            'data' => array_merge($pendaftaran->toArray(), [
+                'pesan' => $pesan,
+            ])
         ], 201);
     }
 
@@ -124,6 +179,10 @@ class PendaftaranController extends Controller
         $pendaftaran = Pendaftaran::find($id);
         if (!$pendaftaran) {
             return response()->json(['error' => 'Pendaftaran tidak ditemukan'], 404);
+        }
+
+        if ($pendaftaran->status === 'diterima') {
+            return response()->json(['error' => 'Pendaftaran ini sudah diterima sebelumnya'], 422);
         }
 
         $kelas = Kelas::withCount('siswa')->find($request->kelas_id);
@@ -142,7 +201,9 @@ class PendaftaranController extends Controller
         try {
             // Find or create Orangtua & User account
             $user = User::where('email', $pendaftaran->email)->first();
+            $isNewUser = false;
             if (!$user) {
+                $isNewUser = true;
                 $userId = 'usr-ortu-' . Str::random(8);
                 $user = User::create([
                     'id' => $userId,
@@ -171,6 +232,20 @@ class PendaftaranController extends Controller
                 ]);
             }
 
+            // Map program_diminati / kelas program ke kode level_saat_ini yang sesuai
+            $programMap = [
+                'prg-001' => 'pra-membaca',
+                'prg-002' => 'level-1',
+                'prg-003' => 'level-2',
+                'prg-004' => 'level-3',
+                'prg-005' => 'lanjutan',
+            ];
+            $resolvedLevel = $request->level
+                ?? $programMap[$pendaftaran->program_diminati]
+                ?? $programMap[$kelas->program_id]
+                ?? $pendaftaran->program?->kode
+                ?? 'pra-membaca';
+
             // Create Siswa
             $siswaId = 'sis-' . Str::random(8);
             $siswa = Siswa::create([
@@ -180,7 +255,7 @@ class PendaftaranController extends Controller
                 'tempat_lahir' => $pendaftaran->tempat_lahir,
                 'tanggal_lahir' => $pendaftaran->tanggal_lahir,
                 'jenis_kelamin' => $pendaftaran->jenis_kelamin,
-                'level_saat_ini' => $request->level ?? 'Pra Membaca',
+                'level_saat_ini' => $resolvedLevel,
                 'kelas_id' => $request->kelas_id,
                 'status' => 'aktif',
                 'tanggal_masuk' => now()->toDateString(),
@@ -196,11 +271,16 @@ class PendaftaranController extends Controller
 
             DB::commit();
             return response()->json([
+                'success' => true,
                 'message' => 'Pendaftaran berhasil diterima dan siswa baru telah dibuat',
                 'data' => [
                     'pendaftaran' => $pendaftaran,
                     'siswa' => $siswa,
                     'orangtua' => $orangtua,
+                    'akun_dibuat' => [
+                        'email' => $user->email,
+                        'password_default' => $isNewUser ? 'ortu123' : 'ortu123 (Menggunakan akun orang tua yang sudah terdaftar)',
+                    ],
                 ]
             ]);
         } catch (\Exception $e) {
@@ -211,6 +291,10 @@ class PendaftaranController extends Controller
 
     public function tolak(Request $request, $id)
     {
+        if ($request->filled('alasan_tolak') && !$request->filled('alasan_penolakan')) {
+            $request->merge(['alasan_penolakan' => $request->alasan_tolak]);
+        }
+
         $request->validate([
             'alasan_penolakan' => 'required|string',
         ]);
@@ -218,6 +302,10 @@ class PendaftaranController extends Controller
         $pendaftaran = Pendaftaran::find($id);
         if (!$pendaftaran) {
             return response()->json(['error' => 'Pendaftaran tidak ditemukan'], 404);
+        }
+
+        if ($pendaftaran->status === 'diterima') {
+            return response()->json(['error' => 'Pendaftaran ini sudah diterima sebelumnya'], 422);
         }
 
         $pendaftaran->update([
@@ -238,6 +326,10 @@ class PendaftaranController extends Controller
         $pendaftaran = Pendaftaran::find($id);
         if (!$pendaftaran) {
             return response()->json(['error' => 'Pendaftaran tidak ditemukan'], 404);
+        }
+
+        if ($pendaftaran->status === 'diterima') {
+            return response()->json(['error' => 'Pendaftaran ini sudah diterima sebelumnya'], 422);
         }
 
         $pendaftaran->update(['status' => 'ditunda']);
@@ -265,15 +357,30 @@ class PendaftaranController extends Controller
     {
         $pendaftaran = Pendaftaran::where('no_registrasi', $noRegistrasi)->first();
         if (!$pendaftaran) {
-            return response()->json(['error' => 'Nomor registrasi tidak ditemukan'], 404);
+            return response()->json(['success' => false, 'error' => 'Nomor registrasi tidak ditemukan'], 404);
         }
 
+        $namaProgram = \App\Models\Program::where('id', $pendaftaran->program_diminati)->value('nama')
+            ?? $pendaftaran->program_diminati;
+
+        $keterangan = match ($pendaftaran->status) {
+            'diterima' => 'Selamat! Pendaftaran telah disetujui dan siswa telah ditempatkan pada kelas belajar.',
+            'ditolak' => $pendaftaran->alasan_penolakan ?: 'Pendaftaran belum dapat diterima.',
+            'ditunda' => 'Pendaftaran masuk ke dalam daftar tunggu (Waiting List) kuota kelas.',
+            default => 'Berkas pendaftaran sedang dalam antrean verifikasi Admin AHE Karang Joang.',
+        };
+
         return response()->json([
+            'success' => true,
             'data' => [
                 'no_registrasi' => $pendaftaran->no_registrasi,
+                'tipe_pendaftaran' => $pendaftaran->tipe_pendaftaran,
                 'nama_anak' => $pendaftaran->nama_anak,
+                'program_diminati' => $namaProgram,
                 'status' => $pendaftaran->status,
                 'alasan_penolakan' => $pendaftaran->alasan_penolakan,
+                'keterangan' => $keterangan,
+                'tanggal_daftar' => $pendaftaran->created_at?->format('Y-m-d'),
                 'created_at' => $pendaftaran->created_at,
             ]
         ]);

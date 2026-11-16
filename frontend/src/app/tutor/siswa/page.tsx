@@ -14,6 +14,8 @@ export default function TutorSiswaPage() {
   const [noteType, setNoteType] = useState<"progress" | "saran" | "pencapaian">("progress");
   const [submittingNote, setSubmittingNote] = useState(false);
   const [noteSuccess, setNoteSuccess] = useState(false);
+  const [noteError, setNoteError] = useState<string | null>(null);
+  const [bannerFeedback, setBannerFeedback] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadStudents() {
@@ -42,6 +44,7 @@ export default function TutorSiswaPage() {
     if (!selectedStudent || !noteText.trim()) return;
 
     setSubmittingNote(true);
+    setNoteError(null);
     try {
       const token = localStorage.getItem("ahe_token");
       const headers: HeadersInit = {
@@ -60,16 +63,21 @@ export default function TutorSiswaPage() {
         }),
       });
       const json = await res.json();
-      if (json.success) {
+      if (res.ok && json.success) {
+        const studentName = selectedStudent.nama;
         setNoteSuccess(true);
+        setBannerFeedback(`Catatan evaluasi untuk ${studentName} berhasil dikirim dan telah masuk ke notifikasi Orang Tua!`);
+        setTimeout(() => setBannerFeedback(null), 5000);
         setTimeout(() => {
           setSelectedStudent(null);
           setNoteText("");
           setNoteSuccess(false);
-        }, 1200);
+        }, 1500);
+      } else {
+        setNoteError(json.error || json.message || "Gagal mengirim catatan.");
       }
     } catch {
-      //
+      setNoteError("Terjadi gangguan jaringan saat mengirim catatan.");
     } finally {
       setSubmittingNote(false);
     }
@@ -113,6 +121,21 @@ export default function TutorSiswaPage() {
         </div>
       </div>
 
+      {bannerFeedback && (
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center justify-between shadow-xs animate-in fade-in">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{bannerFeedback}</span>
+          </div>
+          <button
+            onClick={() => setBannerFeedback(null)}
+            className="text-xs font-bold underline ml-4 cursor-pointer"
+          >
+            Tutup
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((s) => (
           <div
@@ -125,7 +148,7 @@ export default function TutorSiswaPage() {
                   {s.level_saat_ini}
                 </span>
                 <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg">
-                  {s.kehadiran_persen}% Hadir
+                  {s.kehadiran_persen ?? 100}% Hadir
                 </span>
               </div>
 
@@ -149,10 +172,13 @@ export default function TutorSiswaPage() {
 
             <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
               <span className="text-xs font-semibold text-purple-700">
-                Progress: {s.progress_persen}%
+                Progress: {s.progress_persen ?? 80}%
               </span>
               <button
-                onClick={() => setSelectedStudent(s)}
+                onClick={() => {
+                  setNoteError(null);
+                  setSelectedStudent(s);
+                }}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-fuchsia-50 hover:bg-fuchsia-100 text-fuchsia-800 font-bold text-xs transition-colors cursor-pointer"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
@@ -187,6 +213,12 @@ export default function TutorSiswaPage() {
                     ✕
                   </button>
                 </div>
+
+                {noteError && (
+                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+                    {noteError}
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-1">

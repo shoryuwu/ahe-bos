@@ -12,7 +12,11 @@ class KelasController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Kelas::with(['program', 'guru', 'siswa']);
+        // Normalisasi kapasitas kelas lama yang masih > 2 agar sesuai aturan semi-private AHE (maks 2 siswa)
+        Kelas::where('kapasitas', '>', 2)->update(['kapasitas' => 2]);
+
+        $query = Kelas::with(['program', 'guru', 'siswa'])
+            ->withCount(['siswa' => fn($q) => $q->where('status', 'aktif')]);
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);

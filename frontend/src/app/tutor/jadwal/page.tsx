@@ -128,7 +128,7 @@ export default function TutorJadwalPage() {
 
             <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
               <Link
-                href="/tutor/input-sesi"
+                href={`/tutor/input-sesi?kelas_id=${cls.id}`}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-fuchsia-600 hover:text-fuchsia-700"
               >
                 Mulai Catat Sesi Kelas Ini

@@ -81,8 +81,18 @@ class ModulController extends Controller
         return response()->json(['message' => 'Modul berhasil dihapus']);
     }
 
-    public function siswaProgress($siswaId)
+    public function siswaProgress(Request $request, $siswaId)
     {
+        $siswa = \App\Models\Siswa::with('orangtua')->find($siswaId);
+        if (!$siswa) {
+            return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua' && (!$siswa->orangtua || $siswa->orangtua->user_id !== $user->id)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap progres modul anak ini'], 403);
+        }
+
         $progress = ModulSiswa::with('modul')
             ->where('siswa_id', $siswaId)
             ->get();

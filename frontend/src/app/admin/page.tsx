@@ -289,12 +289,24 @@ export default function AdminDashboard() {
     null
   );
 
+  // In-Web Confirmation & Prompt Modal (replaces native browser confirm/prompt)
+  const [dialogModal, setDialogModal] = useState<{
+    title: string;
+    message: string;
+    variant?: "warning" | "danger" | "info" | "success";
+    confirmText?: string;
+    inputLabel?: string;
+    inputPlaceholder?: string;
+    onConfirm: (inputValue?: string) => void | Promise<void>;
+  } | null>(null);
+  const [dialogInputValue, setDialogInputValue] = useState("");
+
   function notify(type: "success" | "error", text: string) {
     setFeedback({ type, text });
     setTimeout(() => setFeedback(null), 4000);
   }
 
-  // Authenticated fetch â€” automatically attaches Bearer token from localStorage
+  // Authenticated fetch — automatically attaches Bearer token from localStorage
   function authFetch(url: string, options: RequestInit = {}) {
     const token = localStorage.getItem("ahe_token");
     const headers: HeadersInit = {
@@ -378,7 +390,16 @@ export default function AdminDashboard() {
       if (sisRes.data) setSiswaList(sisRes.data.items || sisRes.data || []);
       if (ortRes.data) setOrangtuaList(ortRes.data || []);
       if (gurRes.data) setGuruList(gurRes.data || []);
-      if (kelRes.data) setKelasList(kelRes.data || []);
+      if (kelRes.data) {
+        const normalizedKelas = (Array.isArray(kelRes.data) ? kelRes.data : []).map((k: any) => ({
+          ...k,
+          siswa_count: k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.filter((s: any) => !s.status || s.status === "aktif").length : 0),
+          guru_nama: k.guru_nama || (typeof k.guru === "object" ? k.guru?.nama : k.guru) || "-",
+          program_nama: k.program_nama || (typeof k.program === "object" ? k.program?.nama : k.program) || "-",
+          kapasitas: k.kapasitas || 2,
+        }));
+        setKelasList(normalizedKelas);
+      }
       if (sesRes.data) setSesiList(sesRes.data || []);
       if (asmRes.data) setAsesmenList(asmRes.data || []);
       if (waitRes.data) setWaitingList(waitRes.data || []);
@@ -436,49 +457,73 @@ export default function AdminDashboard() {
   }
 
   // Handle Reject Registration
-  async function handleRejectRegistration(id: string) {
-    const alasan = prompt("Masukkan alasan penolakan pendaftaran:");
-    if (!alasan) return;
-
-    try {
-      const res = await authFetch(`/api/pendaftaran/${id}/tolak`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ alasan_tolak: alasan }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "Pendaftaran ditolak.");
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal memproses penolakan.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handleRejectRegistration(id: string) {
+    setDialogInputValue("");
+    setDialogModal({
+      title: "Tolak Pendaftaran Siswa",
+      message: "Masukkan alasan penolakan berkas pendaftaran ini agar tercatat pada status pendaftaran:",
+      variant: "danger",
+      confirmText: "Konfirmasi Tolak",
+      inputLabel: "Alasan Penolakan *",
+      inputPlaceholder: "Contoh: Usia calon siswa belum memenuhi syarat minimal 3,5 tahun...",
+      onConfirm: async (alasan) => {
+        if (!alasan?.trim()) {
+          notify("error", "Alasan penolakan wajib diisi.");
+          return;
+        }
+        try {
+          const res = await authFetch(`/api/pendaftaran/${id}/tolak`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ alasan_tolak: alasan.trim() }),
+          });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "Pendaftaran ditolak.");
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal memproses penolakan.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
   // Handle Postpone Registration
-  async function handlePostponeRegistration(id: string) {
-    const catatan = prompt("Catatan penundaan / jadwal tunggu:");
-    if (!catatan) return;
-
-    try {
-      const res = await authFetch(`/api/pendaftaran/${id}/tunda`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ catatan_admin: catatan }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "Pendaftaran ditunda.");
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal memproses penundaan.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handlePostponeRegistration(id: string) {
+    setDialogInputValue("");
+    setDialogModal({
+      title: "Tunda Pendaftaran Siswa",
+      message: "Masukkan catatan penundaan atau jadwal tunggu untuk calon siswa ini:",
+      variant: "warning",
+      confirmText: "Simpan Penundaan",
+      inputLabel: "Catatan Penundaan *",
+      inputPlaceholder: "Contoh: Menunggu konfirmasi jadwal orang tua bulan depan...",
+      onConfirm: async (catatan) => {
+        if (!catatan?.trim()) {
+          notify("error", "Catatan penundaan wajib diisi.");
+          return;
+        }
+        try {
+          const res = await authFetch(`/api/pendaftaran/${id}/tunda`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ catatan_admin: catatan.trim() }),
+          });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "Pendaftaran ditunda.");
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal memproses penundaan.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
   // Handle Create Student Manual
@@ -595,21 +640,27 @@ export default function AdminDashboard() {
   }
 
   // Handle Delete Teacher (Cascade Safety Rule)
-  async function handleDeleteTeacher(id: string, nama: string) {
-    if (!confirm(`Apakah Anda yakin ingin menonaktifkan/menghapus akun tutor ${nama}?`)) return;
-
-    try {
-      const res = await authFetch(`/api/guru/${id}`, { method: "DELETE" });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", `Tutor ${nama} berhasil dihapus.`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal menghapus tutor.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handleDeleteTeacher(id: string, nama: string) {
+    setDialogModal({
+      title: "Nonaktifkan / Hapus Tutor",
+      message: `Apakah Anda yakin ingin menonaktifkan/menghapus akun tutor ${nama}?`,
+      variant: "danger",
+      confirmText: "Ya, Hapus Tutor",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/guru/${id}`, { method: "DELETE" });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", `Tutor ${nama} berhasil dihapus.`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal menghapus tutor.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
   // Handle Edit Teacher
@@ -690,26 +741,33 @@ export default function AdminDashboard() {
   }
 
   // Handle Reset Parent Password
-  async function handleResetParentPassword(parent: any) {
-    if (!confirm(`Reset kata sandi akun login untuk ${parent.nama}? Password baru acak akan dibuatkan.`)) return;
-    setIsProcessing(true);
-    try {
-      const res = await authFetch(`/api/orangtua/${parent.id}/reset-password`, {
-        method: "POST",
-      });
-      const json = await res.json();
-      if (json.success) {
-        setResetPasswordResult(json.data);
-        notify("success", `Kata sandi akun ${parent.nama} berhasil direset!`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal mereset kata sandi.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    } finally {
-      setIsProcessing(false);
-    }
+  function handleResetParentPassword(parent: any) {
+    setDialogModal({
+      title: "Reset Kata Sandi Wali Murid",
+      message: `Reset kata sandi akun login untuk ${parent.nama}? Password baru acak akan dibuatkan secara otomatis.`,
+      variant: "warning",
+      confirmText: "Ya, Reset Password",
+      onConfirm: async () => {
+        setIsProcessing(true);
+        try {
+          const res = await authFetch(`/api/orangtua/${parent.id}/reset-password`, {
+            method: "POST",
+          });
+          const json = await res.json();
+          if (json.success) {
+            setResetPasswordResult(json.data);
+            notify("success", `Kata sandi akun ${parent.nama} berhasil direset!`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal mereset kata sandi.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        } finally {
+          setIsProcessing(false);
+        }
+      },
+    });
   }
 
   // Handle Create Class
@@ -791,20 +849,27 @@ export default function AdminDashboard() {
   }
 
   // Handle Delete / Deactivate Class
-  async function handleDeleteClass(id: string, nama: string) {
-    if (!confirm(`Yakin ingin menonaktifkan rombel kelas ${nama}?`)) return;
-    try {
-      const res = await authFetch(`/api/kelas/${id}`, { method: "DELETE" });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", `Kelas ${nama} berhasil dinonaktifkan.`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal menonaktifkan kelas.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handleDeleteClass(id: string, nama: string) {
+    setDialogModal({
+      title: "Nonaktifkan Rombel Kelas",
+      message: `Apakah Anda yakin ingin menonaktifkan rombel kelas ${nama}?`,
+      variant: "danger",
+      confirmText: "Ya, Nonaktifkan",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/kelas/${id}`, { method: "DELETE" });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", `Kelas ${nama} berhasil dinonaktifkan.`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal menonaktifkan kelas.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
   // Handle View Class Students
@@ -939,64 +1004,67 @@ export default function AdminDashboard() {
     }
   }
 
-  async function handleDeleteWaitingList(id: string) {
-    if (!confirm("Hapus antrean waiting list ini?")) return;
-    try {
-      const res = await authFetch(`/api/waiting-list/${id}`, { method: "DELETE" });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "Antrean berhasil dihapus dari waiting list.");
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal menghapus antrean.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handleDeleteWaitingList(id: string) {
+    setDialogModal({
+      title: "Hapus Antrean Waiting List",
+      message: "Apakah Anda yakin ingin menghapus data antrean waiting list ini?",
+      variant: "danger",
+      confirmText: "Ya, Hapus Antrean",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/waiting-list/${id}`, { method: "DELETE" });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "Antrean berhasil dihapus dari waiting list.");
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal menghapus antrean.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
-  async function handleAddToWaitingList(pendaftaran: any) {
+  function handleAddToWaitingList(pendaftaran: any) {
     const relevantClasses = kelasList.filter((k) => k.status === "aktif");
-    const hasSeats = relevantClasses.some((k) => (k.siswa_count || 0) < k.kapasitas);
+    const hasSeats = relevantClasses.some((k) => (k.siswa_count || 0) < (k.kapasitas || 2));
 
-    if (hasSeats) {
-      if (
-        !confirm(
-          `Perhatian: Masih ada rombel kelas yang memiliki kuota tersedia. Apakah Anda yakin tetap ingin memasukkan ${pendaftaran.nama_anak} ke antrean Waiting List?`
-        )
-      ) {
-        return;
-      }
-    } else {
-      if (!confirm(`Rombel kelas saat ini telah penuh. Masukkan ${pendaftaran.nama_anak} ke antrean Waiting List?`)) {
-        return;
-      }
-    }
-
-    setIsProcessing(true);
-    try {
-      const res = await authFetch("/api/waiting-list", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pendaftaran_id: pendaftaran.id,
-          program_id: pendaftaran.program_diminati || "prg-001",
-          preferensi_jadwal: pendaftaran.preferensi_jadwal || "fleksibel",
-          catatan: "Menunggu pembukaan kuota kelas baru",
-        }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", `Pendaftaran ${pendaftaran.nama_anak} berhasil dimasukkan ke waiting list.`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal memasukkan ke waiting list.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    } finally {
-      setIsProcessing(false);
-    }
+    setDialogModal({
+      title: "Masukkan ke Antrean Waiting List",
+      message: hasSeats
+        ? `Perhatian: Masih ada rombel kelas yang memiliki kuota tersedia. Apakah Anda yakin tetap ingin memasukkan ${pendaftaran.nama_anak} ke antrean Waiting List?`
+        : `Seluruh rombel kelas aktif saat ini telah penuh (2/2 siswa). Masukkan ${pendaftaran.nama_anak} ke antrean Waiting List?`,
+      variant: "warning",
+      confirmText: "Ya, Masukkan ke Waiting List",
+      onConfirm: async () => {
+        setIsProcessing(true);
+        try {
+          const res = await authFetch("/api/waiting-list", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              pendaftaran_id: pendaftaran.id,
+              program_id: pendaftaran.program_diminati || "prg-001",
+              preferensi_jadwal: pendaftaran.preferensi_jadwal || "fleksibel",
+              catatan: "Menunggu pembukaan kuota kelas baru",
+            }),
+          });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", `Pendaftaran ${pendaftaran.nama_anak} berhasil dimasukkan ke waiting list.`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal memasukkan ke waiting list.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        } finally {
+          setIsProcessing(false);
+        }
+      },
+    });
   }
 
   // Handle Transfer Class (Pindah Jadwal)
@@ -1083,86 +1151,113 @@ export default function AdminDashboard() {
     }
   }
 
-  async function handleToggleUserActive(user: any) {
+  function handleToggleUserActive(user: any) {
     const actionText = user.is_active ? "menonaktifkan" : "mengaktifkan kembali";
-    if (!confirm(`Yakin ingin ${actionText} akun ${user.nama}?`)) return;
-    try {
-      const res = await authFetch(`/api/akun/${user.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ is_active: !user.is_active }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", `Status akun ${user.nama} berhasil diperbarui.`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal memperbarui status akun.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+    setDialogModal({
+      title: "Ubah Status Akun Pengguna",
+      message: `Apakah Anda yakin ingin ${actionText} akun ${user.nama}?`,
+      variant: user.is_active ? "warning" : "info",
+      confirmText: "Ya, Lanjutkan",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/akun/${user.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ is_active: !user.is_active }),
+          });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", `Status akun ${user.nama} berhasil diperbarui.`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal memperbarui status akun.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
-  async function handleUnlockUser(user: any) {
-    if (!confirm(`Buka kunci akun (unlock) untuk ${user.nama}?`)) return;
-    try {
-      const res = await authFetch(`/api/akun/${user.id}/unlock`, {
-        method: "POST",
-      });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", `Akun ${user.nama} berhasil dibuka kuncinya!`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal membuka kunci akun.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handleUnlockUser(user: any) {
+    setDialogModal({
+      title: "Buka Kunci Akun (Unlock)",
+      message: `Buka kunci akun (unlock) untuk ${user.nama} agar dapat login kembali?`,
+      variant: "info",
+      confirmText: "Ya, Buka Kunci",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/akun/${user.id}/unlock`, {
+            method: "POST",
+          });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", `Akun ${user.nama} berhasil dibuka kuncinya!`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal membuka kunci akun.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
-  async function handleResetUserPassword(user: any) {
-    if (!confirm(`Reset kata sandi akun login untuk ${user.nama}? Password baru acak akan dibuatkan.`)) return;
-    setIsProcessing(true);
-    try {
-      const res = await authFetch(`/api/akun/${user.id}/reset-password`, {
-        method: "POST",
-      });
-      const json = await res.json();
-      if (json.success) {
-        setResetUserPasswordResult(json.data);
-        notify("success", `Kata sandi akun ${user.nama} berhasil direset!`);
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal mereset kata sandi.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    } finally {
-      setIsProcessing(false);
-    }
+  function handleResetUserPassword(user: any) {
+    setDialogModal({
+      title: "Reset Kata Sandi Pengguna",
+      message: `Reset kata sandi akun login untuk ${user.nama}? Password baru acak akan dibuatkan.`,
+      variant: "warning",
+      confirmText: "Ya, Reset Password",
+      onConfirm: async () => {
+        setIsProcessing(true);
+        try {
+          const res = await authFetch(`/api/akun/${user.id}/reset-password`, {
+            method: "POST",
+          });
+          const json = await res.json();
+          if (json.success) {
+            setResetUserPasswordResult(json.data);
+            notify("success", `Kata sandi akun ${user.nama} berhasil direset!`);
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal mereset kata sandi.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        } finally {
+          setIsProcessing(false);
+        }
+      },
+    });
   }
 
   // Handle Approve Assessment Level
-  async function handleApproveAssessment(id: string) {
-    if (!confirm("Setujui kenaikan jenjang membaca siswa ini? Badge dan riwayat level baru akan otomatis diterbitkan.")) return;
-
-    try {
-      const res = await authFetch(`/api/asesmen/${id}/approve`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "Kenaikan level berhasil disetujui!");
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal menyetujui kenaikan level.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan server.");
-    }
+  function handleApproveAssessment(id: string) {
+    setDialogModal({
+      title: "Setujui Kenaikan Jenjang Membaca",
+      message: "Setujui kenaikan jenjang membaca siswa ini? Badge kelulusan, sertifikat, dan riwayat level baru akan otomatis diterbitkan.",
+      variant: "success",
+      confirmText: "Ya, Setujui Kenaikan Level",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/asesmen/${id}/approve`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "Kenaikan level berhasil disetujui!");
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal menyetujui kenaikan level.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan server.");
+        }
+      },
+    });
   }
 
   // Handle Assign Substitute Tutor
@@ -1272,18 +1367,25 @@ export default function AdminDashboard() {
   }
 
   // Handle Delete FAQ
-  async function handleDeleteFaq(id: string) {
-    if (!confirm("Hapus item FAQ ini?")) return;
-    try {
-      const res = await authFetch(`/api/faq/${id}`, { method: "DELETE" });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "FAQ berhasil dihapus.");
-        loadAdminData();
-      }
-    } catch {
-      notify("error", "Gagal menghapus FAQ.");
-    }
+  function handleDeleteFaq(id: string) {
+    setDialogModal({
+      title: "Hapus Item FAQ",
+      message: "Apakah Anda yakin ingin menghapus pertanyaan FAQ ini?",
+      variant: "danger",
+      confirmText: "Ya, Hapus FAQ",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/faq/${id}`, { method: "DELETE" });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "FAQ berhasil dihapus.");
+            loadAdminData();
+          }
+        } catch {
+          notify("error", "Gagal menghapus FAQ.");
+        }
+      },
+    });
   }
 
   // Handle Create Testimoni
@@ -1338,20 +1440,27 @@ export default function AdminDashboard() {
   }
 
   // Handle Delete Testimoni
-  async function handleDeleteTestimoni(id: string) {
-    if (!confirm("Hapus testimoni ini secara permanen?")) return;
-    try {
-      const res = await authFetch(`/api/testimoni/${id}`, { method: "DELETE" });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "Testimoni berhasil dihapus.");
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal menghapus testimoni.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan jaringan.");
-    }
+  function handleDeleteTestimoni(id: string) {
+    setDialogModal({
+      title: "Hapus Testimoni",
+      message: "Apakah Anda yakin ingin menghapus testimoni ini secara permanen?",
+      variant: "danger",
+      confirmText: "Ya, Hapus Testimoni",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/testimoni/${id}`, { method: "DELETE" });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "Testimoni berhasil dihapus.");
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal menghapus testimoni.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan jaringan.");
+        }
+      },
+    });
   }
 
   // Handle Create Galeri
@@ -1413,20 +1522,27 @@ export default function AdminDashboard() {
   }
 
   // Handle Delete Galeri
-  async function handleDeleteGaleri(id: string) {
-    if (!confirm("Hapus foto ini dari galeri?")) return;
-    try {
-      const res = await authFetch(`/api/galeri/${id}`, { method: "DELETE" });
-      const json = await res.json();
-      if (json.success) {
-        notify("success", "Foto berhasil dihapus dari galeri.");
-        loadAdminData();
-      } else {
-        notify("error", json.error || "Gagal menghapus foto galeri.");
-      }
-    } catch {
-      notify("error", "Terjadi kesalahan jaringan.");
-    }
+  function handleDeleteGaleri(id: string) {
+    setDialogModal({
+      title: "Hapus Foto Galeri",
+      message: "Apakah Anda yakin ingin menghapus foto ini dari galeri?",
+      variant: "danger",
+      confirmText: "Ya, Hapus Foto",
+      onConfirm: async () => {
+        try {
+          const res = await authFetch(`/api/galeri/${id}`, { method: "DELETE" });
+          const json = await res.json();
+          if (json.success) {
+            notify("success", "Foto berhasil dihapus dari galeri.");
+            loadAdminData();
+          } else {
+            notify("error", json.error || "Gagal menghapus foto galeri.");
+          }
+        } catch {
+          notify("error", "Terjadi kesalahan jaringan.");
+        }
+      },
+    });
   }
 
   // Filtered lists
@@ -1557,7 +1673,12 @@ export default function AdminDashboard() {
                   setPendaftaranSubtab={setPendaftaranSubtab}
                   onOpenAcceptModal={(p) => {
                     setAcceptModalReg(p);
-                    setSelectedClassIdForAccept(kelasList[0]?.id || "");
+                    const matchingClass = kelasList.find(
+                      (k) =>
+                        k.program_id === p.program_diminati &&
+                        (k.siswa_count ?? 0) < (k.kapasitas || 2)
+                    ) || kelasList.find((k) => k.program_id === p.program_diminati) || kelasList[0];
+                    setSelectedClassIdForAccept(matchingClass?.id || "");
                   }}
                   onAddToWaitingList={handleAddToWaitingList}
                   onRejectRegistration={handleRejectRegistration}
@@ -1782,6 +1903,15 @@ export default function AdminDashboard() {
                   Pilih kelompok kelas untuk calon siswa:{" "}
                   <strong>{acceptModalReg.nama_anak}</strong>
                 </p>
+                <div className="p-2.5 rounded-xl bg-purple-50 border border-purple-100 text-xs text-purple-900">
+                  Program / Level Diminati Saat Daftar:{" "}
+                  <strong>
+                    {acceptModalReg.program_nama ||
+                      acceptModalReg.program?.nama ||
+                      acceptModalReg.program_diminati ||
+                      "-"}
+                  </strong>
+                </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -1792,11 +1922,17 @@ export default function AdminDashboard() {
                     onChange={(e) => setSelectedClassIdForAccept(e.target.value)}
                     className="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white"
                   >
-                    {kelasList.map((k) => (
-                      <option key={k.id} value={k.id}>
-                        {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa) &bull; Tutor: {k.guru_nama}
-                      </option>
-                    ))}
+                    {kelasList.map((k) => {
+                      const terisi = k.siswa_count ?? (Array.isArray(k.siswa) ? k.siswa.length : 0);
+                      const kap = k.kapasitas || 2;
+                      const tutorNama = k.guru_nama || k.guru?.nama || "-";
+                      const isMatch = k.program_id === acceptModalReg.program_diminati;
+                      return (
+                        <option key={k.id} value={k.id}>
+                          {isMatch ? "★ " : ""}{k.nama} ({terisi}/{kap} Siswa){terisi >= kap ? " [PENUH]" : ""} &bull; Tutor: {tutorNama}{isMatch ? " (Sesuai Level)" : ""}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -2039,7 +2175,7 @@ export default function AdminDashboard() {
                     <option value="">-- Tempatkan Nanti --</option>
                     {kelasList.map((k) => (
                       <option key={k.id} value={k.id}>
-                        {k.nama} ({k.siswa_count}/{k.kapasitas} Siswa)
+                        {k.nama} ({k.siswa_count ?? 0}/{k.kapasitas || 2} Siswa) &bull; Tutor: {k.guru_nama || k.guru?.nama || "-"}
                       </option>
                     ))}
                   </select>
@@ -2716,7 +2852,7 @@ export default function AdminDashboard() {
                 onClick={() => setClassStudentsModal(null)}
                 className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
               >
-                âœ•
+                ✕
               </button>
             </div>
 
@@ -2826,7 +2962,7 @@ export default function AdminDashboard() {
                     onClick={() => setStudentDetailModal(null)}
                     className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
                   >
-                    âœ•
+                    ✕
                   </button>
                 </div>
 
@@ -3584,7 +3720,7 @@ export default function AdminDashboard() {
                     onClick={() => setSessionDetailModal(null)}
                     className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
                   >
-                    âœ•
+                    ✕
                   </button>
                 </div>
 
@@ -3700,6 +3836,94 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ) : null}
+          </div>
+        </div>
+      )}
+
+      {/* Modal: In-Web Pop-up Konfirmasi & Input (Menggantikan confirm/prompt bawaan browser) */}
+      {dialogModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 animate-in fade-in">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 animate-in zoom-in-95 space-y-4">
+            <div className="flex items-start gap-3.5">
+              <div
+                className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${
+                  dialogModal.variant === "danger"
+                    ? "bg-rose-100 text-rose-600"
+                    : dialogModal.variant === "success"
+                    ? "bg-emerald-100 text-emerald-600"
+                    : dialogModal.variant === "info"
+                    ? "bg-purple-100 text-purple-600"
+                    : "bg-amber-100 text-amber-600"
+                }`}
+              >
+                {dialogModal.variant === "danger" ? (
+                  <AlertCircle className="w-6 h-6" />
+                ) : dialogModal.variant === "success" ? (
+                  <CheckCircle2 className="w-6 h-6" />
+                ) : (
+                  <AlertTriangle className="w-6 h-6" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base font-bold text-slate-900">
+                  {dialogModal.title}
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  {dialogModal.message}
+                </p>
+              </div>
+            </div>
+
+            {dialogModal.inputLabel && (
+              <div className="pt-1">
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  {dialogModal.inputLabel}
+                </label>
+                <textarea
+                  rows={3}
+                  autoFocus
+                  value={dialogInputValue}
+                  onChange={(e) => setDialogInputValue(e.target.value)}
+                  placeholder={dialogModal.inputPlaceholder || "Ketik di sini..."}
+                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500"
+                />
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => {
+                  setDialogModal(null);
+                  setDialogInputValue("");
+                }}
+                className="px-4 py-2 rounded-xl text-slate-600 text-xs font-semibold hover:bg-slate-100 cursor-pointer transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                disabled={isProcessing || (Boolean(dialogModal.inputLabel) && !dialogInputValue.trim())}
+                onClick={async () => {
+                  const currentModal = dialogModal;
+                  const val = dialogInputValue;
+                  setDialogModal(null);
+                  setDialogInputValue("");
+                  await currentModal.onConfirm(val);
+                }}
+                className={`px-4 py-2 rounded-xl text-white text-xs font-bold shadow-xs cursor-pointer transition-colors disabled:opacity-50 ${
+                  dialogModal.variant === "danger"
+                    ? "bg-rose-600 hover:bg-rose-700"
+                    : dialogModal.variant === "success"
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : dialogModal.variant === "info"
+                    ? "bg-purple-600 hover:bg-purple-700"
+                    : "bg-amber-600 hover:bg-amber-700"
+                }`}
+              >
+                {dialogModal.confirmText || "Ya, Lanjutkan"}
+              </button>
+            </div>
           </div>
         </div>
       )}

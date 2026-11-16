@@ -14,9 +14,26 @@ use Illuminate\Support\Facades\DB;
 
 class SiswaController extends Controller
 {
+    private function deniesParentAccess(Request $request, Siswa $siswa): bool
+    {
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua') {
+            $siswa->loadMissing('orangtua');
+            return !$siswa->orangtua || $siswa->orangtua->user_id !== $user->id;
+        }
+        return false;
+    }
+
     public function index(Request $request)
     {
         $query = Siswa::with(['orangtua', 'kelas.program', 'kelas.guru']);
+
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua') {
+            $query->whereHas('orangtua', function ($oq) use ($user) {
+                $oq->where('user_id', $user->id);
+            });
+        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -45,7 +62,7 @@ class SiswaController extends Controller
         return response()->json(['data' => $siswa]);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $siswa = Siswa::with([
             'orangtua',
@@ -65,16 +82,59 @@ class SiswaController extends Controller
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
         }
 
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
+        }
+
         return response()->json(['data' => $siswa]);
     }
 
     public function store(Request $request)
     {
+        // Apabila form Admin mengirim data wali baru/lama tanpa orangtua_id, cari atau buat Orangtua terlebih dahulu
+        if (!$request->filled('orangtua_id') && $request->filled('nama_ortu')) {
+            $emailOrtu = $request->input('email_ortu') ?: ('wali.' . (preg_replace('/[^0-9]/', '', (string) $request->input('no_wa_ortu')) ?: Str::random(6)) . '@ahe.id');
+            $noWaOrtu = $request->input('no_wa_ortu') ?: '-';
+
+            $orangtua = Orangtua::where('email', $emailOrtu)->orWhere('no_wa', $noWaOrtu)->first();
+            if (!$orangtua) {
+                $user = User::where('email', $emailOrtu)->first();
+                if (!$user) {
+                    $user = User::create([
+                        'id' => 'usr-ortu-' . Str::random(8),
+                        'name' => $request->nama_ortu,
+                        'nama' => $request->nama_ortu,
+                        'email' => $emailOrtu,
+                        'password' => Hash::make('ortu123'),
+                        'role' => 'orangtua',
+                        'is_active' => true,
+                        'password_reset_required' => true,
+                    ]);
+                    $user->assignRole('orangtua');
+                }
+                $orangtua = Orangtua::create([
+                    'id' => 'ort-' . Str::random(8),
+                    'user_id' => $user->id,
+                    'nama' => $request->nama_ortu,
+                    'no_wa' => $noWaOrtu,
+                    'email' => $emailOrtu,
+                    'alamat' => $request->input('alamat_ortu') ?: '-',
+                    'hubungan' => $request->input('hubungan_ortu') ?: 'ibu',
+                ]);
+            }
+            $request->merge(['orangtua_id' => $orangtua->id]);
+        }
+
+        if (!$request->filled('level_saat_ini')) {
+            $request->merge(['level_saat_ini' => 'Pra Membaca']);
+        }
+
         $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:L,P',
-            'orangtua_id' => 'required|string',
+            'orangtua_id' => 'required|string|exists:orangtua,id',
+            'kelas_id' => 'nullable|string|exists:kelas,id',
             'level_saat_ini' => 'required|string',
         ]);
 
@@ -145,66 +205,90 @@ class SiswaController extends Controller
         ]);
     }
 
-    public function getAbsensi($id)
+    public function getAbsensi(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $absensi = $siswa->absensi()->with('sesi.guru')->orderBy('created_at', 'desc')->get();
         return response()->json(['data' => $absensi]);
     }
 
-    public function getNilai($id)
+    public function getNilai(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $nilai = $siswa->nilaiSesi()->with('sesi.guru')->orderBy('created_at', 'desc')->get();
         return response()->json(['data' => $nilai]);
     }
 
-    public function getKosakata($id)
+    public function getKosakata(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $kosakata = $siswa->kosakata()->orderBy('kata')->get();
         return response()->json(['data' => $kosakata]);
     }
 
-    public function getProgress($id)
+    public function getProgress(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $progress = $siswa->progressIndikator()->orderBy('bulan', 'asc')->get();
         return response()->json(['data' => $progress]);
     }
 
-    public function getCatatan($id)
+    public function getCatatan(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $catatan = $siswa->catatan()->with('guru')->orderBy('tanggal', 'desc')->get();
         return response()->json(['data' => $catatan]);
     }
 
-    public function getPencapaian($id)
+    public function getPencapaian(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        if ($this->deniesParentAccess($request, $siswa)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $pencapaian = $siswa->pencapaian()->orderBy('tanggal_raih', 'desc')->get();

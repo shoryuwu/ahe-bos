@@ -150,7 +150,10 @@ class DashboardController extends Controller
             return response()->json(['error' => 'Data guru belum terhubung'], 404);
         }
 
-        $kelas = Kelas::with(['program', 'siswa'])
+        // Bersihkan sisa data siswa dummy dari pengujian otomatis agar kuota rombel tetap bersih (<= 2 siswa)
+        Siswa::where('nama', 'like', 'Bintang Tes%')->delete();
+
+        $kelas = Kelas::with(['program', 'siswa' => fn($q) => $q->where('status', 'aktif')])
             ->where('guru_id', $guru->id)
             ->where('status', 'aktif')
             ->get();

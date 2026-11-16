@@ -236,7 +236,7 @@ export function PendaftaranTab({
                       <Clock3 className="w-8 h-8 mx-auto mb-2 opacity-50" />
                       <p className="font-semibold text-xs text-foreground">Antrean Waiting List Kosong</p>
                       <p className="text-[11px] text-muted-foreground mt-0.5 max-w-md mx-auto">
-                        Saat rombel kelas 6/6 penuh, calon siswa dapat dialihkan ke waiting list agar mendapatkan prioritas rombel berikutnya.
+                        Saat rombel kelas 2/2 penuh, calon siswa dapat dialihkan ke waiting list agar mendapatkan prioritas rombel berikutnya.
                       </p>
                     </td>
                   </tr>
@@ -261,13 +261,13 @@ export function PendaftaranTab({
                           {w.pendaftaran?.nama_ortu || "-"}
                         </span>
                         <a
-                          href={`https://wa.me/${w.pendaftaran?.no_wa_ortu?.replace(/[^0-9]/g, "")}`}
+                          href={`https://wa.me/${(w.pendaftaran?.no_wa_ortu || (w.pendaftaran as any)?.no_wa || "").replace(/[^0-9]/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[11px] text-emerald-700 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-1"
                         >
                           <Phone className="w-3 h-3" />
-                          {w.pendaftaran?.no_wa_ortu || "-"}
+                          {w.pendaftaran?.no_wa_ortu || (w.pendaftaran as any)?.no_wa || "-"}
                         </a>
                       </td>
                       <td className="px-5 py-3.5">

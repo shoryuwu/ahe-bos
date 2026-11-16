@@ -143,7 +143,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/orangtua', [OrangtuaController::class, 'index']);
         Route::get('/orangtua/{id}', [OrangtuaController::class, 'show']);
         Route::put('/orangtua/{id}', [OrangtuaController::class, 'update']);
-        Route::put('/orangtua/{id}/reset-password', [OrangtuaController::class, 'resetPassword']);
+        Route::match(['put', 'post'], '/orangtua/{id}/reset-password', [OrangtuaController::class, 'resetPassword']);
 
         // Kelas Management
         Route::post('/kelas', [KelasController::class, 'store']);
@@ -173,6 +173,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Waiting List & Pindah Kelas
         Route::get('/waiting-list', [WaitingListController::class, 'index']);
+        Route::post('/waiting-list', [WaitingListController::class, 'store']);
         Route::put('/waiting-list/{id}/assign', [WaitingListController::class, 'assign']);
         Route::delete('/waiting-list/{id}', [WaitingListController::class, 'destroy']);
         Route::post('/pindah-kelas', [PindahKelasController::class, 'store']);
@@ -192,8 +193,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/akun', [AkunController::class, 'index']);
         Route::post('/akun', [AkunController::class, 'store']);
         Route::put('/akun/{id}', [AkunController::class, 'update']);
-        Route::put('/akun/{id}/reset-password', [AkunController::class, 'resetPassword']);
-        Route::put('/akun/{id}/unlock', [AkunController::class, 'unlock']);
+        Route::match(['put', 'post'], '/akun/{id}/reset-password', [AkunController::class, 'resetPassword']);
+        Route::match(['put', 'post'], '/akun/{id}/unlock', [AkunController::class, 'unlock']);
         Route::get('/log-aktivitas', [LogAktivitasController::class, 'index']);
     });
 });
