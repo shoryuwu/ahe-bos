@@ -30,6 +30,11 @@ class LaporanController extends Controller
             return response()->json(['success' => false, 'message' => 'Siswa tidak ditemukan'], 404);
         }
 
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua' && (!$siswa->orangtua || $siswa->orangtua->user_id !== $user->id)) {
+            return response()->json(['success' => false, 'error' => 'Anda tidak memiliki akses terhadap rapor anak ini'], 403);
+        }
+
         // --- Kehadiran recap ---
         $absensiAll = $siswa->absensi;
         $hadir  = $absensiAll->where('status', 'hadir')->count();

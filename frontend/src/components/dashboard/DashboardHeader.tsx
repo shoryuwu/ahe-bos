@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -43,11 +43,87 @@ export function DashboardHeader({
 }: DashboardHeaderProps) {
   const router = useRouter();
   const [showNotifModal, setShowNotifModal] = useState(false);
+  const [notifikasiList, setNotifikasiList] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [activeGuideTab, setActiveGuideTab] = useState<"sop" | "admin" | "tutor" | "ortu">(
     userRole === "admin" ? "admin" : userRole === "tutor" ? "tutor" : userRole === "orangtua" ? "ortu" : "sop"
   );
   const [loggingOut, setLoggingOut] = useState(false);
+
+  const fetchNotifikasi = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("ahe_token");
+      if (!token) return;
+      const res = await fetch("/api/notifikasi", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (Array.isArray(json.data)) {
+        setNotifikasiList(json.data);
+        setUnreadCount(typeof json.unread_count === "number" ? json.unread_count : json.data.filter((n: any) => !n.is_read).length);
+      }
+    } catch {
+      // Ignore network errors
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchNotifikasi();
+    const interval = setInterval(fetchNotifikasi, 15000);
+    return () => clearInterval(interval);
+  }, [fetchNotifikasi]);
+
+  async function handleMarkAsRead(notif: any) {
+    try {
+      const token = localStorage.getItem("ahe_token");
+      if (token && !notif.is_read) {
+        await fetch(`/api/notifikasi/${notif.id}/read`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+        setNotifikasiList((prev) =>
+          prev.map((item) => (item.id === notif.id ? { ...item, is_read: true } : item))
+        );
+        setUnreadCount((prev) => Math.max(0, prev - 1));
+      }
+    } catch {
+      // Ignore
+    }
+    setShowNotifModal(false);
+    if (notif.link) {
+      if (typeof window !== "undefined" && notif.link.startsWith("/admin?tab=") && window.location.pathname === "/admin") {
+        window.location.href = notif.link;
+      } else {
+        router.push(notif.link);
+      }
+    }
+  }
+
+  async function handleMarkAllAsRead() {
+    try {
+      const token = localStorage.getItem("ahe_token");
+      if (!token) return;
+      await fetch("/api/notifikasi/read-all", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+      setNotifikasiList((prev) => prev.map((item) => ({ ...item, is_read: true })));
+      setUnreadCount(0);
+    } catch {
+      // Ignore
+    }
+  }
 
   async function handleLogout() {
     if (loggingOut) return;
@@ -134,47 +210,101 @@ export function DashboardHeader({
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setShowNotifModal(!showNotifModal)}
+            onClick={() => {
+              const nextState = !showNotifModal;
+              setShowNotifModal(nextState);
+              if (nextState) fetchNotifikasi();
+            }}
             className="relative text-muted-foreground hover:text-foreground cursor-pointer"
             aria-label="Notifikasi"
           >
             <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-[var(--ahe-orange)] ring-2 ring-white" />
+            {unreadCount > 0 ? (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--ahe-orange)] text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            ) : (
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-300 ring-2 ring-white" />
+            )}
           </Button>
 
           {showNotifModal && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 z-50 animate-in fade-in zoom-in-95">
+            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 z-50 animate-in fade-in zoom-in-95">
               <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-900">
                   Pemberitahuan Sistem
                 </span>
-                <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                  Terbaru
-                </span>
+                {unreadCount > 0 ? (
+                  <button
+                    onClick={handleMarkAllAsRead}
+                    className="text-[10px] font-semibold text-purple-600 bg-purple-50 hover:bg-purple-100 px-2.5 py-0.5 rounded-full transition-colors cursor-pointer"
+                  >
+                    Tandai Dibaca ({unreadCount})
+                  </button>
+                ) : (
+                  <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                    Terbaru
+                  </span>
+                )}
               </div>
-              <div className="space-y-2.5 max-h-60 overflow-y-auto">
-                <div className="flex items-start gap-2.5 p-2 rounded-xl bg-purple-50/50 hover:bg-purple-50 transition-colors">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900">
-                      Sistem Aktif Berjalan
-                    </p>
-                    <p className="text-[11px] text-slate-500">
-                      Seluruh fitur administrasi AHE siap digunakan.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-2.5 p-2 rounded-xl bg-slate-50 hover:bg-slate-100/70 transition-colors">
-                  <Info className="w-4 h-4 text-purple-600 mt-0.5 shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900">
-                      Metode AHE Terintegrasi
-                    </p>
-                    <p className="text-[11px] text-slate-500">
-                      Pencatatan 6 langkah belajar aktif pada sesi bimbingan.
-                    </p>
-                  </div>
-                </div>
+              <div className="space-y-2 max-h-72 overflow-y-auto">
+                {notifikasiList.length > 0 ? (
+                  notifikasiList.map((notif: any) => (
+                    <div
+                      key={notif.id}
+                      onClick={() => handleMarkAsRead(notif)}
+                      className={`flex items-start gap-2.5 p-2.5 rounded-xl transition-colors cursor-pointer ${
+                        !notif.is_read
+                          ? "bg-purple-50/80 hover:bg-purple-100/70 border border-purple-100"
+                          : "bg-slate-50/70 hover:bg-slate-100/80"
+                      }`}
+                    >
+                      {notif.tipe === "sukses" ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                      ) : (
+                        <Info className={`w-4 h-4 mt-0.5 shrink-0 ${!notif.is_read ? "text-purple-600" : "text-slate-400"}`} />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className={`text-xs ${!notif.is_read ? "font-bold text-slate-900" : "font-semibold text-slate-700"}`}>
+                            {notif.judul}
+                          </p>
+                          {!notif.is_read && (
+                            <span className="w-2 h-2 rounded-full bg-purple-600 shrink-0" />
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-600 mt-0.5 leading-snug">
+                          {notif.pesan}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="flex items-start gap-2.5 p-2 rounded-xl bg-purple-50/50 hover:bg-purple-50 transition-colors">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                      <div>
+                        <p className="text-xs font-semibold text-slate-900">
+                          Sistem Aktif Berjalan
+                        </p>
+                        <p className="text-[11px] text-slate-500">
+                          Seluruh fitur administrasi AHE siap digunakan.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5 p-2 rounded-xl bg-slate-50 hover:bg-slate-100/70 transition-colors">
+                      <Info className="w-4 h-4 text-purple-600 mt-0.5 shrink-0" />
+                      <div>
+                        <p className="text-xs font-semibold text-slate-900">
+                          Metode AHE Terintegrasi
+                        </p>
+                        <p className="text-[11px] text-slate-500">
+                          Pencatatan 6 langkah belajar aktif pada sesi bimbingan.
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           )}

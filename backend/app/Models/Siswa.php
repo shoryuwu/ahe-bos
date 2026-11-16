@@ -14,13 +14,34 @@ class Siswa extends Model
     public $incrementing = false;
     protected $guarded = [];
 
-    protected $appends = ['tutor'];
+    protected $appends = ['tutor', 'kehadiran_persen', 'progress_persen'];
 
     protected $casts = [
         'tanggal_lahir' => 'date',
         'tanggal_masuk' => 'date',
         'tanggal_keluar' => 'date',
     ];
+
+    public function getKehadiranPersenAttribute(): int
+    {
+        $total = $this->absensi()->count();
+        if ($total === 0) return 100;
+        $hadir = $this->absensi()->where('status', 'hadir')->count();
+        return (int) round(($hadir / $total) * 100);
+    }
+
+    public function getProgressPersenAttribute(): int
+    {
+        $latest = $this->progressIndikator()->orderBy('bulan', 'desc')->first();
+        if (!$latest) return 0;
+        return (int) round((
+            ($latest->mengenal_huruf ?? 0) +
+            ($latest->membaca_suku_kata ?? 0) +
+            ($latest->membaca_kata ?? 0) +
+            ($latest->membaca_kalimat ?? 0) +
+            ($latest->membaca_cerita ?? 0)
+        ) / 5);
+    }
 
     public function getTutorAttribute()
     {

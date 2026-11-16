@@ -33,6 +33,16 @@ class AsesmenController extends Controller
 
     public function store(Request $request)
     {
+        $siswa = Siswa::with('kelas')->find($request->siswa_id);
+        $guruId = $request->input('guru_id')
+            ?? $request->user()?->guru?->id
+            ?? ($request->user() ? \App\Models\Guru::where('email', $request->user()->email)->value('id') : null)
+            ?? $siswa?->kelas?->guru_id;
+
+        if ($guruId) {
+            $request->merge(['guru_id' => $guruId]);
+        }
+
         $request->validate([
             'siswa_id' => 'required|string|exists:siswa,id',
             'guru_id' => 'required|string|exists:guru,id',
@@ -48,20 +58,31 @@ class AsesmenController extends Controller
         $asesmen = Asesmen::create([
             'id' => $id,
             'siswa_id' => $request->siswa_id,
-            'guru_id' => $request->guru_id,
+            'guru_id' => $guruId,
             'dari_level' => $request->dari_level,
             'ke_level' => $request->ke_level,
             'tanggal_pengajuan' => now()->toDateString(),
             'nilai_tertulis' => $request->nilai_tertulis,
             'nilai_praktik' => $request->nilai_praktik,
             'checklist_indikator' => $request->checklist_indikator,
-            'catatan_evaluasi' => $request->catatan_evaluasi,
+            'catatan_evaluasi' => $request->catatan_evaluasi ?? $request->catatan,
             'rekomendasi' => $request->rekomendasi,
             'status' => 'menunggu',
         ]);
 
         $siswa = Siswa::find($request->siswa_id);
         LogAktivitas::catat($request->user()?->id, 'ajukan_asesmen', "Mengajukan asesmen kenaikan level untuk {$siswa?->nama}", $request->ip());
+
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            Notifikasi::kirim(
+                $admin->id,
+                'Pengajuan Kenaikan Level',
+                "Tutor mengajukan asesmen kenaikan level untuk {$siswa?->nama} ({$request->dari_level} ke {$request->ke_level})",
+                'info',
+                '/admin?tab=kenaikan-level'
+            );
+        }
 
         return response()->json([
             'message' => 'Pengajuan asesmen berhasil disimpan',
@@ -74,6 +95,10 @@ class AsesmenController extends Controller
         $asesmen = Asesmen::with('siswa.orangtua')->find($id);
         if (!$asesmen) {
             return response()->json(['error' => 'Asesmen tidak ditemukan'], 404);
+        }
+
+        if ($asesmen->status === 'disetujui') {
+            return response()->json(['error' => 'Asesmen ini sudah disetujui sebelumnya'], 422);
         }
 
         DB::beginTransaction();
@@ -131,7 +156,7 @@ class AsesmenController extends Controller
                         'Selamat! Kenaikan Level',
                         "Ananda {$siswa->nama} telah resmi naik level ke {$asesmen->ke_level}!",
                         'sukses',
-                        '/dashboard'
+                        '/orangtua'
                     );
                 }
             }

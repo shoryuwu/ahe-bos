@@ -10,11 +10,16 @@ use Illuminate\Support\Str;
 
 class KosakataController extends Controller
 {
-    public function indexSiswa($siswaId)
+    public function indexSiswa(Request $request, $siswaId)
     {
-        $siswa = Siswa::find($siswaId);
+        $siswa = Siswa::with('orangtua')->find($siswaId);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua' && (!$siswa->orangtua || $siswa->orangtua->user_id !== $user->id)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data kosakata anak ini'], 403);
         }
 
         $kosakata = Kosakata::where('siswa_id', $siswaId)->orderBy('kata')->get();

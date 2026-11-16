@@ -11,11 +11,16 @@ use Illuminate\Support\Str;
 
 class ProgressIndikatorController extends Controller
 {
-    public function show($siswaId)
+    public function show(Request $request, $siswaId)
     {
-        $siswa = Siswa::find($siswaId);
+        $siswa = Siswa::with('orangtua')->find($siswaId);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua' && (!$siswa->orangtua || $siswa->orangtua->user_id !== $user->id)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data anak ini'], 403);
         }
 
         $progress = ProgressIndikator::where('siswa_id', $siswaId)

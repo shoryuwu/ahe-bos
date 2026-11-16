@@ -10,11 +10,16 @@ use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
-    public function rekapSiswa($id)
+    public function rekapSiswa(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::with('orangtua')->find($id);
         if (!$siswa) {
             return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+        }
+
+        $user = $request->user();
+        if ($user && $user->role === 'orangtua' && (!$siswa->orangtua || $siswa->orangtua->user_id !== $user->id)) {
+            return response()->json(['error' => 'Anda tidak memiliki akses terhadap data absensi anak ini'], 403);
         }
 
         $records = Absensi::with('sesi.guru')

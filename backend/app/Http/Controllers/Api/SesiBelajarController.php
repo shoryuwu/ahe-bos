@@ -62,20 +62,63 @@ class SesiBelajarController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kelas_id' => 'required|string',
+            'kelas_id' => 'required|string|exists:kelas,id',
             'tanggal' => 'required|date',
             'materi' => 'required|string',
             'modul_id' => 'nullable|string',
             'siswa_data' => 'nullable|array',
+            'siswa_data.*.siswa_id' => 'required|string|exists:siswa,id',
+            'siswa_data.*.status_absensi' => 'nullable|in:hadir,izin,sakit,alpha',
+            'siswa_data.*.absensi' => 'nullable|in:hadir,izin,sakit,alpha',
+            'siswa_data.*.nilai' => 'nullable|integer|min:0|max:100',
+            'siswa_data.*.mood' => 'nullable|integer|min:1|max:5',
             'video_url' => 'nullable|string|max:500',
         ]);
 
+        $kelas = \App\Models\Kelas::find($request->kelas_id);
+        $user = $request->user();
+
+        if ($user && $user->role === 'tutor') {
+            $tutorGuruId = $user->guru?->id;
+            if (!$tutorGuruId || $kelas->guru_id !== $tutorGuruId) {
+                return response()->json([
+                    'error' => 'Anda tidak ditugaskan mengajar pada kelas ini'
+                ], 403);
+            }
+        }
+
+        $sesiGanda = SesiBelajar::where('kelas_id', $request->kelas_id)
+            ->whereDate('tanggal', $request->tanggal)
+            ->where('status_sesi', '!=', 'dibatalkan')
+            ->exists();
+
+        if ($sesiGanda) {
+            return response()->json([
+                'error' => 'Sesi belajar untuk kelas dan tanggal tersebut sudah tercatat'
+            ], 422);
+        }
+
+        if ($request->filled('siswa_data') && is_array($request->siswa_data)) {
+            foreach ($request->siswa_data as $item) {
+                $siswaId = $item['siswa_id'] ?? null;
+                if (!$siswaId) continue;
+                $siswa = \App\Models\Siswa::find($siswaId);
+                if (!$siswa || $siswa->kelas_id !== $request->kelas_id) {
+                    return response()->json([
+                        'error' => "Siswa {$siswaId} tidak terdaftar pada kelas {$kelas->nama}"
+                    ], 422);
+                }
+            }
+        }
+
         DB::beginTransaction();
         try {
-            $user = $request->user();
             $guruId = $request->guru_id;
             if (!$guruId && $user && $user->role === 'tutor' && $user->guru) {
                 $guruId = $user->guru->id;
+            }
+            if (!$guruId) {
+                $guruId = $kelas->guru_id;
             }
 
             $sesiId = 'ses-' . Str::random(8);
@@ -128,6 +171,17 @@ class SesiBelajarController extends Controller
                             'catatan' => $item['catatan'],
                             'tipe' => 'progress',
                         ]);
+                    }
+
+                    $siswaObj = \App\Models\Siswa::with('orangtua')->find($siswaId);
+                    if ($siswaObj && $siswaObj->orangtua && $siswaObj->orangtua->user_id) {
+                        \App\Models\Notifikasi::kirim(
+                            $siswaObj->orangtua->user_id,
+                            'Laporan Sesi Belajar Baru',
+                            "Sesi belajar ananda {$siswaObj->nama} ({$request->materi}) telah dicatat oleh Tutor.",
+                            'sukses',
+                            '/orangtua'
+                        );
                     }
                 }
             }

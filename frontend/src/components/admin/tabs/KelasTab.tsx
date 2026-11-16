@@ -33,7 +33,7 @@ export function KelasTab({
         <div>
           <h3 className="text-base font-bold text-foreground">Program & Kelompok Belajar</h3>
           <p className="text-xs text-muted-foreground">
-            Struktur rombel kelas sesuai standar AHE (Maksimal 6 siswa per kelompok)
+            Struktur rombel kelas sesuai standar Semi-Private AHE (Maksimal 2 siswa per kelompok)
           </p>
         </div>
 
